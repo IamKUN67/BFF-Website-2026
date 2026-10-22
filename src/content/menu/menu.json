@@ -1,0 +1,100 @@
+{
+  "items": [
+    {
+      "label": "HomePage",
+      "link": "/",
+      "children": []
+    },
+    {
+      "label": "ข่าวสาร",
+      "link": "/news/",
+      "children": [
+        {
+          "label": "ข่าวจริง",
+          "link": "/news/?category=ข่าวจริง"
+        },
+        {
+          "label": "ทั่วไป",
+          "link": "/news/?category=ทั่วไป"
+        },
+        {
+          "label": "ประชาสัมพันธ์",
+          "link": "/news/?category=ประชาสัมพันธ์"
+        }
+      ]
+    },
+    {
+      "label": "บอร์ดบริหาร",
+      "link": "/board/",
+      "children": []
+    },
+    {
+      "label": "School Zone \"โซนแห่งการเรียนรู้\"",
+      "children": [
+        {
+          "label": "วิชาภาษาไทย",
+          "link": "/pages/thai/"
+        },
+        {
+          "label": "วิทยาศาสตร์",
+          "link": "/pages/science/"
+        },
+        {
+          "label": "คณิตศาสตร์",
+          "link": "/pages/math/"
+        },
+        {
+          "label": "ภาษาอังกฤษ",
+          "link": "/pages/english/"
+        },
+        {
+          "label": "ภาษาจีน",
+          "link": "/pages/chinese/"
+        },
+        {
+          "label": "สังคมศึกษา",
+          "link": "/pages/social/"
+        },
+        {
+          "label": "เก็นชินอิมแพกต์",
+          "link": "/pages/genshin/"
+        },
+        {
+          "label": "กิจกรรมพัฒนาผู้เรียน",
+          "link": "/pages/student-activities/"
+        },
+        {
+          "label": "สมัครเรียน",
+          "link": "/pages/apply/"
+        }
+      ]
+    },
+    {
+      "label": "แมพของพวกเรา",
+      "children": [
+        {
+          "label": "BFF MMORPG",
+          "link": "/pages/bff-mmorpg/"
+        },
+        {
+          "label": "BFF FOREVER CRAFT",
+          "link": "/pages/bff-forever-craft/"
+        }
+      ]
+    },
+    {
+      "label": "ติดต่อเรา",
+      "link": "/pages/contact/",
+      "children": [
+        {
+          "label": "ช่องทางการติดต่อสื่อสาร",
+          "link": "/pages/contact-channels/"
+        },
+        {
+          "label": "แบบประเมิณรายเดือน",
+          "link": "/pages/monthly-evaluation/"
+        }
+      ]
+    }
+  ]
+}
