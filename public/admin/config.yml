@@ -8,12 +8,11 @@ backend:
 
 locale: th
 publish_mode: simple
-site_url: /
-display_url: /
+site_url: https://iamkun67.github.io/BFF-Website-2026/
 
 # รูปที่อัปโหลดเก็บใน src/assets/uploads (path แบบสัมพัทธ์ เพื่อให้ Astro ย่อรูปตอน build)
-media_folder: src/assets/uploads
-public_folder: ../../assets/uploads
+media_folder: public/uploads
+public_folder: /uploads
 
 # ย่อรูปและแปลงเป็น WebP อัตโนมัติตั้งแต่ตอนอัปโหลด
 media_libraries:
