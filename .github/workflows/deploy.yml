@@ -19,9 +19,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: withastro/action@v3
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
+
+      # ติดตั้งแพ็กเกจ (ไม่ต้องมี package-lock.json)
+      - run: npm install
+
+      # สร้างเว็บ (ผลลัพธ์อยู่ในโฟลเดอร์ dist)
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
   deploy:
     needs: build
