@@ -1,0 +1,203 @@
+# ตั้งค่าหน้าแอดมิน (Sveltia CMS) ป้ายกำกับทั้งหมดเป็นภาษาไทย
+# *** แก้เฉพาะบรรทัด repo: ด้านล่างครั้งเดียวตอนติดตั้ง ***
+
+backend:
+  name: github
+  repo: ชื่อผู้ใช้GitHub/ชื่อrepo   # <-- แก้ตรงนี้ เช่น somchai/bff-2026
+  branch: main
+
+locale: th
+publish_mode: simple
+site_url: /
+display_url: /
+
+# รูปที่อัปโหลดเก็บใน src/assets/uploads (path แบบสัมพัทธ์ เพื่อให้ Astro ย่อรูปตอน build)
+media_folder: src/assets/uploads
+public_folder: ../../assets/uploads
+
+# ย่อรูปและแปลงเป็น WebP อัตโนมัติตั้งแต่ตอนอัปโหลด
+media_libraries:
+  default:
+    config:
+      max_file_size: 10485760
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2000
+          height: 2000
+
+collections:
+  # ───────────── 1) ตั้งค่าเว็บไซต์ + 2) เมนู ─────────────
+  - name: settings
+    label: "ตั้งค่าเว็บไซต์"
+    files:
+      - name: site
+        label: "ตั้งค่าทั่วไป"
+        file: src/content/settings/site.json
+        format: json
+        fields:
+          - { name: siteName, label: "ชื่อเว็บไซต์", widget: string }
+          - { name: tagline, label: "ชื่อรอง", widget: string, required: false }
+          - { name: welcomeTitle, label: "หัวข้อต้อนรับหน้าแรก", widget: string, required: false }
+          - { name: welcomeText, label: "ข้อความต้อนรับหน้าแรก", widget: text, required: false }
+          - name: logo
+            label: "รูปโลโก้"
+            widget: object
+            required: false
+            fields:
+              - { name: src, label: "ไฟล์รูป", widget: image, required: false }
+              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
+          - name: cover
+            label: "รูปปก"
+            widget: object
+            required: false
+            fields:
+              - { name: src, label: "ไฟล์รูป", widget: image, required: false }
+              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
+          - name: colors
+            label: "สีของเว็บไซต์"
+            widget: object
+            fields:
+              - { name: primary, label: "สีหลัก", widget: color, default: "#e8590c" }
+              - { name: accent, label: "สีเน้น", widget: color, default: "#0c8599" }
+          - name: social
+            label: "ลิงก์โซเชียล"
+            widget: object
+            fields:
+              - { name: instagram, label: "Instagram (ลิงก์เต็ม)", widget: string, required: false }
+              - { name: facebook, label: "Facebook (ลิงก์เต็ม)", widget: string, required: false }
+              - { name: line, label: "LINE (ลิงก์เต็ม)", widget: string, required: false }
+              - { name: discord, label: "Discord (ลิงก์เชิญ)", widget: string, required: false }
+          - { name: email, label: "อีเมล", widget: string, required: false }
+          - { name: address, label: "ที่อยู่", widget: text, required: false }
+          - { name: footerText, label: "ข้อความท้ายเว็บ", widget: string, required: false }
+
+      - name: menu
+        label: "เมนู"
+        file: src/content/menu/menu.json
+        format: json
+        fields:
+          - name: items
+            label: "รายการเมนูหลัก (ลากเพื่อเรียงลำดับ)"
+            label_singular: "เมนู"
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { name: label, label: "ชื่อเมนู", widget: string }
+              - { name: link, label: "ลิงก์", widget: string, required: false, hint: "ลิงก์ในเว็บขึ้นต้นด้วย / เช่น /news/ หรือ /pages/thai/ ส่วนลิงก์นอกเว็บขึ้นต้นด้วย https:// ถ้าเมนูนี้มีเมนูย่อย เว้นว่างได้" }
+              - name: children
+                label: "เมนูย่อย (ลากเพื่อเรียงลำดับ)"
+                label_singular: "เมนูย่อย"
+                widget: list
+                required: false
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: label, label: "ชื่อเมนูย่อย", widget: string }
+                  - { name: link, label: "ลิงก์", widget: string }
+
+  # ───────────── 3) โพสต์ข่าว/กิจกรรม ─────────────
+  - name: posts
+    label: "ข่าว/กิจกรรม"
+    label_singular: "ข่าว"
+    folder: src/content/posts
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{title}} — {{status}}"
+    sortable_fields: [title, date, status]
+    fields:
+      - { name: title, label: "หัวข้อ", widget: string }
+      - name: status
+        label: "สถานะ"
+        widget: select
+        default: draft
+        options:
+          - { label: "ร่าง (ยังไม่แสดงบนเว็บ)", value: draft }
+          - { label: "เผยแพร่", value: published }
+      - { name: date, label: "วันที่โพสต์", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
+      - { name: updated, label: "วันที่อัปเดต", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
+      - name: category
+        label: "หมวดหมู่"
+        widget: select
+        required: false
+        options: ["ข่าวจริง", "ทั่วไป", "ประชาสัมพันธ์"]
+      - { name: pinned, label: "ปักหมุดข่าว", widget: boolean, default: false }
+      - { name: isNew, label: "ป้าย New", widget: boolean, default: false }
+      - { name: notes, label: "หมายเหตุภายใน (ไม่แสดงบนเว็บ)", widget: text, required: false }
+      - { name: legacyUrl, label: "ลิงก์เดิมจาก Google Sites", widget: string, required: false }
+      - name: cover
+        label: "รูปปก"
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: "ไฟล์รูป", widget: image, required: false }
+          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
+      - name: gallery
+        label: "อัลบั้มรูป"
+        label_singular: "รูป"
+        widget: list
+        required: false
+        fields:
+          - { name: src, label: "ไฟล์รูป", widget: image }
+          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string }
+      - { name: body, label: "เนื้อหา", widget: markdown, required: false }
+
+  # ───────────── 4) หน้าทั่วไป ─────────────
+  - name: pages
+    label: "หน้าทั่วไป"
+    label_singular: "หน้า"
+    folder: src/content/pages
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{fields.slug}}"
+    summary: "{{title}}"
+    fields:
+      - { name: title, label: "ชื่อหน้า", widget: string }
+      - { name: slug, label: "ชื่อลิงก์ (ภาษาอังกฤษพิมพ์เล็ก/ตัวเลข/ขีดกลางเท่านั้น)", widget: string, pattern: ["^[a-z0-9-]+$", "ใช้ได้เฉพาะ a-z 0-9 และ -"], hint: "เช่น thai-subject จะได้ลิงก์ /pages/thai-subject/" }
+      - { name: description, label: "คำอธิบายสั้น (ใช้ใน Google)", widget: text, required: false }
+      - { name: legacy, label: "ระบบเก่า (ซ่อนจากเมนูหลัก แต่เปิดผ่านลิงก์ได้)", widget: boolean, default: false }
+      - { name: body, label: "เนื้อหา", widget: markdown, required: false }
+
+  # ───────────── 5) ปฏิทินกิจกรรม ─────────────
+  - name: events
+    label: "ปฏิทินกิจกรรม"
+    label_singular: "กิจกรรม"
+    folder: src/content/events
+    extension: json
+    format: json
+    create: true
+    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{title}}"
+    fields:
+      - { name: title, label: "ชื่อกิจกรรม", widget: string }
+      - { name: start, label: "วันเริ่ม", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false }
+      - { name: end, label: "วันสิ้นสุด", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
+      - { name: location, label: "สถานที่", widget: string, required: false }
+      - { name: details, label: "รายละเอียด", widget: text, required: false }
+      - { name: link, label: "ลิงก์", widget: string, required: false }
+
+  # ───────────── 6) สมาชิก/บอร์ดบริหาร ─────────────
+  - name: board
+    label: "บอร์ดบริหาร/สมาชิก"
+    label_singular: "สมาชิก"
+    folder: src/content/board
+    extension: json
+    format: json
+    create: true
+    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{order}}. {{name}} — {{position}}"
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: "ชื่อ", widget: string }
+      - { name: position, label: "ตำแหน่ง", widget: string, required: false }
+      - name: photo
+        label: "รูป"
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: "ไฟล์รูป", widget: image, required: false }
+          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
+      - { name: order, label: "ลำดับ (เลขน้อยขึ้นก่อน)", widget: number, value_type: int, default: 100 }
