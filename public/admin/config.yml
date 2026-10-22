@@ -3,7 +3,7 @@
 
 backend:
   name: github
-  repo: ชื่อผู้ใช้GitHub/ชื่อrepo   # <-- แก้ตรงนี้ เช่น somchai/bff-2026
+  repo: IamKUN67/BFF-Website-2026   # <-- แก้ตรงนี้ เช่น somchai/bff-2026
   branch: main
 
 locale: th
