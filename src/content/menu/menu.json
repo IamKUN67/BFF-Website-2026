@@ -25,8 +25,13 @@
       "children": []
     },
     {
-      "label": "School Zone \"โซนแห่งการเรียนรู้\"",
+      "label": "School Zone",
+      "link": "",
       "children": [
+        {
+          "label": "สมัครเรียน",
+          "link": "/pages/apply/"
+        },
         {
           "label": "วิชาภาษาไทย",
           "link": "/pages/thai/"
@@ -58,15 +63,12 @@
         {
           "label": "กิจกรรมพัฒนาผู้เรียน",
           "link": "/pages/student-activities/"
-        },
-        {
-          "label": "สมัครเรียน",
-          "link": "/pages/apply/"
         }
       ]
     },
     {
       "label": "แมพของพวกเรา",
+      "link": "",
       "children": [
         {
           "label": "BFF MMORPG",
