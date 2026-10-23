@@ -1,8 +1,20 @@
 ---
-title: "BFF Christmas And Newyear Party 2025"
+title: BFF Christmas And Newyear Party 2025
 status: published
 date: 2024-12-30
 updated: 2025-01-02
-pinned: false
+category: ข่าวประชาสัมพันธ์ทั่วไป
+pinned: true
 isNew: true
+notes: ''
+cover:
+  src: /uploads/unnamed (2).webp
+  alt: ''
+gallery:
+  - src: /uploads/unnamed (3).webp
+    alt: Happy New Year!
+  - src: /uploads/unnamed (4).webp
+    alt: ลาก่อนปีเก่า เจอกันปีใหม่!
 ---
+
+BFF Christmas and New Year Party 2025: กิจกรรมเฉลิมฉลองวันคริสต์มาสและปีใหม่ เพื่อเสริมสร้างความสุขและความสัมพันธ์ระหว่างสมาชิก ด้วยเกมสนุกสนาน สังสรรค์ และปาร์ตี้สุดพิเศษในบรรยากาศที่อบอุ่นตั้งแต่บ่ายจนถึงค่ำ!
