@@ -214,3 +214,69 @@ a.contact-card:hover { transform: translateY(-3px); }
 .contact-cards > :nth-child(4n) .cc-icon { color: #3a2a00; }
 .cc-label { display: block; font-weight: 600; }
 .cc-value { display: block; color: var(--muted); font-size: .95rem; overflow-wrap: anywhere; }
+
+/* ───── ส่วนเนื้อหา (section), อัลบั้ม, วิดีโอ ───── */
+.sec { margin-top: 2.6rem; }
+.paper > :first-child, .paper > .sec:first-child { margin-top: 0; }
+.sec-title { margin: 0 0 1.1rem; padding-bottom: .5rem; font-size: clamp(1.3rem, 3vw, 1.75rem); border-bottom: 4px solid transparent; border-image: var(--rainbow) 1; }
+.sec-main.has-image { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 1.6rem; align-items: start; }
+.sec-main .prose > :first-child { margin-top: 0; }
+@media (max-width: 700px) { .sec-main.has-image { grid-template-columns: 1fr; } }
+.zoom { display: block; width: 100%; padding: 0; border: 0; background: none; border-radius: 14px; overflow: hidden; cursor: zoom-in; }
+.zoom img { width: 100%; height: auto; transition: transform .3s; }
+.zoom:hover img { transform: scale(1.03); }
+.album { columns: 3 210px; column-gap: .8rem; margin-top: 1.3rem; }
+.album .zoom { margin-bottom: .8rem; break-inside: avoid; }
+.videos { display: grid; gap: 1.4rem; margin-top: 1.3rem; }
+.video { margin: 0; }
+.video iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 14px; background: #000; }
+.video figcaption { margin-top: .5rem; text-align: center; color: var(--muted); font-size: .95rem; }
+.prose img { cursor: zoom-in; }
+
+/* ───── กล่องดูรูปขยาย ───── */
+.lightbox { width: 100%; height: 100%; max-width: 100vw; max-height: 100vh; padding: 0; border: 0; background: transparent; color: #fff; }
+.lightbox[open] { display: grid; place-items: center; }
+.lightbox::backdrop { background: rgba(8, 18, 30, .9); }
+.lightbox figure { margin: 0; max-width: 92vw; text-align: center; }
+.lightbox img { max-width: min(92vw, 1400px); max-height: 80vh; width: auto; height: auto; object-fit: contain; border-radius: 10px; }
+.lightbox figcaption { margin: .8rem auto 0; max-width: 70ch; font-size: 1.05rem; }
+.lb-btn { position: fixed; width: 50px; height: 50px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .92); color: #111; font-size: 2rem; line-height: 1; cursor: pointer; }
+.lb-btn:hover { background: #fff; }
+.lb-close { top: 1rem; right: 1rem; }
+.lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+body:has(dialog[open]) { overflow: hidden; }
+
+/* ───── ผู้บริหาร: จัดกึ่งกลางอัตโนมัติ การ์ดใหญ่ ───── */
+.exec-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 2.8rem 3rem; list-style: none; margin: 0; padding: 0; }
+.exec-grid > :nth-child(3n+1) { --stripe: var(--c-green); }
+.exec-grid > :nth-child(3n+2) { --stripe: var(--c-blue); }
+.exec-grid > :nth-child(3n) { --stripe: var(--c-red); }
+.exec-card { flex: 0 1 300px; display: flex; flex-direction: column; align-items: center; gap: .3rem; text-align: center; }
+.exec-card > img, .exec-card > .avatar { width: 210px; height: 210px; border-radius: 50%; object-fit: cover; border: 6px solid #fff; box-shadow: 0 0 0 6px var(--stripe), var(--shadow); margin-bottom: 1rem; }
+.exec-card > .avatar { font-size: 4rem; }
+.exec-name { font-size: 1.45rem; line-height: 1.4; }
+.exec-pos { color: var(--muted); font-size: 1.1rem; }
+.exec-links { display: flex; gap: .6rem; margin-top: .8rem; }
+.icon-link { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; text-decoration: none; background: color-mix(in srgb, var(--stripe, var(--c-blue)) 70%, #000); transition: transform .2s; }
+.icon-link:hover { transform: translateY(-3px); }
+.exec-text { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; gap: .2rem; }
+.exec-text li { display: flex; align-items: center; justify-content: center; gap: .45rem; color: var(--muted); }
+.exec-text a { color: var(--link); overflow-wrap: anywhere; }
+
+/* ───── ไอคอนท้ายเว็บ + ไอคอนในการ์ดติดต่อ ───── */
+.social-icons { display: flex; flex-wrap: wrap; justify-content: center; gap: .8rem; list-style: none; margin: 0 0 1rem; padding: 0; }
+.soc { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--link); border: 2px solid var(--border); text-decoration: none; transition: transform .2s, background .2s, color .2s; }
+a.soc:hover { background: var(--primary); color: var(--on-primary); transform: translateY(-3px); }
+.soc.is-empty { opacity: .4; }
+.cc-icon { background: color-mix(in srgb, var(--stripe, var(--c-blue)) 70%, #000) !important; color: #fff !important; }
+
+/* ───── ปุ่มลิงก์ใหญ่ (เช่น แบบประเมิน) ───── */
+.link-cards { display: grid; gap: 1rem; }
+.link-card { display: flex; align-items: center; gap: 1.2rem; padding: 1.5rem 1.7rem; border-radius: 16px; text-decoration: none; color: var(--text); border: 1px solid var(--border); border-left: 6px solid var(--c-blue); box-shadow: var(--shadow); background: linear-gradient(135deg, color-mix(in srgb, var(--c-blue) 14%, #fff), color-mix(in srgb, var(--c-green) 12%, #fff)); transition: transform .2s; }
+.link-card:hover { transform: translateY(-3px); }
+.lc-icon { flex: none; width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); }
+.lc-text { flex: 1; display: grid; gap: .1rem; font-size: 1.15rem; }
+.lc-text span { color: var(--muted); font-size: .95rem; }
+.lc-go { font-weight: 600; color: var(--link); white-space: nowrap; }
+@media (max-width: 560px) { .link-card { flex-wrap: wrap; } .lc-go { width: 100%; } }

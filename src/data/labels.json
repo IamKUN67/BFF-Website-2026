@@ -34,7 +34,7 @@
   "updatedOn": "อัปเดตเมื่อ",
   "galleryTitle": "อัลบั้มรูป",
   "backToNews": "กลับไปหน้าข่าว",
-  "boardTitle": "บอร์ดบริหาร",
+  "boardTitle": "ผู้บริหาร",
   "noBoard": "ยังไม่มีรายชื่อ",
   "notFoundTitle": "ไม่พบหน้าที่ต้องการ",
   "notFoundText": "ลิงก์นี้อาจผิดหรือถูกย้ายไปแล้ว",
@@ -48,5 +48,12 @@
     "ข่าวประชาสัมพันธ์ทั่วไป",
     "ข่าวการศึกษา"
   ],
-  "openChannel": "เปิดช่องทางนี้"
+  "openChannel": "เปิดช่องทางนี้",
+  "closeImage": "ปิดรูป",
+  "prevImage": "รูปก่อนหน้า",
+  "nextImage": "รูปถัดไป",
+  "zoomImage": "ดูรูปขยาย",
+  "videoDefaultTitle": "วิดีโอ",
+  "socialYoutube": "YouTube",
+  "openLink": "เปิดลิงก์"
 }

@@ -20,18 +20,8 @@
       ]
     },
     {
-      "label": "บอร์ดบริหาร",
-      "link": "/board/",
-      "children": []
-    },
-    {
-      "label": "School Zone",
-      "link": "",
+      "label": "School Zone \"โซนแห่งการเรียนรู้\"",
       "children": [
-        {
-          "label": "สมัครเรียน",
-          "link": "/pages/apply/"
-        },
         {
           "label": "วิชาภาษาไทย",
           "link": "/pages/thai/"
@@ -63,12 +53,15 @@
         {
           "label": "กิจกรรมพัฒนาผู้เรียน",
           "link": "/pages/student-activities/"
+        },
+        {
+          "label": "สมัครเรียน",
+          "link": "/pages/apply/"
         }
       ]
     },
     {
       "label": "แมพของพวกเรา",
-      "link": "",
       "children": [
         {
           "label": "BFF MMORPG",

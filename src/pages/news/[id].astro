@@ -2,6 +2,7 @@
 // หน้าข่าวแต่ละเรื่อง (สร้างเฉพาะข่าวที่สถานะ "เผยแพร่")
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Sections from '../../components/Sections.astro';
 import { getPublishedPosts, labels, url, img, fmtDate, iso, plain } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -12,7 +13,7 @@ const { post } = Astro.props;
 const d = post.data;
 const { Content } = await render(post);
 const cover = img(d.cover, `(ข่าว: ${d.title})`);
-const gallery = d.gallery.map((g) => img(g, `(อัลบั้ม: ${d.title})`)!);
+const hasIntro = !!post.body?.trim();
 ---
 <Base title={d.title} description={plain(post.body) || d.title} image={cover?.src}>
   <header class="page-band">
@@ -31,17 +32,10 @@ const gallery = d.gallery.map((g) => img(g, `(อัลบั้ม: ${d.title})
   </header>
   <article class="section pull-up">
     <div class="container narrow">
-      <div class="paper">
+      <div class="paper" data-lb-scope>
         {cover && <img class="post-cover" src={cover.src} alt={cover.alt} />}
-        <div class="prose"><Content /></div>
-        {gallery.length > 0 && (
-          <section>
-            <h2>{labels.galleryTitle}</h2>
-            <div class="gallery">
-              {gallery.map((g) => <img src={g.src} alt={g.alt} loading="lazy" decoding="async" />)}
-            </div>
-          </section>
-        )}
+        {hasIntro && <div class="prose"><Content /></div>}
+        <Sections sections={d.sections} />
       </div>
     </div>
   </article>

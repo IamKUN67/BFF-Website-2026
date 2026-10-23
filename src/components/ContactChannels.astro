@@ -1,28 +1,25 @@
 ---
-// การ์ดช่องทางติดต่อ: ดึงจากหน้าตั้งค่าเว็บไซต์ (อีเมล โซเชียล ที่อยู่)
+// การ์ดช่องทางติดต่อของเว็บ: ดึงจากหน้าตั้งค่าเว็บไซต์ (อีเมล โซเชียล ที่อยู่)
+import Icon from './Icon.astro';
 import { labels } from '../lib/site';
+import { platforms } from '../lib/social';
 const { site } = Astro.props;
-const s = site.social;
-const channels = [
-  [labels.socialInstagram, s.instagram],
-  [labels.socialFacebook, s.facebook],
-  [labels.socialLine, s.line],
-  [labels.socialDiscord, s.discord],
-].filter(([, href]) => href);
+const social = site.social as Record<string, string | null | undefined>;
+const channels = platforms.filter((p) => social[p.key]);
 const hasAny = channels.length > 0 || site.email || site.address;
 ---
 {hasAny ? (
   <div class="contact-cards">
     {site.email && (
       <a class="contact-card" href={`mailto:${site.email}`}>
-        <span class="cc-icon" aria-hidden="true">@</span>
+        <span class="cc-icon"><Icon name="mail" /></span>
         <span><span class="cc-label">{labels.emailLabel}</span><span class="cc-value">{site.email}</span></span>
       </a>
     )}
-    {channels.map(([name, href]) => (
-      <a class="contact-card" href={href} target="_blank" rel="noopener">
-        <span class="cc-icon" aria-hidden="true">{name.charAt(0)}</span>
-        <span><span class="cc-label">{name}</span><span class="cc-value">{labels.openChannel}<span class="sr-only"> ({labels.externalHint})</span></span></span>
+    {channels.map((p) => (
+      <a class="contact-card" href={social[p.key]!} target="_blank" rel="noopener">
+        <span class="cc-icon"><Icon name={p.key} /></span>
+        <span><span class="cc-label">{p.name}</span><span class="cc-value">{labels.openChannel}<span class="sr-only"> ({labels.externalHint})</span></span></span>
       </a>
     ))}
     {site.address && (

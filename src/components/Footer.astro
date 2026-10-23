@@ -1,24 +1,27 @@
 ---
+// ท้ายเว็บ: ชื่อเว็บ + ไอคอนโซเชียล (Facebook/YouTube/Discord แสดงเสมอ ถ้ายังไม่ใส่ลิงก์จะเป็นไอคอนจางๆ)
+import Icon from './Icon.astro';
 import { labels } from '../lib/site';
+import { platforms } from '../lib/social';
 const { site } = Astro.props;
-const s = site.social;
-const links = [
-  [labels.socialInstagram, s.instagram],
-  [labels.socialFacebook, s.facebook],
-  [labels.socialLine, s.line],
-  [labels.socialDiscord, s.discord],
-].filter(([, href]) => href);
+const items = platforms
+  .map((p) => ({ ...p, href: (site.social as Record<string, string | null | undefined>)[p.key] }))
+  .filter((p) => p.href || p.always);
 ---
 <footer class="site-footer">
   <div class="container">
     <p class="footer-brand">{site.siteName}</p>
-    {links.length > 0 && (
-      <ul class="social-list">
-        {links.map(([name, href]) => (
-          <li><a href={href} target="_blank" rel="noopener">{name}<span class="sr-only"> ({labels.externalHint})</span></a></li>
-        ))}
-      </ul>
-    )}
+    <ul class="social-icons">
+      {items.map((p) => (
+        <li>
+          {p.href ? (
+            <a class="soc" href={p.href} target="_blank" rel="noopener" aria-label={`${p.name} (${labels.externalHint})`}><Icon name={p.key} size={22} /></a>
+          ) : (
+            <span class="soc is-empty" aria-hidden="true"><Icon name={p.key} size={22} /></span>
+          )}
+        </li>
+      ))}
+    </ul>
     {site.footerText && <p class="footer-text">{site.footerText}</p>}
   </div>
 </footer>

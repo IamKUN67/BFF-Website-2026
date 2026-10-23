@@ -3,24 +3,46 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ContactChannels from '../../components/ContactChannels.astro';
-import { getSite } from '../../lib/site';
+import Executives from '../../components/Executives.astro';
+import Sections from '../../components/Sections.astro';
+import Icon from '../../components/Icon.astro';
+import { getSite, labels, url } from '../../lib/site';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
   return pages.map((page) => ({ params: { slug: page.data.slug ?? page.id }, props: { page } }));
 }
 const { page } = Astro.props;
+const d = page.data;
 const { Content } = await render(page);
 const site = await getSite();
+const hasBody = !!page.body?.trim();
 ---
-<Base title={page.data.title} description={page.data.description}>
-  <header class="page-band"><div class="container narrow"><h1>{page.data.title}</h1></div></header>
+<Base title={d.title} description={d.description}>
+  <header class="page-band"><div class="container narrow"><h1>{d.title}</h1></div></header>
   <article class="section pull-up">
     <div class="container narrow">
       <div class="paper">
-        {page.data.showContact && <ContactChannels site={site} />}
-        <div class="prose"><Content /></div>
+        {d.showContact && <ContactChannels site={site} />}
+        {d.links.length > 0 && (
+          <div class="link-cards">
+            {d.links.map((l) => (
+              <a class="link-card" href={url(l.url)} target="_blank" rel="noopener">
+                <span class="lc-icon"><Icon name="external" size={26} /></span>
+                <span class="lc-text"><strong>{l.label}</strong>{l.note && <span>{l.note}</span>}</span>
+                <span class="lc-go">{labels.openLink}<span class="sr-only"> ({labels.externalHint})</span></span>
+              </a>
+            ))}
+          </div>
+        )}
+        {hasBody && <div class="prose"><Content /></div>}
+        <Sections sections={d.sections} />
       </div>
     </div>
   </article>
+  {d.showExecutives && (
+    <section class="section alt">
+      <div class="container"><Executives /></div>
+    </section>
+  )}
 </Base>

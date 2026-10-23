@@ -1,33 +1,11 @@
 ---
-// บอร์ดบริหาร/สมาชิก เรียงตามลำดับที่กำหนดในหน้าแอดมิน
-import { getCollection } from 'astro:content';
+// หน้าผู้บริหาร (ปกติแสดงอยู่ในหน้า "ติดต่อเรา" หน้านี้เก็บไว้เผื่อมีลิงก์เก่า)
 import Base from '../layouts/Base.astro';
-import { labels, img } from '../lib/site';
-
-const members = (await getCollection('board')).sort(
-  (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name, 'th'),
-);
+import Executives from '../components/Executives.astro';
+import { labels } from '../lib/site';
 ---
 <Base title={labels.boardTitle}>
   <section class="section">
-    <div class="container">
-      <div class="section-head"><h1 class="section-title">{labels.boardTitle}</h1></div>
-      {members.length > 0 ? (
-        <ul class="member-grid">
-          {members.map((m) => {
-            const photo = img(m.data.photo, `(สมาชิก: ${m.data.name})`);
-            return (
-              <li class="member">
-                {photo ? <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /> : <div class="avatar" aria-hidden="true">{m.data.name.charAt(0)}</div>}
-                <strong>{m.data.name}</strong>
-                {m.data.position && <span class="muted">{m.data.position}</span>}
-              </li>
-            );
-          })}
-        </ul>
-      ) : (
-        <p class="empty">{labels.noBoard}</p>
-      )}
-    </div>
+    <div class="container"><Executives /></div>
   </section>
 </Base>

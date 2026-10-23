@@ -1,0 +1,57 @@
+---
+// กล่องดูรูปขยาย: รักษาสัดส่วนรูป แสดงคำอธิบายรูป (alt) ใต้รูป เลื่อนซ้าย/ขวาได้ ปิดด้วย Esc
+import { labels } from '../lib/site';
+---
+<dialog class="lightbox" aria-label={labels.zoomImage}>
+  <button type="button" class="lb-btn lb-close" aria-label={labels.closeImage}><span aria-hidden="true">×</span></button>
+  <button type="button" class="lb-btn lb-prev" aria-label={labels.prevImage}><span aria-hidden="true">‹</span></button>
+  <figure>
+    <img alt="" />
+    <figcaption></figcaption>
+  </figure>
+  <button type="button" class="lb-btn lb-next" aria-label={labels.nextImage}><span aria-hidden="true">›</span></button>
+</dialog>
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('dialog.lightbox');
+  if (dlg) {
+    const big = dlg.querySelector('img')!;
+    const cap = dlg.querySelector('figcaption')!;
+    const prev = dlg.querySelector<HTMLElement>('.lb-prev')!;
+    const next = dlg.querySelector<HTMLElement>('.lb-next')!;
+    let items: HTMLImageElement[] = [];
+    let idx = 0;
+
+    const show = (i: number) => {
+      idx = (i + items.length) % items.length;
+      const el = items[idx];
+      big.src = el.currentSrc || el.src;
+      big.alt = el.alt;
+      cap.textContent = el.alt;
+      cap.hidden = !el.alt;
+      prev.hidden = next.hidden = items.length < 2;
+    };
+    const open = (el: HTMLImageElement) => {
+      const scope: ParentNode = el.closest('[data-lb-scope]') ?? document;
+      items = Array.from(scope.querySelectorAll<HTMLImageElement>('[data-zoom] img, .prose img'));
+      show(Math.max(0, items.indexOf(el)));
+      dlg.showModal();
+    };
+
+    document.addEventListener('click', (e) => {
+      const t = e.target as Element;
+      if (dlg.contains(t)) return;
+      const el = t.closest('[data-zoom]')?.querySelector('img') ?? (t.matches('.prose img') && !t.closest('a') ? (t as HTMLImageElement) : null);
+      if (el) open(el);
+    });
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.querySelector('.lb-close')!.addEventListener('click', () => dlg.close());
+    prev.addEventListener('click', () => show(idx - 1));
+    next.addEventListener('click', () => show(idx + 1));
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && items.length > 1) show(idx - 1);
+      if (e.key === 'ArrowRight' && items.length > 1) show(idx + 1);
+    });
+    dlg.addEventListener('close', () => { big.removeAttribute('src'); });
+  }
+</script>

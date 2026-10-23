@@ -1,0 +1,49 @@
+---
+// ผู้บริหาร: จัดกึ่งกลางอัตโนมัติ การ์ดใหญ่ พร้อมช่องทางติดต่อ (IG FB YT อีเมล เบอร์โทร)
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import { labels, img } from '../lib/site';
+
+const members = (await getCollection('board')).sort(
+  (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name, 'th'),
+);
+const socials = [
+  ['instagram', labels.socialInstagram],
+  ['facebook', labels.socialFacebook],
+  ['youtube', labels.socialYoutube],
+] as const;
+---
+<section class="exec" aria-labelledby="exec-title">
+  <div class="section-head"><h2 id="exec-title" class="section-title">{labels.boardTitle}</h2></div>
+  {members.length > 0 ? (
+    <ul class="exec-grid">
+      {members.map((m) => {
+        const d = m.data;
+        const photo = img(d.photo, `(ผู้บริหาร: ${d.name})`);
+        const links = socials.filter(([k]) => d[k]);
+        return (
+          <li class="exec-card">
+            {photo ? <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /> : <div class="avatar" aria-hidden="true">{d.name.charAt(0)}</div>}
+            <strong class="exec-name">{d.name}</strong>
+            {d.position && <span class="exec-pos">{d.position}</span>}
+            {links.length > 0 && (
+              <div class="exec-links">
+                {links.map(([k, n]) => (
+                  <a class="icon-link" href={d[k]!} target="_blank" rel="noopener" aria-label={`${n}: ${d.name} (${labels.externalHint})`}><Icon name={k} /></a>
+                ))}
+              </div>
+            )}
+            {(d.email || d.phone) && (
+              <ul class="exec-text">
+                {d.email && <li><Icon name="mail" size={18} /><a href={`mailto:${d.email}`}>{d.email}</a></li>}
+                {d.phone && <li><Icon name="phone" size={18} /><a href={`tel:${d.phone.replace(/[^\d+]/g, '')}`}>{d.phone}</a></li>}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  ) : (
+    <p class="empty">{labels.noBoard}</p>
+  )}
+</section>

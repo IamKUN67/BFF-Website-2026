@@ -1,5 +1,6 @@
 // ฟังก์ชันช่วยกลางของเว็บ: อ่านเนื้อหา, สร้างลิงก์ให้ถูกต้องบน GitHub Pages, จัดรูปวันที่ไทย
 import { getCollection, getEntry } from 'astro:content';
+import { marked } from 'marked';
 import labels from '../data/labels.json';
 export { labels };
 
@@ -39,7 +40,7 @@ export const fmtDate = (d?: Date) =>
     : '';
 
 /** รูป: คืนค่า src ที่ใส่ base แล้ว + alt; เตือนตอน build ถ้ามีรูปแต่ไม่มี alt */
-export function img(i?: { src?: string; alt?: string }, where = '') {
+export function img(i?: { src?: string | null; alt?: string | null } | null, where = '') {
   if (!i?.src) return null;
   if (!i.alt) console.warn(`[เตือน] รูป ${i.src} ${where} ยังไม่มีคำอธิบายรูป (alt)`);
   return { src: url(i.src), alt: i.alt ?? '' };
@@ -61,3 +62,27 @@ export function onColor(hex: string) {
 /** ตัดข้อความจาก markdown เป็นคำอธิบายสั้นสำหรับ meta description */
 export const plain = (s = '', n = 160) =>
   s.replace(/[#*_>`\[\]()!]/g, '').replace(/\s+/g, ' ').trim().slice(0, n);
+
+/** แปลงข้อความ markdown (จากช่อง "ข้อความ" ในแต่ละส่วน) เป็น HTML + ใส่ base path ให้รูป/ลิงก์ภายใน */
+export function md(text?: string | null) {
+  if (!text) return '';
+  let html = marked.parse(text, { async: false, gfm: true, breaks: true }) as string;
+  html = html.replace(/(src|href)="\/(?!\/)/g, `$1="${base}/`);
+  html = html.replace(/<a href="(https?:[^"]*)"/g, '<a href="$1" target="_blank" rel="noopener"');
+  return html;
+}
+
+/** ดึงรหัสวิดีโอจากลิงก์ YouTube ทุกรูปแบบ (watch, youtu.be, shorts, embed, live) */
+export function youtubeId(link: string): string | null {
+  try {
+    const u = new URL(link.trim());
+    let id: string | null = null;
+    if (u.hostname === 'youtu.be') id = u.pathname.slice(1).split('/')[0];
+    else if (u.hostname.endsWith('youtube.com')) {
+      id = u.pathname === '/watch' ? u.searchParams.get('v') : (u.pathname.match(/^\/(?:embed|shorts|live|v)\/([\w-]+)/)?.[1] ?? null);
+    }
+    return id && /^[\w-]{6,}$/.test(id) ? id : null;
+  } catch {
+    return null;
+  }
+}

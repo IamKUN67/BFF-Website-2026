@@ -66,6 +66,7 @@ collections:
             fields:
               - { name: instagram, label: "Instagram (ลิงก์เต็ม)", widget: string, required: false }
               - { name: facebook, label: "Facebook (ลิงก์เต็ม)", widget: string, required: false }
+              - { name: youtube, label: "YouTube (ลิงก์เต็ม)", widget: string, required: false }
               - { name: line, label: "LINE (ลิงก์เต็ม)", widget: string, required: false }
               - { name: discord, label: "Discord (ลิงก์เชิญ)", widget: string, required: false }
           - { name: email, label: "อีเมล", widget: string, required: false }
@@ -111,9 +112,16 @@ collections:
           - { name: postedOn, label: "คำว่า โพสต์เมื่อ", widget: string }
           - { name: updatedOn, label: "คำว่า อัปเดตเมื่อ", widget: string }
           - { name: openChannel, label: "ข้อความบนการ์ดช่องทางติดต่อ", widget: string }
+          - { name: openLink, label: "ปุ่มบนการ์ดลิงก์ใหญ่", widget: string }
+          - { name: socialYoutube, label: "ชื่อ YouTube", widget: string }
+          - { name: closeImage, label: "ปุ่มปิดรูปขยาย (โปรแกรมอ่านจอ)", widget: string }
+          - { name: prevImage, label: "ปุ่มรูปก่อนหน้า (โปรแกรมอ่านจอ)", widget: string }
+          - { name: nextImage, label: "ปุ่มรูปถัดไป (โปรแกรมอ่านจอ)", widget: string }
+          - { name: zoomImage, label: "ข้อความรูปที่กดขยายได้ (โปรแกรมอ่านจอ)", widget: string }
+          - { name: videoDefaultTitle, label: "ชื่อวิดีโอเริ่มต้น (โปรแกรมอ่านจอ)", widget: string }
           - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
           - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
-          - { name: boardTitle, label: "หัวข้อหน้าบอร์ดบริหาร", widget: string }
+          - { name: boardTitle, label: "หัวข้อส่วนผู้บริหาร", widget: string }
           - { name: noBoard, label: "ข้อความเมื่อยังไม่มีรายชื่อ", widget: string }
           - { name: notFoundTitle, label: "หัวข้อหน้าไม่พบ", widget: string }
           - { name: notFoundText, label: "ข้อความหน้าไม่พบ", widget: string }
@@ -185,15 +193,41 @@ collections:
         fields:
           - { name: src, label: "ไฟล์รูป", widget: image, required: false }
           - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
-      - name: gallery
-        label: "อัลบั้มรูป"
-        label_singular: "รูป"
+      - { name: body, label: "ข้อความนำ (ไม่บังคับ แสดงก่อนส่วนเนื้อหา)", widget: markdown, required: false }
+      - name: sections
+        label: "ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)"
+        label_singular: "ส่วน"
         widget: list
         required: false
+        summary: "{{fields.title}}"
         fields:
-          - { name: src, label: "ไฟล์รูป", widget: image }
-          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string }
-      - { name: body, label: "เนื้อหา", widget: markdown, required: false }
+          - { name: title, label: "หัวข้อของส่วนนี้ เช่น กิจกรรมปีใหม่", widget: string, required: false }
+          - name: image
+            label: "รูปประกอบข้อความ (แสดงข้างข้อความ)"
+            widget: object
+            required: false
+            fields:
+              - { name: src, label: "ไฟล์รูป", widget: image, required: false }
+              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
+          - { name: text, label: "ข้อความ", widget: markdown, required: false }
+          - name: album
+            label: "อัลบั้มรูปของส่วนนี้ (กดรูปเพื่อขยายได้)"
+            label_singular: "รูป"
+            widget: list
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - { name: src, label: "ไฟล์รูป", widget: image }
+              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
+          - name: videos
+            label: "วิดีโอ YouTube"
+            label_singular: "วิดีโอ"
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            fields:
+              - { name: url, label: "ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)", widget: string }
+              - { name: title, label: "ชื่อวิดีโอ (แสดงใต้วิดีโอ)", widget: string, required: false }
 
   # ───────────── 4) หน้าทั่วไป ─────────────
   - name: pages
@@ -211,7 +245,52 @@ collections:
       - { name: description, label: "คำอธิบายสั้น (ใช้ใน Google)", widget: text, required: false }
       - { name: legacy, label: "ระบบเก่า (ซ่อนจากเมนูหลัก แต่เปิดผ่านลิงก์ได้)", widget: boolean, default: false }
       - { name: showContact, label: "แสดงช่องทางติดต่อ (ดึงจากตั้งค่าเว็บไซต์) ในหน้านี้", widget: boolean, default: false }
-      - { name: body, label: "เนื้อหา", widget: markdown, required: false }
+      - { name: showExecutives, label: "แสดงรายชื่อผู้บริหารท้ายหน้านี้", widget: boolean, default: false }
+      - name: links
+        label: "ปุ่มลิงก์ใหญ่ (เช่น ลิงก์แบบฟอร์ม)"
+        label_singular: "ลิงก์"
+        widget: list
+        required: false
+        summary: "{{fields.label}}"
+        fields:
+          - { name: label, label: "ชื่อปุ่ม", widget: string }
+          - { name: url, label: "ลิงก์", widget: string }
+          - { name: note, label: "ข้อความเล็กใต้ชื่อ", widget: string, required: false }
+      - { name: body, label: "ข้อความนำ (ไม่บังคับ)", widget: markdown, required: false }
+      - name: sections
+        label: "ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)"
+        label_singular: "ส่วน"
+        widget: list
+        required: false
+        summary: "{{fields.title}}"
+        fields:
+          - { name: title, label: "หัวข้อของส่วนนี้ เช่น กิจกรรมปีใหม่", widget: string, required: false }
+          - name: image
+            label: "รูปประกอบข้อความ (แสดงข้างข้อความ)"
+            widget: object
+            required: false
+            fields:
+              - { name: src, label: "ไฟล์รูป", widget: image, required: false }
+              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
+          - { name: text, label: "ข้อความ", widget: markdown, required: false }
+          - name: album
+            label: "อัลบั้มรูปของส่วนนี้ (กดรูปเพื่อขยายได้)"
+            label_singular: "รูป"
+            widget: list
+            required: false
+            summary: "{{fields.alt}}"
+            fields:
+              - { name: src, label: "ไฟล์รูป", widget: image }
+              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
+          - name: videos
+            label: "วิดีโอ YouTube"
+            label_singular: "วิดีโอ"
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            fields:
+              - { name: url, label: "ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)", widget: string }
+              - { name: title, label: "ชื่อวิดีโอ (แสดงใต้วิดีโอ)", widget: string, required: false }
 
   # ───────────── 5) ปฏิทินกิจกรรม ─────────────
   - name: events
@@ -233,8 +312,8 @@ collections:
 
   # ───────────── 6) สมาชิก/บอร์ดบริหาร ─────────────
   - name: board
-    label: "บอร์ดบริหาร/สมาชิก"
-    label_singular: "สมาชิก"
+    label: "ผู้บริหาร"
+    label_singular: "ผู้บริหาร"
     folder: src/content/board
     extension: json
     format: json
@@ -252,4 +331,9 @@ collections:
         fields:
           - { name: src, label: "ไฟล์รูป", widget: image, required: false }
           - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
+      - { name: instagram, label: "Instagram (ลิงก์เต็ม)", widget: string, required: false }
+      - { name: facebook, label: "Facebook (ลิงก์เต็ม)", widget: string, required: false }
+      - { name: youtube, label: "YouTube (ลิงก์เต็ม)", widget: string, required: false }
+      - { name: email, label: "อีเมล (เช่น Gmail)", widget: string, required: false }
+      - { name: phone, label: "เบอร์โทร", widget: string, required: false }
       - { name: order, label: "ลำดับ (เลขน้อยขึ้นก่อน)", widget: number, value_type: int, default: 100 }
