@@ -1,12 +1,9 @@
 // นิยามรูปแบบข้อมูลของเนื้อหาทุกชนิด (ต้องตรงกับ public/admin/config.yml)
-// ถ้ากรอกข้อมูลผิดรูปแบบ ตอน build จะแจ้งเตือนว่าไฟล์ไหน ช่องไหนผิด
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 // รูปภาพ = path ของไฟล์ (เช่น /uploads/abc.webp) + alt text (คำอธิบายรูปภาษาไทย)
-const image = z
-  .object({ src: z.string().optional(), alt: z.string().optional() })
-  .optional();
+const image = z.object({ src: z.string().optional(), alt: z.string().optional() }).optional();
 
 const settings = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/settings' }),
@@ -18,10 +15,7 @@ const settings = defineCollection({
     logo: image,
     cover: image,
     colors: z
-      .object({
-        primary: z.string().default('#e8590c'),
-        accent: z.string().default('#0c8599'),
-      })
+      .object({ primary: z.string().default('#1a73c4'), accent: z.string().default('#d32f2f') })
       .default({}),
     social: z
       .object({
@@ -37,7 +31,6 @@ const settings = defineCollection({
   }),
 });
 
-// เมนูหลัก + เมนูย่อย (ลิงก์ภายในเว็บขึ้นต้นด้วย / ลิงก์ภายนอกขึ้นต้นด้วย https://)
 const menu = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/menu' }),
   schema: z.object({
@@ -45,9 +38,7 @@ const menu = defineCollection({
       z.object({
         label: z.string(),
         link: z.string().optional(),
-        children: z
-          .array(z.object({ label: z.string(), link: z.string() }))
-          .default([]),
+        children: z.array(z.object({ label: z.string(), link: z.string() })).default([]),
       }),
     ),
   }),
@@ -63,12 +54,9 @@ const posts = defineCollection({
     category: z.string().optional(),
     pinned: z.boolean().default(false),
     isNew: z.boolean().default(false),
-    notes: z.string().optional(), // หมายเหตุภายใน เช่น "รอเติมข้อมูล" (ไม่แสดงบนเว็บ)
-    legacyUrl: z.string().optional(),
+    notes: z.string().optional(), // หมายเหตุภายใน (ไม่แสดงบนเว็บ)
     cover: image,
-    gallery: z
-      .array(z.object({ src: z.string(), alt: z.string() }))
-      .default([]),
+    gallery: z.array(z.object({ src: z.string(), alt: z.string() })).default([]),
   }),
 });
 
@@ -78,7 +66,8 @@ const pages = defineCollection({
     title: z.string(),
     slug: z.string().optional(),
     description: z.string().optional(),
-    legacy: z.boolean().default(false), // true = ซ่อนจากเมนูหลัก แต่เปิดผ่านลิงก์ได้
+    legacy: z.boolean().default(false),
+    showContact: z.boolean().default(false), // true = แสดงการ์ดช่องทางติดต่อจากหน้าตั้งค่า
   }),
 });
 

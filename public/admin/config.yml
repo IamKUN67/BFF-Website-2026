@@ -58,8 +58,8 @@ collections:
             label: "สีของเว็บไซต์"
             widget: object
             fields:
-              - { name: primary, label: "สีหลัก", widget: color, default: "#e8590c" }
-              - { name: accent, label: "สีเน้น", widget: color, default: "#0c8599" }
+              - { name: primary, label: "สีหลัก", widget: color, default: "#1a73c4" }
+              - { name: accent, label: "สีเน้น", widget: color, default: "#d32f2f" }
           - name: social
             label: "ลิงก์โซเชียล"
             widget: object
@@ -110,7 +110,7 @@ collections:
           - { name: pinnedBadge, label: "ป้ายปักหมุด", widget: string }
           - { name: postedOn, label: "คำว่า โพสต์เมื่อ", widget: string }
           - { name: updatedOn, label: "คำว่า อัปเดตเมื่อ", widget: string }
-          - { name: viewOriginal, label: "ลิงก์ไปหน้าเดิมบน Google Sites", widget: string }
+          - { name: openChannel, label: "ข้อความบนการ์ดช่องทางติดต่อ", widget: string }
           - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
           - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
           - { name: boardTitle, label: "หัวข้อหน้าบอร์ดบริหาร", widget: string }
@@ -174,11 +174,10 @@ collections:
         label: "หมวดหมู่"
         widget: select
         required: false
-        options: ["ประชาสัมพันธ์"]
+        options: ["ข่าวประชาสัมพันธ์ทั่วไป", "ข่าวการศึกษา"]
       - { name: pinned, label: "ปักหมุดข่าว", widget: boolean, default: false }
       - { name: isNew, label: "ป้าย New", widget: boolean, default: false }
       - { name: notes, label: "หมายเหตุภายใน (ไม่แสดงบนเว็บ)", widget: text, required: false }
-      - { name: legacyUrl, label: "ลิงก์เดิมจาก Google Sites", widget: string, required: false }
       - name: cover
         label: "รูปปก"
         widget: object
@@ -211,6 +210,7 @@ collections:
       - { name: slug, label: "ชื่อลิงก์ (ภาษาอังกฤษพิมพ์เล็ก/ตัวเลข/ขีดกลางเท่านั้น)", widget: string, pattern: ["^[a-z0-9-]+$", "ใช้ได้เฉพาะ a-z 0-9 และ -"], hint: "เช่น thai-subject จะได้ลิงก์ /pages/thai-subject/" }
       - { name: description, label: "คำอธิบายสั้น (ใช้ใน Google)", widget: text, required: false }
       - { name: legacy, label: "ระบบเก่า (ซ่อนจากเมนูหลัก แต่เปิดผ่านลิงก์ได้)", widget: boolean, default: false }
+      - { name: showContact, label: "แสดงช่องทางติดต่อ (ดึงจากตั้งค่าเว็บไซต์) ในหน้านี้", widget: boolean, default: false }
       - { name: body, label: "เนื้อหา", widget: markdown, required: false }
 
   # ───────────── 5) ปฏิทินกิจกรรม ─────────────

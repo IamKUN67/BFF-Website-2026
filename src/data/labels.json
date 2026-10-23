@@ -32,7 +32,6 @@
   "pinnedBadge": "ปักหมุด",
   "postedOn": "โพสต์เมื่อ",
   "updatedOn": "อัปเดตเมื่อ",
-  "viewOriginal": "ดูหน้าเดิมบน Google Sites",
   "galleryTitle": "อัลบั้มรูป",
   "backToNews": "กลับไปหน้าข่าว",
   "boardTitle": "บอร์ดบริหาร",
@@ -46,6 +45,8 @@
   "socialLine": "LINE",
   "socialDiscord": "Discord",
   "newsCategories": [
-    "ประชาสัมพันธ์"
-  ]
+    "ข่าวประชาสัมพันธ์ทั่วไป",
+    "ข่าวการศึกษา"
+  ],
+  "openChannel": "เปิดช่องทางนี้"
 }

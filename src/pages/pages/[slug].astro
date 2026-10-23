@@ -1,7 +1,9 @@
 ---
-// หน้าทั่วไปทุกหน้า (วิชา สมัครเรียน ฯลฯ) สร้างจากโฟลเดอร์ src/content/pages
+// หน้าทั่วไปทุกหน้า (วิชา สมัครเรียน ติดต่อ ฯลฯ) สร้างจากโฟลเดอร์ src/content/pages
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import ContactChannels from '../../components/ContactChannels.astro';
+import { getSite } from '../../lib/site';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
@@ -9,12 +11,16 @@ export async function getStaticPaths() {
 }
 const { page } = Astro.props;
 const { Content } = await render(page);
+const site = await getSite();
 ---
 <Base title={page.data.title} description={page.data.description}>
-  <article class="section">
+  <header class="page-band"><div class="container narrow"><h1>{page.data.title}</h1></div></header>
+  <article class="section pull-up">
     <div class="container narrow">
-      <div class="section-head"><h1 class="section-title">{page.data.title}</h1></div>
-      <div class="prose"><Content /></div>
+      <div class="paper">
+        {page.data.showContact && <ContactChannels site={site} />}
+        <div class="prose"><Content /></div>
+      </div>
     </div>
   </article>
 </Base>

@@ -187,3 +187,30 @@ input[type="search"]:focus, select:focus { border-color: var(--primary); outline
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .js .reveal { opacity: 1; transform: none; }
 }
+
+/* แถบหัวหน้าในหน้าย่อย (ข่าวแต่ละเรื่อง หน้าทั่วไป) + กล่องเนื้อหา */
+.page-band {
+  padding: clamp(2rem, 5vw, 3.5rem) 0 clamp(3.5rem, 7vw, 5rem); text-align: center; border-bottom: 5px solid transparent; border-image: var(--rainbow) 1;
+  background:
+    radial-gradient(circle at 10% 20%, color-mix(in srgb, var(--c-yellow) 30%, transparent), transparent 40%),
+    radial-gradient(circle at 92% 30%, color-mix(in srgb, var(--c-blue) 28%, transparent), transparent 42%),
+    radial-gradient(circle at 50% 130%, color-mix(in srgb, var(--c-pink) 24%, transparent), transparent 45%), #fff;
+}
+.page-band h1 { margin: .6rem 0 .4rem; font-size: clamp(1.7rem, 4.5vw, 2.6rem); }
+.page-band .badges, .page-band .meta { justify-content: center; margin-bottom: 0; }
+.section.pull-up { padding-top: 0; }
+.paper { position: relative; margin-top: -2.5rem; background: var(--surface); border: 1px solid var(--border); border-top: 6px solid var(--c-green); border-radius: var(--radius); box-shadow: var(--shadow); padding: clamp(1.2rem, 4vw, 2.4rem); }
+.paper > :first-child { margin-top: 0; }
+
+/* การ์ดช่องทางติดต่อ */
+.contact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 1.2rem; }
+.contact-cards > :nth-child(4n+1) { --stripe: var(--c-green); }
+.contact-cards > :nth-child(4n+2) { --stripe: var(--c-blue); }
+.contact-cards > :nth-child(4n+3) { --stripe: var(--c-red); }
+.contact-cards > :nth-child(4n) { --stripe: var(--c-yellow); }
+.contact-card { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.3rem; background: var(--surface); border: 1px solid var(--border); border-left: 6px solid var(--stripe, var(--c-blue)); border-radius: 14px; color: var(--text); text-decoration: none; box-shadow: var(--shadow); transition: transform .2s; }
+a.contact-card:hover { transform: translateY(-3px); }
+.cc-icon { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 1.2rem; color: #fff; background: var(--stripe, var(--c-blue)); }
+.contact-cards > :nth-child(4n) .cc-icon { color: #3a2a00; }
+.cc-label { display: block; font-weight: 600; }
+.cc-value { display: block; color: var(--muted); font-size: .95rem; overflow-wrap: anywhere; }
