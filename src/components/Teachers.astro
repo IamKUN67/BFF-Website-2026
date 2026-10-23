@@ -1,0 +1,42 @@
+---
+// ครูผู้สอนของวิชา (ใช้หน้าตาเดียวกับผู้บริหาร) ids = รายชื่อครูที่เลือกไว้ในหน้าวิชา เรียงตามที่เลือก
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import { labels, img } from '../lib/site';
+const { ids = [] } = Astro.props;
+const all = new Map((await getCollection('teachers')).map((t) => [t.id, t]));
+const members = ids.map((id: string) => all.get(id)).filter(Boolean) as any[];
+const socials = [['instagram', labels.socialInstagram], ['facebook', labels.socialFacebook], ['youtube', labels.socialYoutube]] as const;
+---
+{members.length > 0 && (
+  <section class="exec" aria-labelledby="teachers-title">
+    <div class="section-head"><h2 id="teachers-title" class="section-title">{labels.teachersTitle}</h2></div>
+    <ul class="exec-grid">
+      {members.map((m) => {
+        const d = m.data;
+        const photo = img(d.photo, `(ครู: ${d.name})`);
+        const links = socials.filter(([k]) => d[k]);
+        return (
+          <li class="exec-card">
+            {photo ? <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /> : <div class="avatar" aria-hidden="true">{d.name.charAt(0)}</div>}
+            <strong class="exec-name">{d.name}</strong>
+            {d.position && <span class="exec-pos">{d.position}</span>}
+            {links.length > 0 && (
+              <div class="exec-links">
+                {links.map(([k, n]) => (
+                  <a class="icon-link" href={d[k]} target="_blank" rel="noopener" aria-label={`${n}: ${d.name} (${labels.externalHint})`}><Icon name={k} /></a>
+                ))}
+              </div>
+            )}
+            {(d.email || d.phone) && (
+              <ul class="exec-text">
+                {d.email && <li><Icon name="mail" size={18} /><a href={`mailto:${d.email}`}>{d.email}</a></li>}
+                {d.phone && <li><Icon name="phone" size={18} /><a href={`tel:${d.phone.replace(/[^\d+]/g, '')}`}>{d.phone}</a></li>}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+)}

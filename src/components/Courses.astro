@@ -1,0 +1,59 @@
+---
+// คอร์สเรียน: จัดกลุ่มตามหมวดหมู่คอร์ส แต่ละคอร์สแสดง ชื่อ ช่วงเวลา วัน/เวลาเรียน ครูผู้สอน รายละเอียด และลิงก์แนบ
+import { getCollection } from 'astro:content';
+import { labels, img, md, fmtDate } from '../lib/site';
+const { courses = [] } = Astro.props;
+const teachers = new Map((await getCollection('teachers')).map((t) => [t.id, t]));
+const groups: { name: string; items: any[] }[] = [];
+for (const c of courses) {
+  const name = c.group ?? '';
+  let g = groups.find((x) => x.name === name);
+  if (!g) groups.push((g = { name, items: [] }));
+  g.items.push(c);
+}
+const period = (c: any) =>
+  c.startDate && c.endDate ? `${fmtDate(c.startDate)} – ${fmtDate(c.endDate)}` : c.startDate ? fmtDate(c.startDate) : '';
+---
+{courses.length > 0 && (
+  <section class="courses">
+    <div class="section-head"><h2 class="section-title">{labels.coursesTitle}</h2></div>
+    {groups.map((g) => (
+      <div class="course-group">
+        {g.name && <h3 class="group-title">{g.name}</h3>}
+        <div class="course-list">
+          {g.items.map((c) => {
+            const ts = (c.teachers ?? []).map((id: string) => teachers.get(id)).filter(Boolean) as any[];
+            const p = period(c);
+            return (
+              <article class="course">
+                <h4>{c.title}</h4>
+                <dl class="course-info">
+                  {p && (<><dt>{labels.coursePeriod}</dt><dd>{p}</dd></>)}
+                  {c.schedule && (<><dt>{labels.courseSchedule}</dt><dd class="pre">{c.schedule}</dd></>)}
+                  {ts.length > 0 && (
+                    <><dt>{labels.courseTeachers}</dt><dd>
+                      <ul class="chip-list">
+                        {ts.map((t) => {
+                          const ph = img(t.data.photo, `(ครู: ${t.data.name})`);
+                          return <li class="chip">{ph ? <img src={ph.src} alt="" /> : <span class="mini" aria-hidden="true">{t.data.name.charAt(0)}</span>}{t.data.name}</li>;
+                        })}
+                      </ul>
+                    </dd></>
+                  )}
+                </dl>
+                {c.description && <div class="prose" set:html={md(c.description)} />}
+                {c.links.length > 0 && (
+                  <div class="course-links">
+                    {c.links.map((l: any) => (
+                      <a class="btn btn-outline" href={l.url} target="_blank" rel="noopener">{l.label}<span class="sr-only"> ({labels.externalHint})</span></a>
+                    ))}
+                  </div>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </section>
+)}

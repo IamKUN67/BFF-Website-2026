@@ -17,10 +17,39 @@ const sections = list(
     title: str,
     text: str,
     image,
+    imageSize: str, // 25 | 50 | 75 | 100 (% ความกว้าง)
+    imageAlign: str, // left | center | right
+    textAlign: str, // left | center | right | justify
+    textSize: str, // normal | large | xlarge
+    albumSize: str, // 4 | 3 | 2 (จำนวนคอลัมน์)
     album: list(z.object({ src: z.string(), alt: str })),
     videos: list(z.object({ url: z.string(), title: str })),
   }),
 );
+
+// คอร์สเรียน (อยู่ในหน้าวิชาแต่ละหน้า) — teachers = รหัสของครูในโฟลเดอร์ teachers
+const course = z.object({
+  title: z.string(),
+  group: str,
+  startDate: z.coerce.date().nullish(),
+  endDate: z.coerce.date().nullish(),
+  schedule: str,
+  teachers: list(z.string()),
+  description: str,
+  links: list(z.object({ label: z.string(), url: z.string() })),
+});
+
+const person = {
+  name: z.string(),
+  position: str,
+  photo: image,
+  instagram: str,
+  facebook: str,
+  youtube: str,
+  email: str,
+  phone: str,
+  order: z.number().nullish().transform((v) => v ?? 100),
+};
 
 const settings = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/settings' }),
@@ -84,6 +113,9 @@ const pages = defineCollection({
     showContact: bool, // แสดงการ์ดช่องทางติดต่อจากหน้าตั้งค่า
     showExecutives: bool, // แสดงรายชื่อผู้บริหารท้ายหน้า
     links: list(z.object({ label: z.string(), url: z.string(), note: str })), // ปุ่มลิงก์ใหญ่ เช่น ฟอร์ม
+    newsCategory: str, // แสดงข่าวหมวดนี้ท้ายหน้า (เว้นว่าง = ไม่แสดง)
+    teachers: list(z.string()), // ครูผู้สอนประจำวิชา (รหัสจากโฟลเดอร์ teachers)
+    courses: list(course),
     sections,
   }),
 });
@@ -115,4 +147,9 @@ const board = defineCollection({
   }),
 });
 
-export const collections = { settings, menu, posts, pages, events, board };
+const teachers = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/teachers' }),
+  schema: z.object(person),
+});
+
+export const collections = { settings, menu, posts, pages, events, board, teachers };

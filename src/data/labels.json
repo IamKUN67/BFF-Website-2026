@@ -55,5 +55,11 @@
   "zoomImage": "ดูรูปขยาย",
   "videoDefaultTitle": "วิดีโอ",
   "socialYoutube": "YouTube",
-  "openLink": "เปิดลิงก์"
+  "openLink": "เปิดลิงก์",
+  "teachersTitle": "ครูผู้สอน",
+  "coursesTitle": "คอร์สเรียน",
+  "courseSchedule": "วันและเวลาเรียน",
+  "coursePeriod": "ช่วงเวลาที่เปิดสอน",
+  "courseTeachers": "ครูผู้สอน",
+  "relatedNews": "ข่าวประชาสัมพันธ์"
 }

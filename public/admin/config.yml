@@ -119,6 +119,12 @@ collections:
           - { name: nextImage, label: "ปุ่มรูปถัดไป (โปรแกรมอ่านจอ)", widget: string }
           - { name: zoomImage, label: "ข้อความรูปที่กดขยายได้ (โปรแกรมอ่านจอ)", widget: string }
           - { name: videoDefaultTitle, label: "ชื่อวิดีโอเริ่มต้น (โปรแกรมอ่านจอ)", widget: string }
+          - { name: teachersTitle, label: "หัวข้อ: ครูผู้สอน", widget: string }
+          - { name: coursesTitle, label: "หัวข้อ: คอร์สเรียน", widget: string }
+          - { name: courseSchedule, label: "คำว่า วันและเวลาเรียน", widget: string }
+          - { name: coursePeriod, label: "คำว่า ช่วงเวลาที่เปิดสอน", widget: string }
+          - { name: courseTeachers, label: "คำว่า ครูผู้สอน (ในการ์ดคอร์ส)", widget: string }
+          - { name: relatedNews, label: "หัวข้อ: ข่าวประชาสัมพันธ์ (ท้ายหน้าวิชา)", widget: string }
           - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
           - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
           - { name: boardTitle, label: "หัวข้อส่วนผู้บริหาร", widget: string }
@@ -209,7 +215,45 @@ collections:
             fields:
               - { name: src, label: "ไฟล์รูป", widget: image, required: false }
               - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
+          - name: imageSize
+            label: "ขนาดรูปประกอบ"
+            widget: select
+            default: "50"
+            required: false
+            options:
+              - { label: "เล็ก (25% ของความกว้าง)", value: "25" }
+              - { label: "กลาง (50%)", value: "50" }
+              - { label: "ใหญ่ (75%)", value: "75" }
+              - { label: "เต็มความกว้าง (100%)", value: "100" }
+          - name: imageAlign
+            label: "ตำแหน่งรูป (ชิดซ้าย/ขวา = ข้อความไหลล้อมรูป, กึ่งกลาง = รูปอยู่เหนือข้อความ)"
+            widget: select
+            default: "left"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
           - { name: text, label: "ข้อความ", widget: markdown, required: false }
+          - name: textAlign
+            label: "การจัดข้อความ"
+            widget: select
+            default: "left"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
+              - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
+          - name: textSize
+            label: "ขนาดตัวอักษร"
+            widget: select
+            default: "normal"
+            required: false
+            options:
+              - { label: "ปกติ", value: "normal" }
+              - { label: "ใหญ่", value: "large" }
+              - { label: "ใหญ่มาก", value: "xlarge" }
           - name: album
             label: "อัลบั้มรูปของส่วนนี้ (กดรูปเพื่อขยายได้)"
             label_singular: "รูป"
@@ -219,6 +263,15 @@ collections:
             fields:
               - { name: src, label: "ไฟล์รูป", widget: image }
               - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
+          - name: albumSize
+            label: "ขนาดรูปในอัลบั้ม"
+            widget: select
+            default: "3"
+            required: false
+            options:
+              - { label: "เล็ก (4 คอลัมน์)", value: "4" }
+              - { label: "กลาง (3 คอลัมน์)", value: "3" }
+              - { label: "ใหญ่ (2 คอลัมน์)", value: "2" }
           - name: videos
             label: "วิดีโอ YouTube"
             label_singular: "วิดีโอ"
@@ -246,6 +299,20 @@ collections:
       - { name: legacy, label: "ระบบเก่า (ซ่อนจากเมนูหลัก แต่เปิดผ่านลิงก์ได้)", widget: boolean, default: false }
       - { name: showContact, label: "แสดงช่องทางติดต่อ (ดึงจากตั้งค่าเว็บไซต์) ในหน้านี้", widget: boolean, default: false }
       - { name: showExecutives, label: "แสดงรายชื่อผู้บริหารท้ายหน้านี้", widget: boolean, default: false }
+      - name: newsCategory
+        label: "แสดงข่าวหมวดนี้ท้ายหน้า"
+        widget: select
+        required: false
+        options: ["ข่าวการศึกษา", "ข่าวประชาสัมพันธ์ทั่วไป"]
+      - name: teachers
+        label: "ครูผู้สอนประจำวิชานี้ (เลือกจากรายชื่อครู ต้องเพิ่มครูในเมนู ครูผู้สอน ก่อน)"
+        widget: relation
+        collection: teachers
+        search_fields: [name]
+        value_field: "{{slug}}"
+        display_fields: [name]
+        multiple: true
+        required: false
       - name: links
         label: "ปุ่มลิงก์ใหญ่ (เช่น ลิงก์แบบฟอร์ม)"
         label_singular: "ลิงก์"
@@ -256,6 +323,37 @@ collections:
           - { name: label, label: "ชื่อปุ่ม", widget: string }
           - { name: url, label: "ลิงก์", widget: string }
           - { name: note, label: "ข้อความเล็กใต้ชื่อ", widget: string, required: false }
+      - name: courses
+        label: "คอร์สเรียนของวิชานี้ (เพิ่มได้หลายคอร์ส ลากเรียงลำดับได้)"
+        label_singular: "คอร์ส"
+        widget: list
+        required: false
+        summary: "{{fields.title}}"
+        fields:
+          - { name: title, label: "ชื่อคอร์ส", widget: string }
+          - { name: group, label: "หมวดหมู่คอร์ส (ไม่บังคับ คอร์สที่ใส่หมวดเดียวกันจะอยู่ใต้หัวข้อเดียวกัน)", widget: string, required: false }
+          - { name: startDate, label: "วันเริ่มเรียน", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
+          - { name: endDate, label: "วันสิ้นสุดคอร์ส", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
+          - { name: schedule, label: "วันและเวลาเรียน (เช่น เสาร์ 09:00-11:00)", widget: text, required: false }
+          - name: teachers
+            label: "ครูผู้สอนคอร์สนี้ (เลือกได้หลายคน)"
+            widget: relation
+            collection: teachers
+            search_fields: [name]
+            value_field: "{{slug}}"
+            display_fields: [name]
+            multiple: true
+            required: false
+          - { name: description, label: "รายละเอียดคอร์ส", widget: markdown, required: false }
+          - name: links
+            label: "ลิงก์แนบ (เช่น ลิงก์คะแนน)"
+            label_singular: "ลิงก์"
+            widget: list
+            required: false
+            summary: "{{fields.label}}"
+            fields:
+              - { name: label, label: "ชื่อปุ่ม เช่น ดูคะแนน", widget: string }
+              - { name: url, label: "ลิงก์", widget: string }
       - { name: body, label: "ข้อความนำ (ไม่บังคับ)", widget: markdown, required: false }
       - name: sections
         label: "ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)"
@@ -272,7 +370,45 @@ collections:
             fields:
               - { name: src, label: "ไฟล์รูป", widget: image, required: false }
               - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
+          - name: imageSize
+            label: "ขนาดรูปประกอบ"
+            widget: select
+            default: "50"
+            required: false
+            options:
+              - { label: "เล็ก (25% ของความกว้าง)", value: "25" }
+              - { label: "กลาง (50%)", value: "50" }
+              - { label: "ใหญ่ (75%)", value: "75" }
+              - { label: "เต็มความกว้าง (100%)", value: "100" }
+          - name: imageAlign
+            label: "ตำแหน่งรูป (ชิดซ้าย/ขวา = ข้อความไหลล้อมรูป, กึ่งกลาง = รูปอยู่เหนือข้อความ)"
+            widget: select
+            default: "left"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
           - { name: text, label: "ข้อความ", widget: markdown, required: false }
+          - name: textAlign
+            label: "การจัดข้อความ"
+            widget: select
+            default: "left"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
+              - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
+          - name: textSize
+            label: "ขนาดตัวอักษร"
+            widget: select
+            default: "normal"
+            required: false
+            options:
+              - { label: "ปกติ", value: "normal" }
+              - { label: "ใหญ่", value: "large" }
+              - { label: "ใหญ่มาก", value: "xlarge" }
           - name: album
             label: "อัลบั้มรูปของส่วนนี้ (กดรูปเพื่อขยายได้)"
             label_singular: "รูป"
@@ -282,6 +418,15 @@ collections:
             fields:
               - { name: src, label: "ไฟล์รูป", widget: image }
               - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
+          - name: albumSize
+            label: "ขนาดรูปในอัลบั้ม"
+            widget: select
+            default: "3"
+            required: false
+            options:
+              - { label: "เล็ก (4 คอลัมน์)", value: "4" }
+              - { label: "กลาง (3 คอลัมน์)", value: "3" }
+              - { label: "ใหญ่ (2 คอลัมน์)", value: "2" }
           - name: videos
             label: "วิดีโอ YouTube"
             label_singular: "วิดีโอ"
@@ -335,5 +480,33 @@ collections:
       - { name: facebook, label: "Facebook (ลิงก์เต็ม)", widget: string, required: false }
       - { name: youtube, label: "YouTube (ลิงก์เต็ม)", widget: string, required: false }
       - { name: email, label: "อีเมล (เช่น Gmail)", widget: string, required: false }
+      - { name: phone, label: "เบอร์โทร", widget: string, required: false }
+      - { name: order, label: "ลำดับ (เลขน้อยขึ้นก่อน)", widget: number, value_type: int, default: 100 }
+
+  # ───────────── ครูผู้สอน ─────────────
+  - name: teachers
+    label: "ครูผู้สอน"
+    label_singular: "ครู"
+    folder: src/content/teachers
+    extension: json
+    format: json
+    create: true
+    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{order}}. {{name}} — {{position}}"
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: "ชื่อ", widget: string }
+      - { name: position, label: "ตำแหน่ง/วิชาที่สอน", widget: string, required: false }
+      - name: photo
+        label: "รูป"
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: "ไฟล์รูป", widget: image, required: false }
+          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
+      - { name: instagram, label: "Instagram (ลิงก์เต็ม)", widget: string, required: false }
+      - { name: facebook, label: "Facebook (ลิงก์เต็ม)", widget: string, required: false }
+      - { name: youtube, label: "YouTube (ลิงก์เต็ม)", widget: string, required: false }
+      - { name: email, label: "อีเมล", widget: string, required: false }
       - { name: phone, label: "เบอร์โทร", widget: string, required: false }
       - { name: order, label: "ลำดับ (เลขน้อยขึ้นก่อน)", widget: number, value_type: int, default: 100 }

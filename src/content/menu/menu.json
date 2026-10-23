@@ -23,6 +23,10 @@
       "label": "School Zone \"โซนแห่งการเรียนรู้\"",
       "children": [
         {
+          "label": "ข่าวประชาสัมพันธ์",
+          "link": "/news/?category=ข่าวการศึกษา"
+        },
+        {
           "label": "วิชาภาษาไทย",
           "link": "/pages/thai/"
         },
@@ -76,16 +80,7 @@
     {
       "label": "ติดต่อเรา",
       "link": "/pages/contact/",
-      "children": [
-        {
-          "label": "ช่องทางการติดต่อสื่อสาร",
-          "link": "/pages/contact-channels/"
-        },
-        {
-          "label": "แบบประเมิณรายเดือน",
-          "link": "/pages/monthly-evaluation/"
-        }
-      ]
+      "children": []
     }
   ]
 }

@@ -1,12 +1,15 @@
 ---
-// หน้าทั่วไปทุกหน้า (วิชา สมัครเรียน ติดต่อ ฯลฯ) สร้างจากโฟลเดอร์ src/content/pages
+// หน้าทั่วไปทุกหน้า: เนื้อหา → (ติดต่อ/ลิงก์) → คอร์สเรียน → ครูผู้สอน → ข่าวหมวดที่เลือก → ผู้บริหาร
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ContactChannels from '../../components/ContactChannels.astro';
 import Executives from '../../components/Executives.astro';
+import Teachers from '../../components/Teachers.astro';
+import Courses from '../../components/Courses.astro';
+import PostCard from '../../components/PostCard.astro';
 import Sections from '../../components/Sections.astro';
 import Icon from '../../components/Icon.astro';
-import { getSite, labels, url } from '../../lib/site';
+import { getSite, getPublishedPosts, labels, url } from '../../lib/site';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
@@ -17,32 +20,43 @@ const d = page.data;
 const { Content } = await render(page);
 const site = await getSite();
 const hasBody = !!page.body?.trim();
+const news = d.newsCategory ? (await getPublishedPosts()).filter((p) => p.data.category === d.newsCategory).slice(0, 6) : [];
+const hasMain = d.showContact || d.links.length > 0 || hasBody || d.sections.length > 0;
 ---
 <Base title={d.title} description={d.description}>
   <header class="page-band"><div class="container narrow"><h1>{d.title}</h1></div></header>
-  <article class="section pull-up">
+  <article class={hasMain ? 'section pull-up' : 'pull-up'}>
     <div class="container narrow">
-      <div class="paper">
-        {d.showContact && <ContactChannels site={site} />}
-        {d.links.length > 0 && (
-          <div class="link-cards">
-            {d.links.map((l) => (
-              <a class="link-card" href={url(l.url)} target="_blank" rel="noopener">
-                <span class="lc-icon"><Icon name="external" size={26} /></span>
-                <span class="lc-text"><strong>{l.label}</strong>{l.note && <span>{l.note}</span>}</span>
-                <span class="lc-go">{labels.openLink}<span class="sr-only"> ({labels.externalHint})</span></span>
-              </a>
-            ))}
-          </div>
-        )}
-        {hasBody && <div class="prose"><Content /></div>}
-        <Sections sections={d.sections} />
-      </div>
+      {hasMain && (
+        <div class="paper">
+          {d.links.length > 0 && (
+            <div class="link-cards">
+              {d.links.map((l) => (
+                <a class="link-card" href={url(l.url)} target="_blank" rel="noopener">
+                  <span class="lc-icon"><Icon name="external" size={26} /></span>
+                  <span class="lc-text"><strong>{l.label}</strong>{l.note && <span>{l.note}</span>}</span>
+                  <span class="lc-go">{labels.openLink}<span class="sr-only"> ({labels.externalHint})</span></span>
+                </a>
+              ))}
+            </div>
+          )}
+          {d.showContact && <ContactChannels site={site} />}
+          {hasBody && <div class="prose"><Content /></div>}
+          <Sections sections={d.sections} />
+        </div>
+      )}
     </div>
   </article>
-  {d.showExecutives && (
-    <section class="section alt">
-      <div class="container"><Executives /></div>
+  {d.courses.length > 0 && <section class="section"><div class="container"><Courses courses={d.courses} /></div></section>}
+  {d.teachers.length > 0 && <section class="section alt"><div class="container"><Teachers ids={d.teachers} /></div></section>}
+  {news.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2 class="section-title">{labels.relatedNews}</h2></div>
+        <div class="card-grid">{news.map((p) => <PostCard post={p} />)}</div>
+        <p class="center"><a class="btn btn-outline" href={url(`/news/?category=${encodeURIComponent(d.newsCategory!)}`)}>{labels.allNews}</a></p>
+      </div>
     </section>
   )}
+  {d.showExecutives && <section class="section alt"><div class="container"><Executives /></div></section>}
 </Base>

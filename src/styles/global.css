@@ -280,3 +280,37 @@ a.soc:hover { background: var(--primary); color: var(--on-primary); transform: t
 .lc-text span { color: var(--muted); font-size: .95rem; }
 .lc-go { font-weight: 600; color: var(--link); white-space: nowrap; }
 @media (max-width: 560px) { .link-card { flex-wrap: wrap; } .lc-go { width: 100%; } }
+
+/* ───── รูปประกอบ: ปรับขนาด/ตำแหน่งได้ ข้อความไหลล้อมรูป + จัดข้อความ/ขนาดตัวอักษร ───── */
+.sec-main { display: flow-root; }
+.sec-image.zoom { width: var(--w, 50%); }
+.sec-image.float-left { float: left; margin: .3rem 1.6rem 1rem 0; }
+.sec-image.float-right { float: right; margin: .3rem 0 1rem 1.6rem; }
+.sec-image.block-left { margin: 0 auto 1.2rem 0; }
+.sec-image.block-center { margin: 0 auto 1.2rem; }
+.sec-image.block-right { margin: 0 0 1.2rem auto; }
+.sec-image.block-full { width: 100%; margin: 0 0 1.2rem; }
+@media (max-width: 700px) { .sec-image.zoom { float: none !important; width: 100% !important; margin: 0 0 1.2rem !important; } }
+.prose.ta-left { text-align: left; } .prose.ta-center { text-align: center; } .prose.ta-right { text-align: right; } .prose.ta-justify { text-align: justify; }
+.prose.fs-large { font-size: 1.25rem; } .prose.fs-xlarge { font-size: 1.55rem; }
+.album { columns: var(--cols, 3) 130px; }
+.link-cards + .contact-cards { margin-top: 1.5rem; }
+.link-cards + .prose, .contact-cards + .prose { margin-top: 1.5rem; }
+
+/* ───── คอร์สเรียน ───── */
+.course-group + .course-group { margin-top: 2.5rem; }
+.group-title { margin: 0 0 1.2rem; font-size: 1.4rem; text-align: center; }
+.course-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 1.5rem; }
+.course-list > :nth-child(3n+1) { --stripe: var(--c-green); }
+.course-list > :nth-child(3n+2) { --stripe: var(--c-blue); }
+.course-list > :nth-child(3n) { --stripe: var(--c-red); }
+.course { background: var(--surface); border: 1px solid var(--border); border-top: 6px solid var(--stripe, var(--c-blue)); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.4rem 1.5rem; display: flex; flex-direction: column; gap: .8rem; }
+.course h4 { margin: 0; font-size: 1.25rem; }
+.course-info { display: grid; grid-template-columns: auto 1fr; gap: .5rem 1rem; margin: 0; }
+.course-info dt { font-weight: 600; }
+.course-info dd { margin: 0; }
+.chip-list { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; margin: 0; padding: 0; }
+.chip { display: inline-flex; align-items: center; gap: .45rem; padding: .15rem .9rem .15rem .2rem; border-radius: 999px; background: var(--tint); }
+.chip img, .chip .mini { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+.chip .mini { display: grid; place-items: center; background: var(--primary); color: var(--on-primary); font-size: .85rem; }
+.course-links { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: auto; }

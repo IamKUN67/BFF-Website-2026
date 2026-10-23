@@ -1,12 +1,8 @@
 ---
-title: วิทยาศาสตร์
+title: "วิทยาศาสตร์"
 slug: science
-description: ''
 legacy: false
-showContact: false
-showExecutives: false
-links: []
-sections: []
+newsCategory: "ข่าวการศึกษา"
 ---
 
-กลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี
+รอเติมข้อมูล
