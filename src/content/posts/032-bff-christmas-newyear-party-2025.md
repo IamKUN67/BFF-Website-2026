@@ -4,8 +4,8 @@ status: published
 date: 2024-12-30
 updated: 2025-01-02
 category: ข่าวประชาสัมพันธ์ทั่วไป
-pinned: true
-isNew: true
+pinned: false
+isNew: false
 notes: ''
 cover:
   src: /uploads/unnamed (2).webp
