@@ -1,33 +1,34 @@
 // นิยามรูปแบบข้อมูลของเนื้อหาทุกชนิด (ต้องตรงกับ public/admin/config.yml)
+// หมายเหตุ: หน้าแอดมินจะบันทึกช่องที่เว้นว่างเป็น null จึงต้องรับ null ได้ทุกช่องที่ไม่บังคับ (nullish)
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const str = z.string().nullish();
+const bool = z.boolean().nullish().transform((v) => v ?? false);
+
 // รูปภาพ = path ของไฟล์ (เช่น /uploads/abc.webp) + alt text (คำอธิบายรูปภาษาไทย)
-const image = z.object({ src: z.string().optional(), alt: z.string().optional() }).optional();
+const image = z.object({ src: str, alt: str }).nullish();
 
 const settings = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/settings' }),
   schema: z.object({
     siteName: z.string(),
-    tagline: z.string().optional(),
-    welcomeTitle: z.string().optional(),
-    welcomeText: z.string().optional(),
+    tagline: str,
+    welcomeTitle: str,
+    welcomeText: str,
     logo: image,
     cover: image,
     colors: z
-      .object({ primary: z.string().default('#1a73c4'), accent: z.string().default('#d32f2f') })
-      .default({}),
+      .object({ primary: str, accent: str })
+      .nullish()
+      .transform((c) => ({ primary: c?.primary || '#1a73c4', accent: c?.accent || '#d32f2f' })),
     social: z
-      .object({
-        instagram: z.string().optional(),
-        facebook: z.string().optional(),
-        line: z.string().optional(),
-        discord: z.string().optional(),
-      })
-      .default({}),
-    email: z.string().optional(),
-    address: z.string().optional(),
-    footerText: z.string().optional(),
+      .object({ instagram: str, facebook: str, line: str, discord: str })
+      .nullish()
+      .transform((s) => s ?? {}),
+    email: str,
+    address: str,
+    footerText: str,
   }),
 });
 
@@ -37,8 +38,11 @@ const menu = defineCollection({
     items: z.array(
       z.object({
         label: z.string(),
-        link: z.string().optional(),
-        children: z.array(z.object({ label: z.string(), link: z.string() })).default([]),
+        link: str,
+        children: z
+          .array(z.object({ label: z.string(), link: z.string() }))
+          .nullish()
+          .transform((c) => c ?? []),
       }),
     ),
   }),
@@ -48,15 +52,18 @@ const posts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
   schema: z.object({
     title: z.string(),
-    status: z.enum(['draft', 'published']).default('draft'),
-    date: z.coerce.date().optional(),
-    updated: z.coerce.date().optional(),
-    category: z.string().optional(),
-    pinned: z.boolean().default(false),
-    isNew: z.boolean().default(false),
-    notes: z.string().optional(), // หมายเหตุภายใน (ไม่แสดงบนเว็บ)
+    status: z.enum(['draft', 'published']).nullish().transform((v) => v ?? 'draft'),
+    date: z.coerce.date().nullish(),
+    updated: z.coerce.date().nullish(),
+    category: str,
+    pinned: bool,
+    isNew: bool,
+    notes: str, // หมายเหตุภายใน (ไม่แสดงบนเว็บ)
     cover: image,
-    gallery: z.array(z.object({ src: z.string(), alt: z.string() })).default([]),
+    gallery: z
+      .array(z.object({ src: z.string(), alt: z.string() }))
+      .nullish()
+      .transform((g) => g ?? []),
   }),
 });
 
@@ -64,10 +71,10 @@ const pages = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
   schema: z.object({
     title: z.string(),
-    slug: z.string().optional(),
-    description: z.string().optional(),
-    legacy: z.boolean().default(false),
-    showContact: z.boolean().default(false), // true = แสดงการ์ดช่องทางติดต่อจากหน้าตั้งค่า
+    slug: str,
+    description: str,
+    legacy: bool,
+    showContact: bool, // true = แสดงการ์ดช่องทางติดต่อจากหน้าตั้งค่า
   }),
 });
 
@@ -76,10 +83,10 @@ const events = defineCollection({
   schema: z.object({
     title: z.string(),
     start: z.coerce.date(),
-    end: z.coerce.date().optional(),
-    location: z.string().optional(),
-    details: z.string().optional(),
-    link: z.string().optional(),
+    end: z.coerce.date().nullish(),
+    location: str,
+    details: str,
+    link: str,
   }),
 });
 
@@ -87,9 +94,9 @@ const board = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/board' }),
   schema: z.object({
     name: z.string(),
-    position: z.string().optional(),
+    position: str,
     photo: image,
-    order: z.number().default(100),
+    order: z.number().nullish().transform((v) => v ?? 100),
   }),
 });
 
