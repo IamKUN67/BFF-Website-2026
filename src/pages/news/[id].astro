@@ -1,0 +1,47 @@
+---
+// หน้าข่าวแต่ละเรื่อง (สร้างเฉพาะข่าวที่สถานะ "เผยแพร่")
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getPublishedPosts, labels, url, img, fmtDate, iso, plain } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const d = post.data;
+const { Content } = await render(post);
+const cover = img(d.cover, `(ข่าว: ${d.title})`);
+const gallery = d.gallery.map((g) => img(g, `(อัลบั้ม: ${d.title})`)!);
+---
+<Base title={d.title} description={plain(post.body) || d.title} image={cover?.src}>
+  <article class="section">
+    <div class="container narrow">
+      <p><a class="back" href={url('/news/')}>← {labels.backToNews}</a></p>
+      <header class="post-head">
+        <div class="badges">
+          {d.isNew && <span class="badge badge-new">{labels.newBadge}</span>}
+          {d.category && <span class="badge badge-cat">{d.category}</span>}
+        </div>
+        <h1>{d.title}</h1>
+        <p class="meta">
+          {d.date && <span>{labels.postedOn} <time datetime={iso(d.date)}>{fmtDate(d.date)}</time></span>}
+          {d.updated && <span>{labels.updatedOn} <time datetime={iso(d.updated)}>{fmtDate(d.updated)}</time></span>}
+        </p>
+      </header>
+      {cover && <img class="post-cover" src={cover.src} alt={cover.alt} />}
+      <div class="prose"><Content /></div>
+      {gallery.length > 0 && (
+        <section>
+          <h2>{labels.galleryTitle}</h2>
+          <div class="gallery">
+            {gallery.map((g) => <img src={g.src} alt={g.alt} loading="lazy" decoding="async" />)}
+          </div>
+        </section>
+      )}
+      {d.legacyUrl && (
+        <p><a href={d.legacyUrl} target="_blank" rel="noopener">{labels.viewOriginal} <span class="sr-only">({labels.externalHint})</span></a></p>
+      )}
+    </div>
+  </article>
+</Base>

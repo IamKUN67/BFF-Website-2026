@@ -1,0 +1,108 @@
+---
+// ปฏิทินรายเดือน + รายการกิจกรรม (mode: "home" = แสดงเฉพาะที่กำลังมาถึง, "full" = ทั้งหมด)
+import { fmtDate, iso, url, labels } from '../lib/site';
+const { events, mode = 'full', limit = 5 } = Astro.props;
+const items = events
+  .map((e: any) => ({
+    id: e.id,
+    title: e.data.title,
+    start: iso(e.data.start),
+    end: iso(e.data.end ?? e.data.start),
+    location: e.data.location,
+    details: e.data.details,
+    link: e.data.link,
+  }))
+  .sort((a: any, b: any) => a.start.localeCompare(b.start));
+const range = (e: any) => e.start === e.end ? fmtDate(new Date(e.start)) : `${fmtDate(new Date(e.start))} – ${fmtDate(new Date(e.end))}`;
+---
+<div class="calendar" data-calendar data-mode={mode} data-limit={limit}>
+  <script type="application/json" set:html={JSON.stringify(items)} />
+  <div class="cal-nav">
+    <button type="button" class="icon-btn" data-prev aria-label={labels.prevMonth}><span aria-hidden="true">‹</span></button>
+    <h3 class="cal-title" data-month-title aria-live="polite"></h3>
+    <button type="button" class="icon-btn" data-next aria-label={labels.nextMonth}><span aria-hidden="true">›</span></button>
+  </div>
+  <div class="cal-scroll"><table class="cal-grid" data-grid></table></div>
+
+  <h3 class="list-title">{labels.upcomingEvents}</h3>
+  <p class="empty" data-empty hidden={items.length > 0}>{labels.noEvents}</p>
+  <ol class="event-list" data-event-list>
+    {items.map((e: any) => (
+      <li id={`event-${e.id}`} data-end={e.end}>
+        <time>{range(e)}</time>
+        <strong>{e.title}</strong>
+        {e.location && <span class="muted">{labels.eventLocation}: {e.location}</span>}
+        {e.details && <p>{e.details}</p>}
+        {e.link && <a href={url(e.link)} target={/^https?:/.test(e.link) ? '_blank' : undefined} rel="noopener">{labels.eventLink}</a>}
+      </li>
+    ))}
+  </ol>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-calendar]');
+  if (root) {
+    const events = JSON.parse(root.querySelector('script[type="application/json"]')!.textContent || '[]');
+    const grid = root.querySelector('[data-grid]') as HTMLTableElement;
+    const title = root.querySelector('[data-month-title]')!;
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    let y = now.getFullYear(), m = now.getMonth();
+    const fmtMonth = new Intl.DateTimeFormat('th-TH', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+    const fmtWd = new Intl.DateTimeFormat('th-TH', { weekday: 'short', timeZone: 'UTC' });
+
+    function draw() {
+      title.textContent = fmtMonth.format(new Date(Date.UTC(y, m, 1)));
+      const first = new Date(Date.UTC(y, m, 1)).getUTCDay();
+      const days = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+      const thead = document.createElement('thead');
+      const hr = thead.insertRow();
+      for (let i = 0; i < 7; i++) {
+        const th = document.createElement('th');
+        th.scope = 'col';
+        th.textContent = fmtWd.format(new Date(Date.UTC(2023, 0, 1 + i))); // 1 ม.ค. 2023 = วันอาทิตย์
+        hr.append(th);
+      }
+      const tbody = document.createElement('tbody');
+      let row = tbody.insertRow();
+      for (let i = 0; i < first; i++) row.insertCell();
+      for (let d = 1; d <= days; d++) {
+        if (row.cells.length === 7) row = tbody.insertRow();
+        const cell = row.insertCell();
+        const ds = `${y}-${pad(m + 1)}-${pad(d)}`;
+        if (ds === todayStr) cell.classList.add('today');
+        const num = document.createElement('span');
+        num.className = 'day-num';
+        num.textContent = String(d);
+        cell.append(num);
+        events.filter((e: any) => e.start <= ds && ds <= e.end).forEach((e: any) => {
+          const a = document.createElement('a');
+          a.href = '#event-' + e.id;
+          a.className = 'cal-chip';
+          a.textContent = e.title;
+          cell.append(a);
+        });
+      }
+      while (row.cells.length < 7) row.insertCell();
+      grid.replaceChildren(thead, tbody);
+    }
+    root.querySelector('[data-prev]')!.addEventListener('click', () => { if (--m < 0) { m = 11; y--; } draw(); });
+    root.querySelector('[data-next]')!.addEventListener('click', () => { if (++m > 11) { m = 0; y++; } draw(); });
+    draw();
+
+    // รายการ: ทำเครื่องหมายกิจกรรมที่ผ่านไปแล้ว (หน้าแรกซ่อน และจำกัดจำนวน)
+    const lis = Array.from(root.querySelectorAll<HTMLElement>('[data-event-list] > li'));
+    lis.forEach((li) => { if ((li.dataset.end || '') < todayStr) li.classList.add('past'); });
+    if (root.dataset.mode === 'home') {
+      let shown = 0;
+      const limit = Number(root.dataset.limit) || 5;
+      lis.forEach((li) => {
+        const show = !li.classList.contains('past') && shown < limit;
+        li.hidden = !show;
+        if (show) shown++;
+      });
+      if (lis.length > 0 && shown === 0) (root.querySelector('[data-empty]') as HTMLElement).hidden = false;
+    }
+  }
+</script>

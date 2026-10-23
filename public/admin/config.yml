@@ -3,14 +3,14 @@
 
 backend:
   name: github
-  repo: IamKUN67/BFF-Website-2026   # <-- แก้ตรงนี้ เช่น somchai/bff-2026
+  repo: IamKUN67/BFF-Website-2026
   branch: main
 
 locale: th
 publish_mode: simple
 site_url: https://iamkun67.github.io/BFF-Website-2026/
 
-# รูปที่อัปโหลดเก็บใน src/assets/uploads (path แบบสัมพัทธ์ เพื่อให้ Astro ย่อรูปตอน build)
+# รูปที่อัปโหลดเก็บใน public/uploads
 media_folder: public/uploads
 public_folder: /uploads
 
@@ -71,6 +71,60 @@ collections:
           - { name: email, label: "อีเมล", widget: string, required: false }
           - { name: address, label: "ที่อยู่", widget: text, required: false }
           - { name: footerText, label: "ข้อความท้ายเว็บ", widget: string, required: false }
+
+      - name: labels
+        label: "ข้อความในหน้าเว็บ"
+        file: src/data/labels.json
+        format: json
+        fields:
+          - { name: skipToContent, label: "ลิงก์ข้ามไปเนื้อหา (สำหรับโปรแกรมอ่านจอ)", widget: string }
+          - { name: menuButton, label: "ปุ่มเปิด/ปิดเมนู (โปรแกรมอ่านจอ)", widget: string }
+          - { name: mainNav, label: "ชื่อกลุ่มเมนูหลัก (โปรแกรมอ่านจอ)", widget: string }
+          - { name: subMenuButton, label: "ปุ่มเปิด/ปิดเมนูย่อย (โปรแกรมอ่านจอ)", widget: string }
+          - { name: themeButton, label: "ปุ่มสลับโหมดมืด/สว่าง (โปรแกรมอ่านจอ)", widget: string }
+          - { name: heroCta, label: "ปุ่มในส่วนต้อนรับ", widget: string }
+          - { name: latestNewsTitle, label: "หัวข้อ: ข่าวล่าสุด", widget: string }
+          - { name: allNews, label: "ปุ่ม: ดูข่าวทั้งหมด", widget: string }
+          - { name: calendarTitle, label: "หัวข้อ: ปฏิทินกิจกรรม", widget: string }
+          - { name: upcomingEvents, label: "หัวข้อ: กิจกรรมที่กำลังจะมาถึง", widget: string }
+          - { name: noEvents, label: "ข้อความเมื่อไม่มีกิจกรรม", widget: string }
+          - { name: prevMonth, label: "ปุ่มเดือนก่อนหน้า", widget: string }
+          - { name: nextMonth, label: "ปุ่มเดือนถัดไป", widget: string }
+          - { name: eventLocation, label: "คำว่า สถานที่", widget: string }
+          - { name: eventLink, label: "ลิงก์ดูรายละเอียดกิจกรรม", widget: string }
+          - { name: contactTitle, label: "หัวข้อ: ติดต่อเรา", widget: string }
+          - { name: contactEmpty, label: "ข้อความเมื่อยังไม่มีข้อมูลติดต่อ", widget: string }
+          - { name: emailLabel, label: "คำว่า อีเมล", widget: string }
+          - { name: addressLabel, label: "คำว่า ที่อยู่", widget: string }
+          - { name: moreContact, label: "ปุ่มช่องทางติดต่อเพิ่มเติม", widget: string }
+          - { name: newsPageTitle, label: "หัวข้อหน้าข่าว", widget: string }
+          - { name: searchLabel, label: "ชื่อช่องค้นหา", widget: string }
+          - { name: searchPlaceholder, label: "ข้อความในช่องค้นหา", widget: string }
+          - { name: categoryLabel, label: "ชื่อตัวกรองหมวดหมู่", widget: string }
+          - { name: allCategories, label: "ตัวเลือก: ทุกหมวดหมู่", widget: string }
+          - { name: noResults, label: "ข้อความเมื่อค้นไม่เจอ", widget: string }
+          - { name: noNews, label: "ข้อความเมื่อยังไม่มีข่าว", widget: string }
+          - { name: prevPage, label: "ปุ่มหน้าก่อนหน้า", widget: string }
+          - { name: nextPage, label: "ปุ่มหน้าถัดไป", widget: string }
+          - { name: pageOf, label: "ข้อความเลขหน้า (คง {page} และ {total} ไว้)", widget: string }
+          - { name: newBadge, label: "ป้าย New", widget: string }
+          - { name: pinnedBadge, label: "ป้ายปักหมุด", widget: string }
+          - { name: postedOn, label: "คำว่า โพสต์เมื่อ", widget: string }
+          - { name: updatedOn, label: "คำว่า อัปเดตเมื่อ", widget: string }
+          - { name: viewOriginal, label: "ลิงก์ไปหน้าเดิมบน Google Sites", widget: string }
+          - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
+          - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
+          - { name: boardTitle, label: "หัวข้อหน้าบอร์ดบริหาร", widget: string }
+          - { name: noBoard, label: "ข้อความเมื่อยังไม่มีรายชื่อ", widget: string }
+          - { name: notFoundTitle, label: "หัวข้อหน้าไม่พบ", widget: string }
+          - { name: notFoundText, label: "ข้อความหน้าไม่พบ", widget: string }
+          - { name: backHome, label: "ปุ่มกลับหน้าแรก", widget: string }
+          - { name: externalHint, label: "คำอธิบายลิงก์ที่เปิดแท็บใหม่ (โปรแกรมอ่านจอ)", widget: string }
+          - { name: socialInstagram, label: "ชื่อ Instagram", widget: string }
+          - { name: socialFacebook, label: "ชื่อ Facebook", widget: string }
+          - { name: socialLine, label: "ชื่อ LINE", widget: string }
+          - { name: socialDiscord, label: "ชื่อ Discord", widget: string }
+          - { name: newsCategories, label: "หมวดหมู่ข่าวในตัวกรอง (ควรตรงกับหมวดในฟอร์มข่าว)", widget: list, field: { name: category, label: "ชื่อหมวด", widget: string } }
 
       - name: menu
         label: "เมนู"

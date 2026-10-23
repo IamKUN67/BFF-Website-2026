@@ -1,0 +1,82 @@
+---
+// แถบเมนูบนติดหน้าจอ: ชื่อเว็บซ้าย เมนูขวา มี dropdown และปุ่ม ☰ บนมือถือ
+import { url, img, labels } from '../lib/site';
+const { site, menu } = Astro.props;
+const logo = img(site.logo, '(โลโก้)');
+const path = Astro.url.pathname;
+const here = (l?: string) => !!l && !l.includes('?') && path === url(l);
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={url('/')}>
+      {logo && <img src={logo.src} alt={logo.alt} />}
+      <span>{site.siteName}</span>
+    </a>
+    <nav id="main-nav" class="main-nav" aria-label={labels.mainNav}>
+      <ul class="menu">
+        {menu.map((item) => (
+          <li class="menu-item">
+            {item.link ? (
+              <a class="menu-link" href={url(item.link)} aria-current={here(item.link) ? 'page' : undefined}>{item.label}</a>
+            ) : (
+              <button type="button" class="menu-link sub-toggle" aria-expanded="false">{item.label} <span aria-hidden="true">▾</span></button>
+            )}
+            {item.link && item.children.length > 0 && (
+              <button type="button" class="sub-toggle caret" aria-expanded="false" aria-label={`${labels.subMenuButton}: ${item.label}`}><span aria-hidden="true">▾</span></button>
+            )}
+            {item.children.length > 0 && (
+              <ul class="submenu">
+                {item.children.map((c) => (<li><a href={url(c.link)}>{c.label}</a></li>))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="header-tools">
+      <button type="button" class="icon-btn theme-toggle" aria-label={labels.themeButton}><span aria-hidden="true">◐</span></button>
+      <button type="button" class="icon-btn nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label={labels.menuButton}><span aria-hidden="true">☰</span></button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById('main-nav')!;
+  const toggle = document.querySelector('.nav-toggle')!;
+  const closeSubs = () => {
+    document.querySelectorAll('.menu-item.open').forEach((li) => {
+      li.classList.remove('open');
+      li.querySelectorAll('.sub-toggle').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+    });
+  };
+  toggle.addEventListener('click', () => {
+    toggle.setAttribute('aria-expanded', String(nav.classList.toggle('open')));
+  });
+  document.querySelectorAll('.sub-toggle').forEach((b) =>
+    b.addEventListener('click', () => {
+      const li = b.closest('.menu-item')!;
+      const open = !li.classList.contains('open');
+      closeSubs();
+      li.classList.toggle('open', open);
+      li.querySelectorAll('.sub-toggle').forEach((x) => x.setAttribute('aria-expanded', String(open)));
+    }),
+  );
+  document.addEventListener('click', (e) => {
+    if (!(e.target as Element).closest('.menu-item')) closeSubs();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeSubs();
+      nav.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  // สลับโหมดมืด/สว่าง และจำค่าไว้
+  document.querySelector('.theme-toggle')!.addEventListener('click', () => {
+    const root = document.documentElement;
+    const cur = root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+</script>

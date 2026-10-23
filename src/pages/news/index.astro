@@ -1,0 +1,85 @@
+---
+// หน้าข่าว: การ์ด + ค้นหา + กรองหมวดหมู่ + แบ่งหน้า (ทำงานในเบราว์เซอร์)
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPublishedPosts, labels } from '../../lib/site';
+
+const posts = await getPublishedPosts();
+const cats = [...new Set([...labels.newsCategories, ...posts.map((p) => p.data.category).filter(Boolean)])] as string[];
+---
+<Base title={labels.newsPageTitle}>
+  <section class="section">
+    <div class="container" data-news data-per-page="9" data-page-of={labels.pageOf} data-prev={labels.prevPage} data-next={labels.nextPage}>
+      <div class="section-head"><h1 class="section-title">{labels.newsPageTitle}</h1></div>
+      <div class="filters">
+        <label>
+          <span class="sr-only">{labels.searchLabel}</span>
+          <input type="search" data-search placeholder={labels.searchPlaceholder} aria-label={labels.searchLabel} />
+        </label>
+        <label>
+          <span class="sr-only">{labels.categoryLabel}</span>
+          <select data-cat aria-label={labels.categoryLabel}>
+            <option value="">{labels.allCategories}</option>
+            {cats.map((c) => <option value={c}>{c}</option>)}
+          </select>
+        </label>
+      </div>
+      <ul class="card-grid" data-list>
+        {posts.map((p) => (
+          <li data-card data-category={p.data.category ?? ''} data-search={`${p.data.title} ${p.data.category ?? ''} ${(p.body ?? '').slice(0, 1500)}`.toLowerCase()}>
+            <PostCard post={p} />
+          </li>
+        ))}
+      </ul>
+      <p class="empty" data-empty hidden={posts.length > 0}>{posts.length > 0 ? labels.noResults : labels.noNews}</p>
+      <nav class="pager" data-pager aria-label={labels.newsPageTitle}></nav>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-news]');
+  if (root) {
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-card]'));
+    const q = root.querySelector('[data-search]') as HTMLInputElement;
+    const cat = root.querySelector('[data-cat]') as HTMLSelectElement;
+    const pager = root.querySelector('[data-pager]') as HTMLElement;
+    const empty = root.querySelector('[data-empty]') as HTMLElement;
+    const perPage = Number(root.dataset.perPage) || 9;
+    let page = 1;
+
+    const wanted = new URLSearchParams(location.search).get('category');
+    if (wanted && Array.from(cat.options).some((o) => o.value === wanted)) cat.value = wanted;
+
+    const btn = (text: string, disabled: boolean, go: number) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = text;
+      b.disabled = disabled;
+      b.addEventListener('click', () => { page = go; render(true); });
+      return b;
+    };
+
+    function render(scroll = false) {
+      const term = q.value.trim().toLowerCase();
+      const matched = cards.filter(
+        (el) => (!cat.value || el.dataset.category === cat.value) && (!term || (el.dataset.search || '').includes(term)),
+      );
+      const pages = Math.max(1, Math.ceil(matched.length / perPage));
+      page = Math.min(page, pages);
+      cards.forEach((el) => (el.hidden = true));
+      matched.slice((page - 1) * perPage, page * perPage).forEach((el) => (el.hidden = false));
+      if (cards.length > 0) empty.hidden = matched.length > 0;
+      pager.replaceChildren();
+      if (pages > 1) {
+        const info = document.createElement('span');
+        info.textContent = (root!.dataset.pageOf || '').replace('{page}', String(page)).replace('{total}', String(pages));
+        pager.append(btn(root!.dataset.prev || '', page <= 1, page - 1), info, btn(root!.dataset.next || '', page >= pages, page + 1));
+      }
+      if (scroll) root!.scrollIntoView({ behavior: 'smooth' });
+    }
+    q.addEventListener('input', () => { page = 1; render(); });
+    cat.addEventListener('change', () => { page = 1; render(); });
+    render();
+  }
+</script>

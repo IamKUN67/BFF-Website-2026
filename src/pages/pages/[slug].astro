@@ -1,0 +1,20 @@
+---
+// หน้าทั่วไปทุกหน้า (วิชา สมัครเรียน ฯลฯ) สร้างจากโฟลเดอร์ src/content/pages
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((page) => ({ params: { slug: page.data.slug ?? page.id }, props: { page } }));
+}
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+<Base title={page.data.title} description={page.data.description}>
+  <article class="section">
+    <div class="container narrow">
+      <div class="section-head"><h1 class="section-title">{page.data.title}</h1></div>
+      <div class="prose"><Content /></div>
+    </div>
+  </article>
+</Base>

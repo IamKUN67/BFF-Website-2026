@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Calendar from '../components/Calendar.astro';
+import { labels } from '../lib/site';
+
+const events = await getCollection('events');
+---
+<Base title={labels.calendarTitle}>
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><h1 class="section-title">{labels.calendarTitle}</h1></div>
+      <Calendar events={events} mode="full" />
+    </div>
+  </section>
+</Base>

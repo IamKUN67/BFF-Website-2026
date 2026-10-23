@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { labels, url } from '../lib/site';
+---
+<Base title={labels.notFoundTitle}>
+  <section class="section">
+    <div class="container narrow center">
+      <h1 class="section-title">{labels.notFoundTitle}</h1>
+      <p>{labels.notFoundText}</p>
+      <p><a class="btn" href={url('/')}>{labels.backHome}</a></p>
+    </div>
+  </section>
+</Base>

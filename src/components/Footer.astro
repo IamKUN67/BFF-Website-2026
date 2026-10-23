@@ -1,0 +1,24 @@
+---
+import { labels } from '../lib/site';
+const { site } = Astro.props;
+const s = site.social;
+const links = [
+  [labels.socialInstagram, s.instagram],
+  [labels.socialFacebook, s.facebook],
+  [labels.socialLine, s.line],
+  [labels.socialDiscord, s.discord],
+].filter(([, href]) => href);
+---
+<footer class="site-footer">
+  <div class="container">
+    <p class="footer-brand">{site.siteName}</p>
+    {links.length > 0 && (
+      <ul class="social-list">
+        {links.map(([name, href]) => (
+          <li><a href={href} target="_blank" rel="noopener">{name}<span class="sr-only"> ({labels.externalHint})</span></a></li>
+        ))}
+      </ul>
+    )}
+    {site.footerText && <p class="footer-text">{site.footerText}</p>}
+  </div>
+</footer>
