@@ -8,20 +8,7 @@
     {
       "label": "ข่าวสาร",
       "link": "/news/",
-      "children": [
-        {
-          "label": "ข่าวจริง",
-          "link": "/news/?category=ข่าวจริง"
-        },
-        {
-          "label": "ทั่วไป",
-          "link": "/news/?category=ทั่วไป"
-        },
-        {
-          "label": "ประชาสัมพันธ์",
-          "link": "/news/?category=ประชาสัมพันธ์"
-        }
-      ]
+      "children": []
     },
     {
       "label": "บอร์ดบริหาร",

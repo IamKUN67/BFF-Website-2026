@@ -16,6 +16,7 @@ const cats = [...new Set([...labels.newsCategories, ...posts.map((p) => p.data.c
           <span class="sr-only">{labels.searchLabel}</span>
           <input type="search" data-search placeholder={labels.searchPlaceholder} aria-label={labels.searchLabel} />
         </label>
+        {cats.length > 1 && (
         <label>
           <span class="sr-only">{labels.categoryLabel}</span>
           <select data-cat aria-label={labels.categoryLabel}>
@@ -23,6 +24,7 @@ const cats = [...new Set([...labels.newsCategories, ...posts.map((p) => p.data.c
             {cats.map((c) => <option value={c}>{c}</option>)}
           </select>
         </label>
+        )}
       </div>
       <ul class="card-grid" data-list>
         {posts.map((p) => (
@@ -42,7 +44,7 @@ const cats = [...new Set([...labels.newsCategories, ...posts.map((p) => p.data.c
   if (root) {
     const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-card]'));
     const q = root.querySelector('[data-search]') as HTMLInputElement;
-    const cat = root.querySelector('[data-cat]') as HTMLSelectElement;
+    const cat = (root.querySelector('[data-cat]') ?? { value: '', options: [] }) as HTMLSelectElement;
     const pager = root.querySelector('[data-pager]') as HTMLElement;
     const empty = root.querySelector('[data-empty]') as HTMLElement;
     const perPage = Number(root.dataset.perPage) || 9;
@@ -79,7 +81,7 @@ const cats = [...new Set([...labels.newsCategories, ...posts.map((p) => p.data.c
       if (scroll) root!.scrollIntoView({ behavior: 'smooth' });
     }
     q.addEventListener('input', () => { page = 1; render(); });
-    cat.addEventListener('change', () => { page = 1; render(); });
+    root.querySelector('[data-cat]')?.addEventListener('change', () => { page = 1; render(); });
     render();
   }
 </script>

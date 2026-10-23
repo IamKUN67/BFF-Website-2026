@@ -34,7 +34,6 @@ const here = (l?: string) => !!l && !l.includes('?') && path === url(l);
       </ul>
     </nav>
     <div class="header-tools">
-      <button type="button" class="icon-btn theme-toggle" aria-label={labels.themeButton}><span aria-hidden="true">◐</span></button>
       <button type="button" class="icon-btn nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label={labels.menuButton}><span aria-hidden="true">☰</span></button>
     </div>
   </div>
@@ -70,13 +69,5 @@ const here = (l?: string) => !!l && !l.includes('?') && path === url(l);
       nav.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
     }
-  });
-  // สลับโหมดมืด/สว่าง และจำค่าไว้
-  document.querySelector('.theme-toggle')!.addEventListener('click', () => {
-    const root = document.documentElement;
-    const cur = root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    const next = cur === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = next;
-    try { localStorage.setItem('theme', next); } catch (e) {}
   });
 </script>

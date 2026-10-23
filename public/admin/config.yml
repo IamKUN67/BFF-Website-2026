@@ -81,7 +81,6 @@ collections:
           - { name: menuButton, label: "ปุ่มเปิด/ปิดเมนู (โปรแกรมอ่านจอ)", widget: string }
           - { name: mainNav, label: "ชื่อกลุ่มเมนูหลัก (โปรแกรมอ่านจอ)", widget: string }
           - { name: subMenuButton, label: "ปุ่มเปิด/ปิดเมนูย่อย (โปรแกรมอ่านจอ)", widget: string }
-          - { name: themeButton, label: "ปุ่มสลับโหมดมืด/สว่าง (โปรแกรมอ่านจอ)", widget: string }
           - { name: heroCta, label: "ปุ่มในส่วนต้อนรับ", widget: string }
           - { name: latestNewsTitle, label: "หัวข้อ: ข่าวล่าสุด", widget: string }
           - { name: allNews, label: "ปุ่ม: ดูข่าวทั้งหมด", widget: string }
@@ -175,7 +174,7 @@ collections:
         label: "หมวดหมู่"
         widget: select
         required: false
-        options: ["ข่าวจริง", "ทั่วไป", "ประชาสัมพันธ์"]
+        options: ["ประชาสัมพันธ์"]
       - { name: pinned, label: "ปักหมุดข่าว", widget: boolean, default: false }
       - { name: isNew, label: "ป้าย New", widget: boolean, default: false }
       - { name: notes, label: "หมายเหตุภายใน (ไม่แสดงบนเว็บ)", widget: text, required: false }

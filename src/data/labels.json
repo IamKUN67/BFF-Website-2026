@@ -3,7 +3,6 @@
   "menuButton": "เปิดหรือปิดเมนู",
   "mainNav": "เมนูหลัก",
   "subMenuButton": "เปิดหรือปิดเมนูย่อย",
-  "themeButton": "สลับโหมดมืดและโหมดสว่าง",
   "heroCta": "อ่านข่าวล่าสุด",
   "latestNewsTitle": "ข่าวล่าสุด",
   "allNews": "ดูข่าวทั้งหมด",
@@ -46,5 +45,7 @@
   "socialFacebook": "Facebook",
   "socialLine": "LINE",
   "socialDiscord": "Discord",
-  "newsCategories": ["ข่าวจริง", "ทั่วไป", "ประชาสัมพันธ์"]
+  "newsCategories": [
+    "ประชาสัมพันธ์"
+  ]
 }
