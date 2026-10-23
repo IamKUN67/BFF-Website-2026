@@ -3,13 +3,23 @@
   "tagline": "เพื่อนกันตลอดไป",
   "welcomeTitle": "Best Friend Forever 2026",
   "welcomeText": "\"โลกเปลี่ยน เราต้องปรับ\" ในยุคที่ทุกอย่างเปลี่ยนแปลงอย่างรวดเร็ว เราต้องพร้อมปรับตัว เรียนรู้ และเติบโตไปด้วยกัน เพราะที่นี่ เราคือศูนย์รวมของความรู้ กิจกรรม และความสนุก ที่จะทำให้สมาชิก ผู้บริหาร และทุกคนมีความสุขตลอดปี :)",
+  "logo": {
+    "src": "/uploads/logo.webp",
+    "alt": "โลโก้ BFF รูปมือสามสี เขียว น้ำเงิน แดง บนพื้นหลังสีรุ้ง"
+  },
+  "cover": null,
   "colors": {
     "primary": "#1a73c4",
     "accent": "#d32f2f"
   },
-  "social": {},
-  "logo": {
-    "src": "/uploads/logo.webp",
-    "alt": "โลโก้ BFF รูปมือสามสี เขียว น้ำเงิน แดง บนพื้นหลังสีรุ้ง"
-  }
+  "social": {
+    "instagram": "",
+    "facebook": "",
+    "youtube": "https://www.youtube.com/@BFFDISCORD",
+    "line": "",
+    "discord": "https://discord.gg/nAsrKRsfBu"
+  },
+  "email": "",
+  "address": "",
+  "footerText": ""
 }
