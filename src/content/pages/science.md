@@ -11,7 +11,7 @@ teachers:
 links: []
 courses:
   - title: เคมีพื้นฐาน
-    group: เคมี
+    group: ''
     startDate: 2026-10-01
     endDate: 2026-11-27
     schedule: ทุกวันจันทร์ พุธ และ ศุกร์ เวลา 10.00 - 11.50
