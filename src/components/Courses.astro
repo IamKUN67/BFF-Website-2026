@@ -11,8 +11,8 @@ for (const c of courses) {
   if (!g) groups.push((g = { name, items: [] }));
   g.items.push(c);
 }
-const period = (c: any) =>
-  c.startDate && c.endDate ? `${fmtDate(c.startDate)} – ${fmtDate(c.endDate)}` : c.startDate ? fmtDate(c.startDate) : '';
+const period = (c: any): string[] =>
+  c.startDate && c.endDate ? [fmtDate(c.startDate), fmtDate(c.endDate)] : c.startDate ? [fmtDate(c.startDate)] : [];
 ---
 {courses.length > 0 && (
   <section class="courses">
@@ -28,7 +28,7 @@ const period = (c: any) =>
               <article class="course">
                 <h4>{c.title}</h4>
                 <dl class="course-info">
-                  {p && (<><dt>{labels.coursePeriod}</dt><dd>{p}</dd></>)}
+                  {p.length > 0 && (<><dt>{labels.coursePeriod}</dt><dd>{p.map((x, i) => (<>{i > 0 && ' – '}<span class="nowrap">{x}</span></>))}</dd></>)}
                   {c.schedule && (<><dt>{labels.courseSchedule}</dt><dd class="pre">{c.schedule}</dd></>)}
                   {ts.length > 0 && (
                     <><dt>{labels.courseTeachers}</dt><dd>

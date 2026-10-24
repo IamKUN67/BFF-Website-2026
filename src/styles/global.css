@@ -385,3 +385,12 @@ p, li, dd { text-wrap: pretty; }
 .page-band h1 { font-size: clamp(1.5rem, 1rem + 2.4vw, 2.5rem); line-height: 1.4; }
 .section-title { font-size: clamp(1.45rem, 1rem + 1.8vw, 2.2rem); }
 .post-head h1, .hero h1, .intro-bar h1 { line-height: 1.4; }
+
+/* ───── การ์ดคอร์ส: หัวข้อเล็กอยู่เหนือข้อมูล ใช้ความกว้างเต็มการ์ด วันที่ไม่ตัดกลางคำ ───── */
+.nowrap { white-space: nowrap; }
+.course-info { grid-template-columns: 1fr; gap: .9rem; }
+.course-info dt { margin: 0; font-size: .9rem; font-weight: 600; color: var(--muted); }
+.course-info dd { margin: .1rem 0 0; font-size: 1.05rem; line-height: 1.6; }
+.chip-list { flex-direction: column; align-items: flex-start; gap: .4rem; }
+.chip { max-width: 100%; padding-right: 1rem; }
+.course .prose { font-size: 1rem; }
