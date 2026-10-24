@@ -18,9 +18,9 @@ const here = (l?: string) => !!l && !l.includes('?') && path === url(l);
         {menu.map((item) => (
           <li class="menu-item">
             {item.link ? (
-              <a class:list={['menu-link', item.icon && 'has-icon']} href={url(item.link)} title={item.label} aria-current={here(item.link) ? 'page' : undefined}>{item.icon && <Icon name={item.icon} size={22} />}<span class:list={[item.icon && 'menu-text']}>{item.label}</span></a>
+              <a class:list={['menu-link', item.icon && 'has-icon']} href={url(item.link)} title={item.icon ? item.label : undefined} aria-current={here(item.link) ? 'page' : undefined}>{item.icon && <Icon name={item.icon} size={22} />}<span class:list={[item.icon && 'menu-text']}>{item.label}</span></a>
             ) : (
-              <button type="button" class:list={['menu-link', 'sub-toggle', item.icon && 'has-icon']} title={item.label} aria-expanded="false">{item.icon && <Icon name={item.icon} size={22} />}<span class:list={[item.icon && 'menu-text']}>{item.label}</span> <span aria-hidden="true">▾</span></button>
+              <button type="button" class:list={['menu-link', 'sub-toggle', item.icon && 'has-icon']} title={item.icon ? item.label : undefined} aria-expanded="false">{item.icon && <Icon name={item.icon} size={22} />}<span class:list={[item.icon && 'menu-text']}>{item.label}</span> <span aria-hidden="true">▾</span></button>
             )}
             {item.link && item.children.length > 0 && (
               <button type="button" class="sub-toggle caret" aria-expanded="false" aria-label={`${labels.subMenuButton}: ${item.label}`}><span aria-hidden="true">▾</span></button>
