@@ -6,7 +6,8 @@ legacy: false
 showContact: false
 showExecutives: false
 newsCategory: ข่าวการศึกษา
-teachers: []
+teachers:
+  - 20261024-084344
 links: []
 courses: []
 sections: []
