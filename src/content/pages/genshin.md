@@ -1,8 +1,15 @@
 ---
-title: "เก็นชินอิมแพกต์"
+title: กลุ่มสาระการเรียนรู้เก็นชินอิมแพกต์
 slug: genshin
+description: ''
 legacy: false
-newsCategory: "ข่าวการศึกษา"
+showContact: false
+showExecutives: false
+newsCategory: ข่าวการศึกษา
+teachers: []
+links: []
+courses: []
+sections: []
 ---
 
 รอเติมข้อมูล
