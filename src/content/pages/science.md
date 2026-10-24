@@ -10,17 +10,17 @@ teachers:
   - 20261023-155802
 links: []
 courses:
-  - title: เคมีพื้นฐาน
+  - title: วิทยาศาสตร์พื้นฐานเตรียมความพร้อมการสอบเข้า ม.1
     group: ''
-    startDate: 2026-10-01
-    endDate: 2026-11-27
-    schedule: ทุกวันจันทร์ พุธ และ ศุกร์ เวลา 10.00 - 11.50
+    startDate: 2023-10-01
+    endDate: 2023-10-31
+    schedule: ''
     teachers:
       - 20261023-155802
-    description: ศึกษาวิทยาศาสตร์กายภาพแขนงหนึ่งเกี่ยวกับสสาร โครงสร้าง องค์ประกอบ คุณสมบัติ และการเปลี่ยนแปลงของสสาร รวมถึงพลังงานที่เกี่ยวข้องกับการเปลี่ยนแปลงเหล่านั้น
+    description: ปรับพื้นฐานวิทยาศาสตร์พื้นฐานเพื่อเตรียมความพร้อมนักเรียนเข้าสู่ชั้นมัธยมศึกษาปีที่ 1
     links:
-      - label: คะแนนเก็บ
-        url: prakan.ac.th
+      - label: ระบบรายงานคะแนน
+        url: https://docs.google.com/spreadsheets/d/1g1Y8QGWhzasRKkTbx39kWth9fcqSIdId2hwnbVziL8E/edit?usp=sharing
 sections: []
 ---
 
