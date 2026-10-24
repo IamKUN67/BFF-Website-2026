@@ -21,6 +21,17 @@ courses:
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1g1Y8QGWhzasRKkTbx39kWth9fcqSIdId2hwnbVziL8E/edit?usp=sharing
+  - title: วิทยาศาสตร์พื้นฐานชั้นมัธยมศึกษาตอนต้น
+    group: ''
+    startDate: 2024-03-04
+    endDate: 2024-04-10
+    schedule: ''
+    teachers:
+      - 20261023-155802
+    description: เนื้อหาวิทยาศาสตร์พื้นฐาน สาขา ชีววิทยา ฟิสิกส์ เคมี และดาราศาสตร์ ขอบเขตเนื้อหาชั้นมัธยมศึกษาตอนต้น
+    links:
+      - label: ีระบบรายงานคะแนน
+        url: https://docs.google.com/spreadsheets/d/1Q7Ww2HGuyWtEoQk1pYyS-UzSnnhKDYqtUkGFe7nax5c/edit?usp=sharing
 sections: []
 ---
 
