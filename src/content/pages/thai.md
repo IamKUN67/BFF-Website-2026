@@ -1,8 +1,15 @@
 ---
-title: "วิชาภาษาไทย"
+title: กลุ่มสาระการเรียนรู้ภาษาไทย
 slug: thai
+description: ''
 legacy: false
-newsCategory: "ข่าวการศึกษา"
+showContact: false
+showExecutives: false
+newsCategory: ข่าวการศึกษา
+teachers: []
+links: []
+courses: []
+sections: []
 ---
 
 รอเติมข้อมูล
