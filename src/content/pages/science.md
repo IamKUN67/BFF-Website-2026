@@ -9,6 +9,7 @@ newsCategory: ข่าวการศึกษา
 teachers:
   - 20261023-155802
 links: []
+embeds: []
 courses:
   - title: วิทยาศาสตร์พื้นฐานเตรียมความพร้อมการสอบเข้า ม.1
     group: ''
@@ -18,6 +19,10 @@ courses:
     teachers:
       - 20261023-155802
     description: ปรับพื้นฐานวิทยาศาสตร์พื้นฐานเพื่อเตรียมความพร้อมนักเรียนเข้าสู่ชั้นมัธยมศึกษาปีที่ 1
+    documents: []
+    applyUrl: ''
+    closed: true
+    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1g1Y8QGWhzasRKkTbx39kWth9fcqSIdId2hwnbVziL8E/edit?usp=sharing
@@ -29,6 +34,10 @@ courses:
     teachers:
       - 20261023-155802
     description: เนื้อหาวิทยาศาสตร์พื้นฐาน สาขา ชีววิทยา ฟิสิกส์ เคมี และดาราศาสตร์ ขอบเขตเนื้อหาชั้นมัธยมศึกษาตอนต้น
+    documents: []
+    applyUrl: ''
+    closed: false
+    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1Q7Ww2HGuyWtEoQk1pYyS-UzSnnhKDYqtUkGFe7nax5c/edit?usp=sharing
@@ -40,6 +49,10 @@ courses:
     teachers:
       - 20261023-155802
     description: รายวิชาโครงงานวิทยาศาสตร์เบื้องต้น เน้นการจัดการเรียนรู้แบบ Project base learning เน้นการลงมือทำอย่างจริง พร้อมกับการนำเสนอหน้าชั้นเรียน
+    documents: []
+    applyUrl: ''
+    closed: false
+    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/18i2ikFwoZcNYIYTWhJzRLSPHqXOOH2AaJx9wR8nEwnQ/edit?usp=sharing
