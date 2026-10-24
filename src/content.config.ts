@@ -148,9 +148,23 @@ const board = defineCollection({
   }),
 });
 
+// หน้าสไลด์ต้อนรับ (หน้าแรกสุดของลิงก์เว็บ)
+const intro = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/intro' }),
+  schema: z.object({
+    enabled: z.boolean().nullish().transform((v) => v ?? true),
+    title: str,
+    subtitle: str,
+    autoplay: z.boolean().nullish().transform((v) => v ?? true),
+    interval: z.number().nullish().transform((v) => v ?? 6),
+    slides: list(z.object({ file: str, youtube: str, alt: str, caption: str })),
+    buttons: list(z.object({ label: z.string(), url: z.string(), color: str })),
+  }),
+});
+
 const teachers = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/teachers' }),
   schema: z.object(person),
 });
 
-export const collections = { settings, menu, posts, pages, events, board, teachers };
+export const collections = { settings, menu, posts, pages, events, board, teachers, intro };

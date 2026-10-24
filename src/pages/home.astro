@@ -1,0 +1,51 @@
+---
+// หน้าแรก: ต้อนรับ → ข่าวล่าสุด → ปฏิทินกิจกรรม → ติดต่อ
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import PostCard from '../components/PostCard.astro';
+import Calendar from '../components/Calendar.astro';
+import { getSite, getPublishedPosts, labels, url } from '../lib/site';
+
+const site = await getSite();
+const posts = (await getPublishedPosts()).slice(0, 6);
+const events = await getCollection('events');
+const hasContact = site.email || site.address;
+---
+<Base>
+  <Hero site={site} />
+
+  <section class="section reveal">
+    <div class="container">
+      <div class="section-head"><h2 class="section-title">{labels.latestNewsTitle}</h2></div>
+      {posts.length > 0 ? (
+        <div class="card-grid">{posts.map((p) => <PostCard post={p} />)}</div>
+      ) : (
+        <p class="empty">{labels.noNews}</p>
+      )}
+      <p class="center"><a class="btn btn-outline" href={url('/news/')}>{labels.allNews}</a></p>
+    </div>
+  </section>
+
+  <section class="section alt reveal">
+    <div class="container">
+      <div class="section-head"><h2 class="section-title">{labels.calendarTitle}</h2></div>
+      <Calendar events={events} mode="home" limit={5} />
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="container narrow">
+      <div class="section-head"><h2 class="section-title">{labels.contactTitle}</h2></div>
+      {hasContact ? (
+        <dl class="contact-list">
+          {site.email && (<><dt>{labels.emailLabel}</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></>)}
+          {site.address && (<><dt>{labels.addressLabel}</dt><dd class="pre">{site.address}</dd></>)}
+        </dl>
+      ) : (
+        <p class="empty">{labels.contactEmpty}</p>
+      )}
+      <p class="center"><a class="btn btn-outline" href={url('/pages/contact/')}>{labels.moreContact}</a></p>
+    </div>
+  </section>
+</Base>

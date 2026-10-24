@@ -67,12 +67,26 @@ export const plain = (s = '', n = 160) =>
 export function md(text?: string | null) {
   if (!text) return '';
   let html = marked.parse(text, { async: false, gfm: true, breaks: true }) as string;
-  // ย่อหน้าที่มีแค่ลิงก์ YouTube ลิงก์เดียว → แสดงเป็นเครื่องเล่นวิดีโอ กดเล่นในหน้าเว็บได้เลย
-  html = html.replace(/<p>\s*<a href="([^"]+)"[^>]*>[^<]*<\/a>\s*<\/p>/g, (m, href: string) => {
-    const id = youtubeId(href.replace(/&amp;/g, '&'));
-    return id
-      ? `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${labels.videoDefaultTitle}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>`
-      : m;
+  // ลิงก์ YouTube ในข้อความ (ย่อหน้าเดี่ยว หรือ URL เปล่าๆ ที่พิมพ์ติดกับข้อความ) → เครื่องเล่นกดเล่นในหน้าเว็บ
+  const player = (id: string) =>
+    `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${labels.videoDefaultTitle}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>`;
+  html = html.replace(/<p>([\s\S]*?)<\/p>/g, (whole, inner: string) => {
+    const re = /<a href="([^"]+)"[^>]*>([^<]*)<\/a>/g;
+    const out: string[] = [];
+    let last = 0, found = false, m: RegExpExecArray | null;
+    while ((m = re.exec(inner))) {
+      const id = youtubeId(m[1].replace(/&amp;/g, '&'));
+      if (!id || !(inner.trim() === m[0] || /^https?:/i.test(m[2].trim()))) continue;
+      found = true;
+      const before = inner.slice(last, m.index).replace(/(\s*<br\s*\/?>\s*)+$/i, '').trim();
+      if (before) out.push(`<p>${before}</p>`);
+      out.push(player(id));
+      last = m.index + m[0].length;
+    }
+    if (!found) return whole;
+    const after = inner.slice(last).replace(/^(\s*<br\s*\/?>\s*)+/i, '').trim();
+    if (after) out.push(`<p>${after}</p>`);
+    return out.join('');
   });
   html = html.replace(/(src|href)="\/(?!\/)/g, `$1="${base}/`);
   html = html.replace(/<a href="(https?:[^"]*)"/g, '<a href="$1" target="_blank" rel="noopener"');

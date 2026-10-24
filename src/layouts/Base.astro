@@ -7,7 +7,7 @@ import Seo from '../components/Seo.astro';
 import Lightbox from '../components/Lightbox.astro';
 import { getSite, getMenu, labels, onColor, plain, img } from '../lib/site';
 
-const { title, description, image } = Astro.props;
+const { title, description, image, bare = false } = Astro.props;
 const site = await getSite();
 const menu = await getMenu();
 const { primary, accent } = site.colors;
@@ -21,6 +21,7 @@ const desc = description ?? plain(site.welcomeText ?? site.tagline ?? '');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <Seo title={fullTitle} description={desc} image={image ?? logo?.src} siteName={site.siteName} />
+    <slot name="head" />
     {logo && <link rel="icon" type="image/webp" href={logo.src} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,9 +35,9 @@ const desc = description ?? plain(site.welcomeText ?? site.tagline ?? '');
   </head>
   <body>
     <a class="skip" href="#main">{labels.skipToContent}</a>
-    <Header site={site} menu={menu} />
+    {!bare && <Header site={site} menu={menu} />}
     <main id="main"><slot /></main>
-    <Footer site={site} />
+    {!bare && <Footer site={site} />}
     <Lightbox />
     <script is:inline>
       (function () {

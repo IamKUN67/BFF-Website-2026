@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "title": "Best Friend Forever 2026",
+  "subtitle": "เพื่อนกันตลอดไป",
+  "autoplay": true,
+  "interval": 6,
+  "slides": [],
+  "buttons": [
+    {
+      "label": "เข้าสู่หน้าหลัก",
+      "url": "/home/",
+      "color": "#1a73c4"
+    }
+  ]
+}

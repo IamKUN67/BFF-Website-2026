@@ -63,19 +63,42 @@ function rehypeYoutube() {
       },
     }],
   });
+  const text = (n) => (n.type === 'text' ? n.value : (n.children || []).map(text).join(''));
+  const isBr = (k) => k.type === 'element' && k.tagName === 'br';
+  const blank = (k) => (k.type === 'text' && !k.value.trim()) || isBr(k);
   return (tree) => {
     const walk = (node) => {
       if (!node.children) return;
-      node.children = node.children.map((c) => {
+      node.children = node.children.flatMap((c) => {
         if (c.type === 'element' && c.tagName === 'p') {
-          const kids = c.children.filter((k) => !(k.type === 'text' && !k.value.trim()));
-          if (kids.length === 1 && kids[0].type === 'element' && kids[0].tagName === 'a') {
-            const id = youtubeId(String(kids[0].properties?.href ?? ''));
-            if (id) return embed(id);
+          const real = c.children.filter((k) => !blank(k));
+          const out = [];
+          let seg = [];
+          let found = false;
+          const flush = () => {
+            while (seg.length && blank(seg[0])) seg.shift();
+            while (seg.length && blank(seg[seg.length - 1])) seg.pop();
+            if (seg.length) out.push({ type: 'element', tagName: 'p', properties: {}, children: seg });
+            seg = [];
+          };
+          for (const k of c.children) {
+            if (k.type === 'element' && k.tagName === 'a') {
+              const id = youtubeId(String(k.properties?.href ?? ''));
+              if (id && (real.length === 1 || /^https?:/i.test(text(k).trim()))) {
+                flush();
+                out.push(embed(id));
+                found = true;
+                continue;
+              }
+            }
+            seg.push(k);
           }
+          if (!found) { walk(c); return [c]; }
+          flush();
+          return out;
         }
         walk(c);
-        return c;
+        return [c];
       });
     };
     walk(tree);

@@ -125,6 +125,14 @@ collections:
           - { name: coursePeriod, label: "คำว่า ช่วงเวลาที่เปิดสอน", widget: string }
           - { name: courseTeachers, label: "คำว่า ครูผู้สอน (ในการ์ดคอร์ส)", widget: string }
           - { name: relatedNews, label: "หัวข้อ: ข่าวประชาสัมพันธ์ (ท้ายหน้าวิชา)", widget: string }
+          - { name: enterHome, label: "ปุ่มเข้าสู่หน้าหลัก (ถ้าไม่ได้ตั้งปุ่มเอง)", widget: string }
+          - { name: introLabel, label: "ชื่อกลุ่มสไลด์ (โปรแกรมอ่านจอ)", widget: string }
+          - { name: slidePrev, label: "ปุ่มสไลด์ก่อนหน้า", widget: string }
+          - { name: slideNext, label: "ปุ่มสไลด์ถัดไป", widget: string }
+          - { name: slidePause, label: "ปุ่มหยุดเลื่อนอัตโนมัติ", widget: string }
+          - { name: slidePlay, label: "ปุ่มเริ่มเลื่อนอัตโนมัติ", widget: string }
+          - { name: slideGoto, label: "จุดเลือกสไลด์ (คง {n} ไว้)", widget: string }
+          - { name: openFile, label: "ปุ่มเปิดไฟล์ในสไลด์", widget: string }
           - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
           - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
           - { name: boardTitle, label: "หัวข้อส่วนผู้บริหาร", widget: string }
@@ -138,6 +146,38 @@ collections:
           - { name: socialLine, label: "ชื่อ LINE", widget: string }
           - { name: socialDiscord, label: "ชื่อ Discord", widget: string }
           - { name: newsCategories, label: "หมวดหมู่ข่าวในตัวกรอง (ควรตรงกับหมวดในฟอร์มข่าว)", widget: list, field: { name: category, label: "ชื่อหมวด", widget: string } }
+
+      - name: intro
+        label: "หน้าสไลด์ต้อนรับ (หน้าแรกสุดของลิงก์เว็บ)"
+        file: src/content/intro/intro.json
+        format: json
+        fields:
+          - { name: enabled, label: "เปิดใช้หน้าสไลด์ต้อนรับ (ปิด = เข้าหน้าหลักทันที)", widget: boolean, default: true }
+          - { name: title, label: "หัวข้อ", widget: string, required: false }
+          - { name: subtitle, label: "ข้อความรอง", widget: string, required: false }
+          - { name: autoplay, label: "เลื่อนสไลด์อัตโนมัติ", widget: boolean, default: true }
+          - { name: interval, label: "เวลาต่อสไลด์ (วินาที)", widget: number, value_type: int, min: 3, max: 30, default: 6 }
+          - name: slides
+            label: "สไลด์ (ลากเรียงลำดับได้)"
+            label_singular: "สไลด์"
+            widget: list
+            required: false
+            summary: "{{fields.caption}} {{fields.file}} {{fields.youtube}}"
+            fields:
+              - { name: file, label: "ไฟล์ (รูป วิดีโอ MP4 หรือไฟล์อื่นๆ) — วิดีโอยาวให้ใช้ลิงก์ YouTube แทน", widget: file, required: false }
+              - { name: youtube, label: "หรือวางลิงก์ YouTube (ถ้าใส่ จะใช้ YouTube แทนไฟล์)", widget: string, required: false }
+              - { name: alt, label: "คำอธิบายรูป/วิดีโอ (alt) ภาษาไทย", widget: string, required: false }
+              - { name: caption, label: "ข้อความใต้สไลด์", widget: string, required: false }
+          - name: buttons
+            label: "ปุ่มในหน้าสไลด์ (เพิ่มเองได้ ลิงก์ในเว็บขึ้นต้นด้วย / เช่น /home/ หรือลิงก์นอกเว็บขึ้นต้นด้วย https://)"
+            label_singular: "ปุ่ม"
+            widget: list
+            required: false
+            summary: "{{fields.label}}"
+            fields:
+              - { name: label, label: "ข้อความบนปุ่ม", widget: string }
+              - { name: url, label: "ลิงก์ปลายทาง", widget: string }
+              - { name: color, label: "สีปุ่ม (สีตัวอักษรจะปรับให้อ่านชัดเอง)", widget: color, required: false }
 
       - name: menu
         label: "เมนู"

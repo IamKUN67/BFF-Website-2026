@@ -1,10 +1,9 @@
 {
   "items": [
     {
-      "label": "HomePage",
-      "link": "/",
-      "children": [],
-      "icon": "house"
+      "label": "หน้าหลัก",
+      "link": "/home/",
+      "children": []
     },
     {
       "label": "ข่าวสาร",
@@ -18,11 +17,10 @@
           "label": "ข่าวการศึกษา",
           "link": "/news/?category=ข่าวการศึกษา"
         }
-      ],
-      "icon": "megaphone"
+      ]
     },
     {
-      "label": "School Zone \"โซนแห่งการเรียนรู้\"",
+      "label": "การศึกษา",
       "children": [
         {
           "label": "ข่าวประชาสัมพันธ์",
@@ -64,11 +62,10 @@
           "label": "สมัครเรียน",
           "link": "/pages/apply/"
         }
-      ],
-      "icon": "school"
+      ]
     },
     {
-      "label": "แมพของพวกเรา",
+      "label": "ผลงาน",
       "children": [
         {
           "label": "BFF MMORPG",
@@ -78,14 +75,12 @@
           "label": "BFF FOREVER CRAFT",
           "link": "/pages/bff-forever-craft/"
         }
-      ],
-      "icon": "palette"
+      ]
     },
     {
       "label": "ติดต่อเรา",
       "link": "/pages/contact/",
-      "children": [],
-      "icon": "phone"
+      "children": []
     }
   ]
 }

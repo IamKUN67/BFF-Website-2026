@@ -61,5 +61,13 @@
   "courseSchedule": "วันและเวลาเรียน",
   "coursePeriod": "ช่วงเวลาที่เปิดสอน",
   "courseTeachers": "ครูผู้สอน",
-  "relatedNews": "ข่าวประชาสัมพันธ์"
+  "relatedNews": "ข่าวประชาสัมพันธ์",
+  "enterHome": "เข้าสู่หน้าหลัก",
+  "introLabel": "สไลด์ต้อนรับ",
+  "slidePrev": "สไลด์ก่อนหน้า",
+  "slideNext": "สไลด์ถัดไป",
+  "slidePause": "หยุดเลื่อนสไลด์อัตโนมัติ",
+  "slidePlay": "เลื่อนสไลด์อัตโนมัติ",
+  "slideGoto": "ไปสไลด์ที่ {n}",
+  "openFile": "เปิดไฟล์"
 }

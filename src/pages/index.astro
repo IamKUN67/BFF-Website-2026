@@ -1,51 +1,178 @@
 ---
-// หน้าแรก: ต้อนรับ → ข่าวล่าสุด → ปฏิทินกิจกรรม → ติดต่อ
-import { getCollection } from 'astro:content';
+// หน้าแรกสุดของลิงก์เว็บ: สไลด์ต้อนรับ (รูป วิดีโอ YouTube หรือไฟล์อื่น) + ปุ่มเข้าสู่หน้าหลัก/ปุ่มที่เพิ่มเอง
+// ตั้งค่าได้ที่หน้าแอดมิน > ตั้งค่าเว็บไซต์ > หน้าสไลด์ต้อนรับ (หน้าหลักจริงอยู่ที่ /home/)
+import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import PostCard from '../components/PostCard.astro';
-import Calendar from '../components/Calendar.astro';
-import { getSite, getPublishedPosts, labels, url } from '../lib/site';
+import Icon from '../components/Icon.astro';
+import { getSite, img, labels, onColor, url, youtubeId } from '../lib/site';
 
 const site = await getSite();
-const posts = (await getPublishedPosts()).slice(0, 6);
-const events = await getCollection('events');
-const hasContact = site.email || site.address;
+const intro = (await getEntry('intro', 'intro'))?.data;
+const enabled = intro?.enabled !== false;
+const home = url('/home/');
+const logo = img(site.logo, '(โลโก้)');
+const IMG = /\.(jpe?g|png|webp|gif|avif|svg)$/i;
+const VID = /\.(mp4|webm|ogv|m4v|mov)$/i;
+const AUD = /\.(mp3|wav|ogg|m4a|aac)$/i;
+
+const slides = (intro?.slides ?? [])
+  .map((s) => {
+    const yt = s.youtube ? youtubeId(s.youtube) : null;
+    const f = s.file ? url(s.file) : '';
+    const kind = yt ? 'youtube' : !s.file ? null : IMG.test(s.file) ? 'image' : VID.test(s.file) ? 'video' : AUD.test(s.file) ? 'audio' : 'file';
+    return { ...s, yt, f, kind, name: decodeURIComponent((s.file ?? '').split('/').pop() ?? '') };
+  })
+  .filter((s) => s.kind);
+
+const buttons = (intro?.buttons?.length ? intro.buttons : [{ label: labels.enterHome, url: '/home/', color: null }]).map((b) => ({
+  label: b.label,
+  href: url(b.url),
+  external: /^https?:/i.test(b.url),
+  bg: b.color || site.colors.primary,
+}));
+const title = intro?.title || site.welcomeTitle || site.siteName;
+const subtitle = intro?.subtitle ?? site.tagline;
 ---
-<Base>
-  <Hero site={site} />
-
-  <section class="section reveal">
-    <div class="container">
-      <div class="section-head"><h2 class="section-title">{labels.latestNewsTitle}</h2></div>
-      {posts.length > 0 ? (
-        <div class="card-grid">{posts.map((p) => <PostCard post={p} />)}</div>
+<Base bare>
+  <Fragment slot="head">{!enabled && <meta http-equiv="refresh" content={`0;url=${home}`} />}</Fragment>
+  {enabled ? (
+    <section
+      class="intro"
+      aria-roledescription="carousel"
+      aria-label={labels.introLabel}
+      data-intro
+      data-autoplay={String(intro?.autoplay !== false)}
+      data-interval={intro?.interval ?? 6}
+    >
+      {slides.length > 0 ? (
+        <div class="intro-stage">
+          {slides.map((s, i) => (
+            <div
+              class:list={['slide', i === 0 && 'is-active']}
+              data-kind={s.kind}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} / ${slides.length}`}
+              style={s.kind === 'image' ? `--bg:url("${encodeURI(s.f)}")` : undefined}
+            >
+              {s.kind === 'image' && <img src={s.f} alt={s.alt ?? ''} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />}
+              {s.kind === 'video' && <video src={s.f} muted playsinline controls preload={i === 0 ? 'auto' : 'metadata'} aria-label={s.alt ?? s.caption ?? undefined}></video>}
+              {s.kind === 'audio' && <audio src={s.f} controls preload="none" aria-label={s.alt ?? s.caption ?? undefined}></audio>}
+              {s.kind === 'youtube' && (
+                <div class="slide-yt">
+                  <iframe
+                    data-src={`https://www.youtube-nocookie.com/embed/${s.yt}`}
+                    src={i === 0 ? `https://www.youtube-nocookie.com/embed/${s.yt}` : undefined}
+                    title={s.alt ?? s.caption ?? labels.videoDefaultTitle}
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              )}
+              {s.kind === 'file' && (
+                <div class="slide-file">
+                  <Icon name="external" size={40} />
+                  <strong>{s.alt || s.name}</strong>
+                  <a class="btn" href={s.f} target="_blank" rel="noopener">{labels.openFile}<span class="sr-only"> ({labels.externalHint})</span></a>
+                </div>
+              )}
+              {s.caption && <p class="slide-caption">{s.caption}</p>}
+            </div>
+          ))}
+          {logo && <img class="intro-logo" src={logo.src} alt={logo.alt} />}
+          {slides.length > 1 && (
+            <>
+              <div class="sl-top">
+                {slides.map((_, i) => (
+                  <button type="button" class="dot" data-dot aria-label={labels.slideGoto.replace('{n}', String(i + 1))} aria-current={String(i === 0)}></button>
+                ))}
+                <button type="button" class="sl-pause" data-toggle data-label-pause={labels.slidePause} data-label-play={labels.slidePlay} aria-label={labels.slidePause}><span aria-hidden="true">❚❚</span></button>
+              </div>
+              <button type="button" class="sl-btn sl-prev" data-prev aria-label={labels.slidePrev}><span aria-hidden="true">‹</span></button>
+              <button type="button" class="sl-btn sl-next" data-next aria-label={labels.slideNext}><span aria-hidden="true">›</span></button>
+            </>
+          )}
+        </div>
       ) : (
-        <p class="empty">{labels.noNews}</p>
+        <div class="intro-stage empty">
+          {logo && <img class="intro-hero-logo" src={logo.src} alt={logo.alt} />}
+        </div>
       )}
-      <p class="center"><a class="btn btn-outline" href={url('/news/')}>{labels.allNews}</a></p>
-    </div>
-  </section>
-
-  <section class="section alt reveal">
-    <div class="container">
-      <div class="section-head"><h2 class="section-title">{labels.calendarTitle}</h2></div>
-      <Calendar events={events} mode="home" limit={5} />
-    </div>
-  </section>
-
-  <section class="section reveal">
-    <div class="container narrow">
-      <div class="section-head"><h2 class="section-title">{labels.contactTitle}</h2></div>
-      {hasContact ? (
-        <dl class="contact-list">
-          {site.email && (<><dt>{labels.emailLabel}</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></>)}
-          {site.address && (<><dt>{labels.addressLabel}</dt><dd class="pre">{site.address}</dd></>)}
-        </dl>
-      ) : (
-        <p class="empty">{labels.contactEmpty}</p>
-      )}
-      <p class="center"><a class="btn btn-outline" href={url('/pages/contact/')}>{labels.moreContact}</a></p>
-    </div>
-  </section>
+      <div class="intro-bar">
+        <h1>{title}</h1>
+        {subtitle && <p class="intro-sub">{subtitle}</p>}
+        <div class="intro-buttons">
+          {buttons.map((b) => (
+            <a class="intro-btn" href={b.href} style={`--bg:${b.bg};--fg:${onColor(b.bg)}`} target={b.external ? '_blank' : undefined} rel={b.external ? 'noopener' : undefined}>{b.label}</a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ) : (
+    <section class="section"><div class="container center"><p><a class="btn" href={home}>{labels.enterHome}</a></p></div></section>
+  )}
 </Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-intro]');
+  if (root) {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('.slide'));
+    const first = slides[0]?.querySelector('video');
+    first?.play().catch(() => {});
+    if (slides.length > 1) {
+      const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-dot]'));
+      const toggle = root.querySelector<HTMLElement>('[data-toggle]')!;
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const interval = (Number(root.dataset.interval) || 6) * 1000;
+      let i = 0;
+      let playing = root.dataset.autoplay === 'true' && !reduce;
+      let timer: number | undefined;
+
+      const syncToggle = () => {
+        const label = playing ? toggle.dataset.labelPause! : toggle.dataset.labelPlay!;
+        toggle.setAttribute('aria-label', label);
+        toggle.firstElementChild!.textContent = playing ? '❚❚' : '▶';
+      };
+      const schedule = () => {
+        clearTimeout(timer);
+        if (!playing) return;
+        const kind = slides[i].dataset.kind;
+        if (kind === 'image') timer = window.setTimeout(() => go(i + 1), interval); // วิดีโอเลื่อนเมื่อเล่นจบ ส่วน YouTube/ไฟล์/เสียงให้ผู้ชมเลื่อนเอง
+      };
+      const go = (n: number) => {
+        const old = slides[i];
+        old.classList.remove('is-active');
+        old.querySelectorAll('video, audio').forEach((m) => (m as HTMLMediaElement).pause());
+        old.querySelectorAll('iframe').forEach((f) => f.removeAttribute('src')); // หยุดวิดีโอ YouTube
+        i = (n + slides.length) % slides.length;
+        const cur = slides[i];
+        cur.classList.add('is-active');
+        dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
+        cur.querySelectorAll<HTMLIFrameElement>('iframe[data-src]').forEach((f) => (f.src = f.dataset.src!));
+        cur.querySelectorAll('video').forEach((v) => { v.currentTime = 0; v.play().catch(() => {}); });
+        schedule();
+      };
+      slides.forEach((s) => s.querySelectorAll('video').forEach((v) => v.addEventListener('ended', () => { if (playing && slides[i] === s) go(i + 1); })));
+      root.querySelector('[data-prev]')!.addEventListener('click', () => go(i - 1));
+      root.querySelector('[data-next]')!.addEventListener('click', () => go(i + 1));
+      dots.forEach((d, k) => d.addEventListener('click', () => go(k)));
+      toggle.addEventListener('click', () => { playing = !playing; syncToggle(); schedule(); });
+      root.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') go(i - 1);
+        if (e.key === 'ArrowRight') go(i + 1);
+      });
+      // ปัดซ้าย-ขวาบนมือถือ (ไม่ทำงานเมื่อเริ่มปัดบนตัวเล่นวิดีโอ)
+      let x0: number | null = null;
+      root.addEventListener('touchstart', (e) => { x0 = (e.target as Element).closest('video, iframe, audio, button, a') ? null : e.touches[0].clientX; }, { passive: true });
+      root.addEventListener('touchend', (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 50) go(i + (dx < 0 ? 1 : -1));
+        x0 = null;
+      });
+      syncToggle();
+      schedule();
+    }
+  }
+</script>
