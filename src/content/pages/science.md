@@ -21,7 +21,7 @@ courses:
     description: ปรับพื้นฐานวิทยาศาสตร์พื้นฐานเพื่อเตรียมความพร้อมนักเรียนเข้าสู่ชั้นมัธยมศึกษาปีที่ 1
     documents: []
     applyUrl: ''
-    closed: true
+    closed: false
     ended: true
     links:
       - label: ระบบรายงานคะแนน
