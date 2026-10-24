@@ -30,7 +30,7 @@ courses:
       - 20261023-155802
     description: เนื้อหาวิทยาศาสตร์พื้นฐาน สาขา ชีววิทยา ฟิสิกส์ เคมี และดาราศาสตร์ ขอบเขตเนื้อหาชั้นมัธยมศึกษาตอนต้น
     links:
-      - label: ีระบบรายงานคะแนน
+      - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1Q7Ww2HGuyWtEoQk1pYyS-UzSnnhKDYqtUkGFe7nax5c/edit?usp=sharing
 sections: []
 ---
