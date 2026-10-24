@@ -3,7 +3,8 @@
     {
       "label": "HomePage",
       "link": "/",
-      "children": []
+      "children": [],
+      "icon": "house"
     },
     {
       "label": "ข่าวสาร",
@@ -17,7 +18,8 @@
           "label": "ข่าวการศึกษา",
           "link": "/news/?category=ข่าวการศึกษา"
         }
-      ]
+      ],
+      "icon": "megaphone"
     },
     {
       "label": "School Zone \"โซนแห่งการเรียนรู้\"",
@@ -62,7 +64,8 @@
           "label": "สมัครเรียน",
           "link": "/pages/apply/"
         }
-      ]
+      ],
+      "icon": "school"
     },
     {
       "label": "แมพของพวกเรา",
@@ -75,12 +78,14 @@
           "label": "BFF FOREVER CRAFT",
           "link": "/pages/bff-forever-craft/"
         }
-      ]
+      ],
+      "icon": "palette"
     },
     {
       "label": "ติดต่อเรา",
       "link": "/pages/contact/",
-      "children": []
+      "children": [],
+      "icon": "phone"
     }
   ]
 }

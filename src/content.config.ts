@@ -80,6 +80,7 @@ const menu = defineCollection({
     items: z.array(
       z.object({
         label: z.string(),
+        icon: str, // house | megaphone | school | palette | phone
         link: str,
         children: list(z.object({ label: z.string(), link: z.string() })),
       }),

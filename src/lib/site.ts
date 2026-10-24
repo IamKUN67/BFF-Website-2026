@@ -67,6 +67,13 @@ export const plain = (s = '', n = 160) =>
 export function md(text?: string | null) {
   if (!text) return '';
   let html = marked.parse(text, { async: false, gfm: true, breaks: true }) as string;
+  // ย่อหน้าที่มีแค่ลิงก์ YouTube ลิงก์เดียว → แสดงเป็นเครื่องเล่นวิดีโอ กดเล่นในหน้าเว็บได้เลย
+  html = html.replace(/<p>\s*<a href="([^"]+)"[^>]*>[^<]*<\/a>\s*<\/p>/g, (m, href: string) => {
+    const id = youtubeId(href.replace(/&amp;/g, '&'));
+    return id
+      ? `<div class="video"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${labels.videoDefaultTitle}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>`
+      : m;
+  });
   html = html.replace(/(src|href)="\/(?!\/)/g, `$1="${base}/`);
   html = html.replace(/<a href="(https?:[^"]*)"/g, '<a href="$1" target="_blank" rel="noopener"');
   return html;

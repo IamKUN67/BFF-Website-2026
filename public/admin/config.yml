@@ -151,6 +151,16 @@ collections:
             summary: "{{fields.label}}"
             fields:
               - { name: label, label: "ชื่อเมนู", widget: string }
+              - name: icon
+                label: "ไอคอนแทนชื่อเมนู (เว้นว่าง = แสดงเป็นข้อความ)"
+                widget: select
+                required: false
+                options:
+                  - { label: "บ้าน", value: "house" }
+                  - { label: "โทรโข่ง", value: "megaphone" }
+                  - { label: "โรงเรียน", value: "school" }
+                  - { label: "ถาดสีศิลปะ", value: "palette" }
+                  - { label: "โทรศัพท์", value: "phone" }
               - { name: link, label: "ลิงก์", widget: string, required: false, hint: "ลิงก์ในเว็บขึ้นต้นด้วย / เช่น /news/ หรือ /pages/thai/ ส่วนลิงก์นอกเว็บขึ้นต้นด้วย https:// ถ้าเมนูนี้มีเมนูย่อย เว้นว่างได้" }
               - name: children
                 label: "เมนูย่อย (ลากเพื่อเรียงลำดับ)"

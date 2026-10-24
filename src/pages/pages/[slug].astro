@@ -1,5 +1,5 @@
 ---
-// หน้าทั่วไปทุกหน้า: เนื้อหา → (ติดต่อ/ลิงก์) → คอร์สเรียน → ครูผู้สอน → ข่าวหมวดที่เลือก → ผู้บริหาร
+// หน้าทั่วไปทุกหน้า: (ผู้บริหาร) → เนื้อหา/ลิงก์/ติดต่อ → ครูผู้สอน → คอร์สเรียน → ข่าวหมวดที่เลือก
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ContactChannels from '../../components/ContactChannels.astro';
@@ -25,7 +25,8 @@ const hasMain = d.showContact || d.links.length > 0 || hasBody || d.sections.len
 ---
 <Base title={d.title} description={d.description}>
   <header class="page-band"><div class="container narrow"><h1>{d.title}</h1></div></header>
-  <article class={hasMain ? 'section pull-up' : 'pull-up'}>
+  {d.showExecutives && <section class="section first"><div class="container"><Executives /></div></section>}
+  <article class={hasMain ? (d.showExecutives ? 'section' : 'section pull-up') : 'pull-up'}>
     <div class="container narrow">
       {hasMain && (
         <div class="paper">
@@ -47,8 +48,8 @@ const hasMain = d.showContact || d.links.length > 0 || hasBody || d.sections.len
       )}
     </div>
   </article>
-  {d.courses.length > 0 && <section class="section"><div class="container"><Courses courses={d.courses} /></div></section>}
   {d.teachers.length > 0 && <section class="section alt"><div class="container"><Teachers ids={d.teachers} /></div></section>}
+  {d.courses.length > 0 && <section class="section"><div class="container"><Courses courses={d.courses} /></div></section>}
   {news.length > 0 && (
     <section class="section">
       <div class="container">
@@ -58,5 +59,4 @@ const hasMain = d.showContact || d.links.length > 0 || hasBody || d.sections.len
       </div>
     </section>
   )}
-  {d.showExecutives && <section class="section alt"><div class="container"><Executives /></div></section>}
 </Base>

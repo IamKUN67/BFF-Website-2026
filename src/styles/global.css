@@ -314,3 +314,17 @@ a.soc:hover { background: var(--primary); color: var(--on-primary); transform: t
 .chip img, .chip .mini { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
 .chip .mini { display: grid; place-items: center; background: var(--primary); color: var(--on-primary); font-size: .85rem; }
 .course-links { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: auto; }
+
+/* ───── เมนูแบบไอคอน: จอใหญ่แสดงเฉพาะไอคอน (ชื่ออ่านด้วยโปรแกรมอ่านจอ + ขึ้นเมื่อชี้เมาส์) / เมนูมือถือแสดงไอคอน+ชื่อ ───── */
+.menu-link { display: inline-flex; align-items: center; gap: .55rem; }
+.menu-link.has-icon { padding: .6rem .9rem; }
+@media (min-width: 1201px) {
+  .menu-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
+/* วิดีโอ YouTube ที่แทรกในข้อความข่าว/หน้า */
+.prose .video { margin: 1.4rem 0; }
+
+/* ผู้บริหารที่อยู่บนสุดของหน้า / กล่องเนื้อหาที่ไม่ได้ซ้อนทับแถบหัว */
+.section.first { padding-top: clamp(1rem, 3vw, 2rem); }
+.section:not(.pull-up) > .container > .paper { margin-top: 0; }

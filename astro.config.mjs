@@ -2,6 +2,7 @@
 // ไม่ต้องแก้ไฟล์นี้เมื่อเปลี่ยนชื่อ repo หรือย้ายบัญชี
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { readFileSync } from 'node:fs';
 
 // GITHUB_REPOSITORY มีรูปแบบ "เจ้าของ/ชื่อrepo" (มีเฉพาะตอน build บน GitHub)
 const [owner, repo] = (process.env.GITHUB_REPOSITORY ?? 'localhost/bff-2026').split('/');
@@ -36,10 +37,55 @@ function rehypeSiteLinks() {
   };
 }
 
+// ย่อหน้าที่มีแค่ลิงก์ YouTube ลิงก์เดียว → เครื่องเล่นวิดีโอในหน้าเว็บ
+const labels = JSON.parse(readFileSync(new URL('./src/data/labels.json', import.meta.url), 'utf-8'));
+function youtubeId(link) {
+  try {
+    const u = new URL(link.trim());
+    let id = null;
+    if (u.hostname === 'youtu.be') id = u.pathname.slice(1).split('/')[0];
+    else if (u.hostname.endsWith('youtube.com'))
+      id = u.pathname === '/watch' ? u.searchParams.get('v') : (u.pathname.match(/^\/(?:embed|shorts|live|v)\/([\w-]+)/)?.[1] ?? null);
+    return id && /^[\w-]{6,}$/.test(id) ? id : null;
+  } catch {
+    return null;
+  }
+}
+function rehypeYoutube() {
+  const embed = (id) => ({
+    type: 'element', tagName: 'div', properties: { className: ['video'] },
+    children: [{
+      type: 'element', tagName: 'iframe', children: [],
+      properties: {
+        src: `https://www.youtube-nocookie.com/embed/${id}`, title: labels.videoDefaultTitle, loading: 'lazy',
+        allowFullScreen: true, referrerPolicy: 'strict-origin-when-cross-origin',
+        allow: 'accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share',
+      },
+    }],
+  });
+  return (tree) => {
+    const walk = (node) => {
+      if (!node.children) return;
+      node.children = node.children.map((c) => {
+        if (c.type === 'element' && c.tagName === 'p') {
+          const kids = c.children.filter((k) => !(k.type === 'text' && !k.value.trim()));
+          if (kids.length === 1 && kids[0].type === 'element' && kids[0].tagName === 'a') {
+            const id = youtubeId(String(kids[0].properties?.href ?? ''));
+            if (id) return embed(id);
+          }
+        }
+        walk(c);
+        return c;
+      });
+    };
+    walk(tree);
+  };
+}
+
 export default defineConfig({
   site: process.env.GITHUB_REPOSITORY ? `https://${owner}.github.io` : 'http://localhost:4321',
   base,
   trailingSlash: 'always',
   integrations: [sitemap()],
-  markdown: { rehypePlugins: [rehypeSiteLinks] },
+  markdown: { rehypePlugins: [rehypeYoutube, rehypeSiteLinks] },
 });
