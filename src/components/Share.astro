@@ -1,0 +1,35 @@
+---
+// ปุ่มแชร์ข่าว: คัดลอกลิงก์ / LINE / Facebook
+import Icon from './Icon.astro';
+import { labels } from '../lib/site';
+const link = new URL(Astro.url.pathname, Astro.site).href;
+const enc = encodeURIComponent(link);
+---
+<div class="share" data-share data-link={link}>
+  <strong>{labels.shareTitle}</strong>
+  <button type="button" class="share-btn" data-copy><Icon name="link" size={20} />{labels.shareCopy}</button>
+  <a class="share-btn" href={`https://social-plugins.line.me/lineit/share?url=${enc}`} target="_blank" rel="noopener"><Icon name="line" size={20} />{labels.shareLine}<span class="sr-only"> ({labels.externalHint})</span></a>
+  <a class="share-btn" href={`https://www.facebook.com/sharer/sharer.php?u=${enc}`} target="_blank" rel="noopener"><Icon name="facebook" size={20} />{labels.shareFacebook}<span class="sr-only"> ({labels.externalHint})</span></a>
+  <span class="share-status" role="status" data-msg={labels.shareCopied}></span>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-share]').forEach((box) => {
+    const status = box.querySelector<HTMLElement>('.share-status')!;
+    box.querySelector('[data-copy]')!.addEventListener('click', async () => {
+      const link = box.dataset.link!;
+      try {
+        await navigator.clipboard.writeText(link);
+      } catch {
+        const t = document.createElement('textarea');
+        t.value = link;
+        document.body.append(t);
+        t.select();
+        document.execCommand('copy');
+        t.remove();
+      }
+      status.textContent = status.dataset.msg!;
+      setTimeout(() => (status.textContent = ''), 2500);
+    });
+  });
+</script>

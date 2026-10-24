@@ -71,6 +71,8 @@ const settings = defineCollection({
     email: str,
     address: str,
     footerText: str,
+    goatcounterCode: str, // GoatCounter (นับยอดเข้าชม ไม่ใช้คุกกี้)
+    cloudflareToken: str, // หรือ Cloudflare Web Analytics
   }),
 });
 
@@ -114,6 +116,7 @@ const pages = defineCollection({
     showContact: bool, // แสดงการ์ดช่องทางติดต่อจากหน้าตั้งค่า
     showExecutives: bool, // แสดงรายชื่อผู้บริหารท้ายหน้า
     links: list(z.object({ label: z.string(), url: z.string(), note: str })), // ปุ่มลิงก์ใหญ่ เช่น ฟอร์ม
+    embeds: list(z.object({ title: str, url: z.string(), height: z.number().nullish() })), // ฝังแบบฟอร์ม/เอกสาร
     newsCategory: str, // แสดงข่าวหมวดนี้ท้ายหน้า (เว้นว่าง = ไม่แสดง)
     teachers: list(z.string()), // ครูผู้สอนประจำวิชา (รหัสจากโฟลเดอร์ teachers)
     courses: list(course),

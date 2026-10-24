@@ -1,0 +1,25 @@
+---
+// ฝังแบบฟอร์ม/เอกสารในหน้า (เช่น Google Forms) พร้อมลิงก์เปิดในแท็บใหม่เผื่อฝังไม่แสดง
+import { labels } from '../lib/site';
+const { embeds = [] } = Astro.props;
+const prep = (raw: string) => {
+  try {
+    const u = new URL(raw.trim());
+    if (u.protocol !== 'https:') return null;
+    const open = new URL(u.href);
+    open.searchParams.delete('embedded');
+    if (u.hostname === 'docs.google.com' && u.pathname.includes('/forms/')) u.searchParams.set('embedded', 'true');
+    return { src: u.href, open: open.href };
+  } catch {
+    return null;
+  }
+};
+const items = embeds.map((e: any) => ({ ...e, ...prep(e.url) })).filter((e: any) => e.src);
+---
+{items.map((e: any) => (
+  <section class="embed" style={`--h:${Math.min(3000, Math.max(300, e.height ?? 900))}px`}>
+    {e.title && <h2 class="sec-title">{e.title}</h2>}
+    <iframe src={e.src} title={e.title ?? labels.embedDefaultTitle} loading="lazy"></iframe>
+    <p class="center"><a class="btn btn-outline" href={e.open} target="_blank" rel="noopener">{labels.embedOpen}<span class="sr-only"> ({labels.externalHint})</span></a></p>
+  </section>
+))}

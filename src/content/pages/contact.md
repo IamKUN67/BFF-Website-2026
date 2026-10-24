@@ -4,8 +4,8 @@ slug: contact
 legacy: false
 showContact: true
 showExecutives: true
-links:
-  - label: "แบบประเมิณรายเดือน"
-    url: "https://forms.gle/VFez8FBdQXF6YXL46"
-    note: "Google Forms"
+embeds:
+  - title: "แบบประเมิณรายเดือน"
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSf_Y1wVHDOlP6k8BnLWfopR2bukgs8mfU8FH_E2ugGMzVVQwg/viewform?embedded=true"
+    height: 900
 ---

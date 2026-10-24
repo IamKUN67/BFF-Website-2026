@@ -8,6 +8,7 @@ import Teachers from '../../components/Teachers.astro';
 import Courses from '../../components/Courses.astro';
 import PostCard from '../../components/PostCard.astro';
 import Sections from '../../components/Sections.astro';
+import Embeds from '../../components/Embeds.astro';
 import Icon from '../../components/Icon.astro';
 import { getSite, getPublishedPosts, labels, url } from '../../lib/site';
 
@@ -21,7 +22,7 @@ const { Content } = await render(page);
 const site = await getSite();
 const hasBody = !!page.body?.trim();
 const news = d.newsCategory ? (await getPublishedPosts()).filter((p) => p.data.category === d.newsCategory).slice(0, 6) : [];
-const hasMain = d.showContact || d.links.length > 0 || hasBody || d.sections.length > 0;
+const hasMain = d.showContact || d.links.length > 0 || d.embeds.length > 0 || hasBody || d.sections.length > 0;
 ---
 <Base title={d.title} description={d.description}>
   <header class="page-band"><div class="container narrow"><h1>{d.title}</h1></div></header>
@@ -41,6 +42,7 @@ const hasMain = d.showContact || d.links.length > 0 || hasBody || d.sections.len
               ))}
             </div>
           )}
+          {d.embeds.length > 0 && <Embeds embeds={d.embeds} />}
           {d.showContact && <ContactChannels site={site} />}
           {hasBody && <div class="prose"><Content /></div>}
           <Sections sections={d.sections} />

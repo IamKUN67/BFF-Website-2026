@@ -54,7 +54,7 @@ h1, h2, h3 { line-height: 1.35; }
 .submenu a:hover { background: var(--tint); color: var(--link); }
 .header-tools { display: flex; gap: .5rem; }
 .nav-toggle { display: none; }
-@media (max-width: 900px) {
+@container hdr (max-width: 53em) {
   .nav-toggle { display: inline-block; }
   .main-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--border); max-height: calc(100vh - 80px); overflow-y: auto; padding: .5rem 1rem 1rem; }
   .main-nav.open { display: block; }
@@ -394,3 +394,42 @@ p, li, dd { text-wrap: pretty; }
 .chip-list { flex-direction: column; align-items: flex-start; gap: .4rem; }
 .chip { max-width: 100%; padding-right: 1rem; }
 .course .prose { font-size: 1rem; }
+
+/* ───── แถบเมนู: จุดสลับเป็นปุ่ม ☰ ปรับตามขนาดตัวอักษร (หน่วย em) เพื่อไม่ให้เมนูล้นเมื่อขยายตัวอักษร ───── */
+.header-inner { container: hdr / inline-size; }
+.brand { min-width: 0; }
+.brand span { overflow: hidden; text-overflow: ellipsis; }
+.header-tools { flex: none; }
+
+/* ───── ปุ่มปรับขนาดตัวอักษร ───── */
+html[data-fs="1"] { font-size: 115%; }
+html[data-fs="2"] { font-size: 130%; }
+.fs-btn { position: fixed; right: 1rem; bottom: 1rem; z-index: 40; width: 3.2rem; height: 3.2rem; border-radius: 50%; border: 2px solid var(--primary); background: var(--surface); color: var(--link); font: inherit; font-weight: 700; font-size: 1.1rem; cursor: pointer; box-shadow: var(--shadow); }
+.fs-btn:hover { background: var(--tint); }
+
+/* ───── กล่องค้นหา ───── */
+.search-dialog { width: min(680px, 92vw); max-height: 84vh; margin: 6vh auto auto; padding: 0; border: 0; border-radius: 18px; background: transparent; overflow: visible; }
+.search-dialog::backdrop { background: rgba(8, 18, 30, .6); }
+.search-panel { display: flex; flex-direction: column; max-height: 84vh; padding: 1rem 1.1rem 1.1rem; background: var(--surface); border-top: 6px solid var(--c-blue); border-radius: 18px; box-shadow: 0 20px 60px rgba(0, 0, 0, .35); }
+.search-head { display: flex; gap: .6rem; }
+.search-head input { flex: 1; min-width: 0; font-size: 1.1rem; }
+.search-status { margin: .6rem .2rem; color: var(--muted); font-size: .95rem; }
+.search-results { list-style: none; margin: 0; padding: 0; overflow-y: auto; }
+.search-results a { display: grid; gap: .1rem; padding: .7rem .8rem; border-radius: 12px; color: var(--text); text-decoration: none; }
+.search-results a:hover, .search-results a:focus-visible { background: var(--tint); }
+.sr-type { justify-self: start; padding: 0 .6rem; border-radius: 999px; border: 1px solid var(--border); background: var(--tint); color: var(--link); font-size: .8rem; font-weight: 600; }
+.sr-snip { color: var(--muted); font-size: .95rem; }
+.sr-snip mark { background: color-mix(in srgb, var(--c-yellow) 55%, #fff); color: inherit; border-radius: 3px; }
+
+/* ───── ปุ่มแชร์ข่าว ───── */
+.share { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .7rem; margin-top: 1.8rem; }
+.share-btn { display: inline-flex; align-items: center; gap: .5rem; padding: .55rem 1.1rem; border-radius: 999px; border: 2px solid var(--border); background: var(--surface); color: var(--text); font: inherit; text-decoration: none; cursor: pointer; transition: transform .2s, border-color .2s; }
+.share-btn:hover { transform: translateY(-2px); border-color: var(--primary); }
+.share-status { min-width: 9rem; color: var(--link); font-weight: 600; }
+
+/* ───── กรอบฝังแบบฟอร์ม ───── */
+.embed { margin-top: 2rem; }
+.paper > .embed:first-child { margin-top: 0; }
+.embed iframe { display: block; width: 100%; height: var(--h, 900px); border: 1px solid var(--border); border-radius: 14px; background: #fff; }
+.embed .center { margin: 1rem 0 0; }
+.embed + .contact-cards { margin-top: 2rem; }

@@ -35,6 +35,7 @@ const here = (l?: string) => !!l && !l.includes('?') && path === url(l);
       </ul>
     </nav>
     <div class="header-tools">
+      <button type="button" class="icon-btn search-btn" data-search-open aria-label={labels.searchButton}><Icon name="search" size={20} /></button>
       <button type="button" class="icon-btn nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label={labels.menuButton}><span aria-hidden="true">☰</span></button>
     </div>
   </div>

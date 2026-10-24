@@ -1,0 +1,25 @@
+---
+// ปุ่มลอยมุมขวาล่าง: กดวนเปลี่ยนขนาดตัวอักษรทั้งเว็บ ปกติ → ใหญ่ → ใหญ่มาก (จำค่าไว้ในเครื่อง)
+import { labels } from '../lib/site';
+---
+<button type="button" class="fs-btn" data-fs-btn data-title={labels.fontSizeButton} data-l0={labels.fontSize0} data-l1={labels.fontSize1} data-l2={labels.fontSize2}><span aria-hidden="true">Aa</span></button>
+<span class="sr-only" role="status" data-fs-status></span>
+
+<script>
+  const btn = document.querySelector<HTMLElement>('[data-fs-btn]');
+  const status = document.querySelector<HTMLElement>('[data-fs-status]');
+  if (btn && status) {
+    const root = document.documentElement;
+    const label = (n: number) => `${btn.dataset.title}: ${btn.dataset['l' + n]}`;
+    let n = Number(root.dataset.fs) || 0;
+    const apply = (announce: boolean) => {
+      root.dataset.fs = String(n);
+      btn.setAttribute('aria-label', label(n));
+      btn.title = label(n);
+      if (announce) status.textContent = label(n);
+      try { localStorage.setItem('fs', String(n)); } catch (e) {}
+    };
+    btn.addEventListener('click', () => { n = (n + 1) % 3; apply(true); });
+    apply(false);
+  }
+</script>

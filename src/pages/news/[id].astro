@@ -3,6 +3,7 @@
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Sections from '../../components/Sections.astro';
+import Share from '../../components/Share.astro';
 import { getPublishedPosts, labels, url, img, fmtDate, iso, plain } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -37,6 +38,7 @@ const hasIntro = !!post.body?.trim();
         {hasIntro && <div class="prose"><Content /></div>}
         <Sections sections={d.sections} />
       </div>
+      <Share />
     </div>
   </article>
 </Base>

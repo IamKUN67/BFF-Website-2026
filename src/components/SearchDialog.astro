@@ -1,0 +1,101 @@
+---
+// กล่องค้นหาทั้งเว็บ: เปิดจากปุ่มแว่นขยายบนแถบเมนู โหลดดัชนีเมื่อเปิดครั้งแรก
+import { labels, url } from '../lib/site';
+---
+<dialog class="search-dialog" aria-label={labels.searchTitle} data-index={url('/search-index.json')} data-count={labels.searchCount} data-empty={labels.searchNoResult} data-hint={labels.searchHint}>
+  <div class="search-panel">
+    <div class="search-head">
+      <input type="search" data-q placeholder={labels.searchPlaceholder} aria-label={labels.searchTitle} autocomplete="off" />
+      <button type="button" class="icon-btn" data-search-close aria-label={labels.searchClose}><span aria-hidden="true">×</span></button>
+    </div>
+    <p class="search-status" data-status role="status">{labels.searchHint}</p>
+    <ul class="search-results" data-results></ul>
+  </div>
+</dialog>
+
+<script>
+  const dlg = document.querySelector<HTMLDialogElement>('dialog.search-dialog');
+  if (dlg) {
+    type Item = { t: string; type: string; u: string; x: string };
+    const input = dlg.querySelector<HTMLInputElement>('[data-q]')!;
+    const list = dlg.querySelector<HTMLElement>('[data-results]')!;
+    const status = dlg.querySelector<HTMLElement>('[data-status]')!;
+    let items: Item[] | null = null;
+    let wait: number | undefined;
+    const norm = (s: string) => s.toLowerCase();
+
+    const load = async () => {
+      if (!items) {
+        try { items = await (await fetch(dlg.dataset.index!)).json(); } catch { items = []; }
+      }
+      return items!;
+    };
+    const excerpt = (text: string, terms: string[]): string[] => {
+      const low = norm(text);
+      let at = -1, len = 0;
+      for (const t of terms) {
+        const i = low.indexOf(t);
+        if (i >= 0 && (at < 0 || i < at)) { at = i; len = t.length; }
+      }
+      if (at < 0) return [text.slice(0, 120) + (text.length > 120 ? '…' : '')];
+      const s = Math.max(0, at - 40);
+      const e = at + len + 90;
+      return [(s > 0 ? '…' : '') + text.slice(s, at), text.slice(at, at + len), text.slice(at + len, e) + (e < text.length ? '…' : '')];
+    };
+
+    const run = async () => {
+      const terms = norm(input.value).split(/\s+/).filter(Boolean);
+      list.replaceChildren();
+      if (terms.join('').length < 2) { status.textContent = dlg.dataset.hint!; return; }
+      const data = await load();
+      const hits = data
+        .map((it) => {
+          const t = norm(it.t), x = norm(it.x);
+          let s = 0;
+          for (const term of terms) {
+            const inT = t.includes(term), inX = x.includes(term);
+            if (!inT && !inX) return null;
+            s += (inT ? 10 : 0) + (inX ? 1 : 0) + (t.startsWith(term) ? 5 : 0);
+          }
+          return { it, s };
+        })
+        .filter((r): r is { it: Item; s: number } => r !== null)
+        .sort((a, b) => b.s - a.s)
+        .slice(0, 30);
+      status.textContent = hits.length ? dlg.dataset.count!.replace('{n}', String(hits.length)) : dlg.dataset.empty!;
+      for (const { it } of hits) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = it.u;
+        const type = document.createElement('span');
+        type.className = 'sr-type';
+        type.textContent = it.type;
+        const title = document.createElement('strong');
+        title.textContent = it.t;
+        const snip = document.createElement('span');
+        snip.className = 'sr-snip';
+        const [pre, hit, post] = excerpt(it.x || it.t, terms);
+        snip.append(pre);
+        if (hit !== undefined) {
+          const m = document.createElement('mark');
+          m.textContent = hit;
+          snip.append(m, post ?? '');
+        }
+        a.append(type, title, snip);
+        li.append(a);
+        list.append(li);
+      }
+    };
+
+    document.addEventListener('click', (e) => {
+      if ((e.target as Element).closest('[data-search-open]')) {
+        dlg.showModal();
+        input.focus();
+        load();
+      }
+    });
+    dlg.querySelector('[data-search-close]')!.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    input.addEventListener('input', () => { clearTimeout(wait); wait = window.setTimeout(run, 120); });
+  }
+</script>

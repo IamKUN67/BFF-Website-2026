@@ -72,6 +72,8 @@ collections:
           - { name: email, label: "อีเมล", widget: string, required: false }
           - { name: address, label: "ที่อยู่", widget: text, required: false }
           - { name: footerText, label: "ข้อความท้ายเว็บ", widget: string, required: false }
+          - { name: goatcounterCode, label: "รหัส GoatCounter นับยอดเข้าชม (เช่น bff ถ้าหน้าสถิติคือ bff.goatcounter.com) เว้นว่าง = ไม่นับ", widget: string, required: false }
+          - { name: cloudflareToken, label: "โทเคน Cloudflare Web Analytics (ใช้แทน GoatCounter ได้ เว้นว่าง = ไม่ใช้)", widget: string, required: false }
 
       - name: labels
         label: "ข้อความในหน้าเว็บ"
@@ -133,6 +135,28 @@ collections:
           - { name: slidePlay, label: "ปุ่มเริ่มเลื่อนอัตโนมัติ", widget: string }
           - { name: slideGoto, label: "จุดเลือกสไลด์ (คง {n} ไว้)", widget: string }
           - { name: openFile, label: "ปุ่มเปิดไฟล์ในสไลด์", widget: string }
+          - { name: searchButton, label: "ปุ่มค้นหา (โปรแกรมอ่านจอ)", widget: string }
+          - { name: searchTitle, label: "ชื่อกล่องค้นหา", widget: string }
+          - { name: searchClose, label: "ปุ่มปิดการค้นหา", widget: string }
+          - { name: searchHint, label: "ข้อความแนะนำในกล่องค้นหา", widget: string }
+          - { name: searchCount, label: "ข้อความจำนวนผลลัพธ์ (คง {n} ไว้)", widget: string }
+          - { name: searchNoResult, label: "ข้อความเมื่อค้นไม่เจอ", widget: string }
+          - { name: searchTypeNews, label: "ป้ายประเภท: ข่าว", widget: string }
+          - { name: searchTypePage, label: "ป้ายประเภท: หน้า", widget: string }
+          - { name: searchTypeCourse, label: "ป้ายประเภท: คอร์สเรียน", widget: string }
+          - { name: searchTypeTeacher, label: "ป้ายประเภท: ครู", widget: string }
+          - { name: searchTypeEvent, label: "ป้ายประเภท: กิจกรรม", widget: string }
+          - { name: embedDefaultTitle, label: "ชื่อกรอบฝังเริ่มต้น (โปรแกรมอ่านจอ)", widget: string }
+          - { name: embedOpen, label: "ปุ่มเปิดแบบฟอร์มในแท็บใหม่", widget: string }
+          - { name: shareTitle, label: "ข้อความ: แชร์ข่าวนี้", widget: string }
+          - { name: shareCopy, label: "ปุ่มคัดลอกลิงก์", widget: string }
+          - { name: shareCopied, label: "ข้อความหลังคัดลอกลิงก์", widget: string }
+          - { name: shareLine, label: "ปุ่มแชร์ LINE", widget: string }
+          - { name: shareFacebook, label: "ปุ่มแชร์ Facebook", widget: string }
+          - { name: fontSizeButton, label: "ปุ่มปรับขนาดตัวอักษร", widget: string }
+          - { name: fontSize0, label: "ขนาดตัวอักษร: ปกติ", widget: string }
+          - { name: fontSize1, label: "ขนาดตัวอักษร: ใหญ่", widget: string }
+          - { name: fontSize2, label: "ขนาดตัวอักษร: ใหญ่มาก", widget: string }
           - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
           - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
           - { name: boardTitle, label: "หัวข้อส่วนผู้บริหาร", widget: string }
@@ -373,6 +397,16 @@ collections:
           - { name: label, label: "ชื่อปุ่ม", widget: string }
           - { name: url, label: "ลิงก์", widget: string }
           - { name: note, label: "ข้อความเล็กใต้ชื่อ", widget: string, required: false }
+      - name: embeds
+        label: "ฝังแบบฟอร์ม/เอกสารในหน้า (เช่น Google Forms กรอกได้ในหน้าเว็บเลย)"
+        label_singular: "กรอบฝัง"
+        widget: list
+        required: false
+        summary: "{{fields.title}}"
+        fields:
+          - { name: title, label: "ชื่อที่แสดงเหนือกรอบ", widget: string, required: false }
+          - { name: url, label: "ลิงก์ฟอร์ม (ต้องขึ้นต้นด้วย https://)", widget: string, hint: "Google Forms: เปิดฟอร์ม กด ส่ง แล้วเลือกลิงก์ (ไอคอนโซ่) แล้วกด ย่อ URL ออก (ติ๊กออก) ก่อนคัดลอก ลิงก์ย่อ forms.gle ใช้ฝังไม่ได้ ระบบจะเติมตัวเลือกฝังให้เอง" }
+          - { name: height, label: "ความสูงของกรอบ (พิกเซล)", widget: number, value_type: int, min: 300, max: 3000, default: 900, required: false }
       - name: courses
         label: "คอร์สเรียนของวิชานี้ (เพิ่มได้หลายคอร์ส ลากเรียงลำดับได้)"
         label_singular: "คอร์ส"
