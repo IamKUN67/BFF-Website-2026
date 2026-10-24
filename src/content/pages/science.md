@@ -21,19 +21,7 @@ courses:
     links:
       - label: คะแนนเก็บ
         url: prakan.ac.th
-sections:
-  - title: กิจกรรมสัปดาห์วันวิทยาศาสตร์ ประจำปี 2569
-    image:
-      src: /uploads/pasted-image-1792760065081.webp
-      alt: ''
-    imageSize: '50'
-    imageAlign: left
-    text: ''
-    textAlign: left
-    textSize: normal
-    album: []
-    albumSize: '3'
-    videos: []
+sections: []
 ---
 
 กลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี ตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พุทธศักราช 2551 (ฉบับปรับปรุง พ.ศ. 2560) แบ่งออกเป็นสาระการเรียนรู้พื้นฐาน 4 สาระ และสาระการเรียนรู้เพิ่มเติม 4 สาขา ดังนี้
