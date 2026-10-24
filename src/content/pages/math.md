@@ -8,8 +8,19 @@ showExecutives: false
 newsCategory: ข่าวการศึกษา
 teachers:
   - 20261024-084247
-links: []
-courses: []
+links:
+  - label: Prakan
+    url: Prakan.ac.th
+    note: PpP
+courses:
+  - title: DDD
+    group: ''
+    startDate: ''
+    endDate: ''
+    schedule: ''
+    teachers: []
+    description: ''
+    links: []
 sections: []
 ---
 
