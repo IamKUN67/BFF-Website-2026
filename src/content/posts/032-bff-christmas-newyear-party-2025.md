@@ -11,14 +11,19 @@ cover:
   src: /uploads/unnamed (2).webp
   alt: ''
 sections:
-  - title: ''
+  - title: Happy New Year 2026
     image: null
+    imageSize: '100'
+    imageAlign: center
     text: ''
+    textAlign: center
+    textSize: normal
     album:
       - src: /uploads/unnamed (3).webp
         alt: Best Friend Forever
       - src: /uploads/unnamed (4).webp
         alt: Best Friend Forever
+    albumSize: '3'
     videos:
       - url: https://www.youtube.com/@IamKUNYT
         title: BFF Christmas And Newyear Party 2025
