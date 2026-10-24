@@ -36,6 +36,10 @@ const course = z.object({
   schedule: str,
   teachers: list(z.string()),
   description: str,
+  applyUrl: str, // ลิงก์ฟอร์มสมัคร (ครูแนบเอง)
+  closed: bool, // ติ๊ก = ปิดรับสมัครแล้ว
+  ended: bool, // ติ๊ก = คอร์สนี้จบแล้ว
+  documents: list(z.object({ title: z.string(), file: z.string(), note: str })), // เอกสารที่ครูฝากไว้
   links: list(z.object({ label: z.string(), url: z.string() })),
 });
 
@@ -165,9 +169,23 @@ const intro = defineCollection({
   }),
 });
 
+// ไทม์ไลน์ BFF: เหตุการณ์สำคัญที่ผู้ดูแลเพิ่มเอง (ข่าวที่เผยแพร่และมีวันที่จะเข้าไทม์ไลน์อัตโนมัติ)
+const milestones = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/milestones' }),
+  schema: z.object({
+    date: z.coerce.date(),
+    yearOnly: bool,
+    title: z.string(),
+    text: str,
+    image,
+    link: str,
+    album: list(z.object({ src: z.string(), alt: str })),
+  }),
+});
+
 const teachers = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/teachers' }),
   schema: z.object(person),
 });
 
-export const collections = { settings, menu, posts, pages, events, board, teachers, intro };
+export const collections = { settings, menu, posts, pages, events, board, teachers, intro, milestones };

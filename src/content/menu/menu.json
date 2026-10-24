@@ -2,13 +2,11 @@
   "items": [
     {
       "label": "หน้าหลัก",
-      "icon": "",
       "link": "/home/",
       "children": []
     },
     {
       "label": "ข่าวสาร",
-      "icon": "",
       "link": "/news/",
       "children": [
         {
@@ -23,47 +21,55 @@
     },
     {
       "label": "การศึกษา",
-      "icon": "",
-      "link": "",
       "children": [
         {
           "label": "ข่าวประชาสัมพันธ์",
           "link": "/news/?category=ข่าวการศึกษา"
         },
         {
-          "label": "กลุ่มสาระการเรียนรู้ภาษาไทย",
+          "label": "วิชาภาษาไทย",
           "link": "/pages/thai/"
         },
         {
-          "label": "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
+          "label": "วิทยาศาสตร์",
           "link": "/pages/science/"
         },
         {
-          "label": "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
+          "label": "คณิตศาสตร์",
           "link": "/pages/math/"
         },
         {
-          "label": "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
-          "link": "/pages/foreign/"
+          "label": "ภาษาอังกฤษ",
+          "link": "/pages/english/"
         },
         {
-          "label": "กลุ่มสาระการเรียนรู้สังคมศึกษา",
+          "label": "ภาษาจีน",
+          "link": "/pages/chinese/"
+        },
+        {
+          "label": "สังคมศึกษา",
           "link": "/pages/social/"
         },
         {
-          "label": "กลุ่มสาระการเรียนรู้เก็นชินอิมแพกต์",
+          "label": "เก็นชินอิมแพกต์",
           "link": "/pages/genshin/"
         },
         {
           "label": "กิจกรรมพัฒนาผู้เรียน",
           "link": "/pages/student-activities/"
+        },
+        {
+          "label": "สมัครเรียน",
+          "link": "/pages/apply/"
+        },
+        {
+          "label": "ดาวน์โหลดเอกสาร",
+          "link": "/downloads/"
         }
       ]
     },
     {
       "label": "ผลงาน",
-      "icon": "",
-      "link": "",
       "children": [
         {
           "label": "BFF MMORPG",
@@ -72,12 +78,15 @@
         {
           "label": "BFF FOREVER CRAFT",
           "link": "/pages/bff-forever-craft/"
+        },
+        {
+          "label": "ไทม์ไลน์และความทรงจำ",
+          "link": "/timeline/"
         }
       ]
     },
     {
       "label": "ติดต่อเรา",
-      "icon": "",
       "link": "/pages/contact/",
       "children": []
     }

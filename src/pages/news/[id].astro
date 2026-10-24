@@ -15,6 +15,7 @@ const d = post.data;
 const { Content } = await render(post);
 const cover = img(d.cover, `(ข่าว: ${d.title})`);
 const hasIntro = !!post.body?.trim();
+const isUpdated = !!(d.updated && d.date && d.updated.getTime() - d.date.getTime() >= 86400000);
 ---
 <Base title={d.title} description={plain(post.body) || d.title} image={cover?.src}>
   <header class="page-band">
@@ -22,6 +23,7 @@ const hasIntro = !!post.body?.trim();
       <a class="back" href={url('/news/')}>← {labels.backToNews}</a>
       <div class="badges">
         {d.isNew && <span class="badge badge-new">{labels.newBadge}</span>}
+        {isUpdated && <span class="badge badge-upd">{labels.updateBadge}</span>}
         {d.category && <span class="badge badge-cat">{d.category}</span>}
       </div>
       <h1>{d.title}</h1>

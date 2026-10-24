@@ -1,0 +1,89 @@
+---
+// ไทม์ไลน์และความทรงจำ: เส้นเวลาแยกตามปี (เหตุการณ์ที่ผู้ดูแลเพิ่ม + ข่าวที่เผยแพร่และมีวันที่) พร้อมรูปความทรงจำของแต่ละปี
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { getPublishedPosts, labels, url, img, md, fmtDate, iso } from '../lib/site';
+
+type Photo = { src: string; alt: string };
+type Item = { date: Date; yearOnly: boolean; title: string; html: string; photo: Photo | null; href: string | null; external: boolean; news: boolean };
+const items: Item[] = [];
+const photos = new Map<number, (Photo | null)[]>();
+const add = (y: number, list: (Photo | null)[]) => photos.set(y, [...(photos.get(y) ?? []), ...list]);
+
+for (const m of await getCollection('milestones')) {
+  const d = m.data;
+  const where = `(ไทม์ไลน์: ${d.title})`;
+  const photo = img(d.image, where);
+  items.push({ date: d.date, yearOnly: d.yearOnly, title: d.title, html: md(d.text), photo, href: d.link ? url(d.link) : null, external: /^https?:/i.test(d.link ?? ''), news: false });
+  add(d.date.getUTCFullYear(), d.album.map((a) => img(a, where)));
+}
+for (const p of await getPublishedPosts()) {
+  const d = p.data;
+  if (!d.date) continue;
+  const where = `(ข่าว: ${d.title})`;
+  const cover = img(d.cover, where);
+  items.push({ date: d.date, yearOnly: false, title: d.title, html: '', photo: cover, href: url(`/news/${p.id}/`), external: false, news: true });
+  add(d.date.getUTCFullYear(), d.sections.flatMap((s) => [img(s.image, where), ...s.album.map((a) => img(a, where))]));
+}
+
+const years = [...new Set(items.map((i) => i.date.getUTCFullYear()))].sort((a, b) => a - b);
+const byYear = (y: number) => items.filter((i) => i.date.getUTCFullYear() === y).sort((a, b) => a.date.getTime() - b.date.getTime());
+const memories = (y: number) => {
+  const shown = new Set(byYear(y).map((i) => i.photo?.src));
+  const seen = new Set<string>();
+  return (photos.get(y) ?? []).filter((p): p is Photo => !!p && !shown.has(p.src) && !seen.has(p.src) && !!seen.add(p.src));
+};
+---
+<Base title={labels.timelineTitle}>
+  <section class="section">
+    <div class="container narrow">
+      <div class="section-head"><h1 class="section-title">{labels.timelineTitle}</h1></div>
+      {years.length > 0 ? (
+        <>
+          <nav class="tl-nav" aria-label={labels.timelineJump}>
+            {years.map((y) => <a href={`#y${y}`}>{labels.yearPrefix} {y + 543}</a>)}
+          </nav>
+          {years.map((y) => {
+            const mem = memories(y);
+            return (
+              <section class="tl-year" id={`y${y}`} data-lb-scope>
+                <h2 class="section-title">{labels.yearPrefix} {y + 543}</h2>
+                <ol class="tl">
+                  {byYear(y).map((it) => (
+                    <li class="tl-item">
+                      {!it.yearOnly && <time datetime={iso(it.date)}>{fmtDate(it.date)}</time>}
+                      <h3>
+                        {it.href ? <a href={it.href} target={it.external ? '_blank' : undefined} rel={it.external ? 'noopener' : undefined}>{it.title}</a> : it.title}
+                        {it.news && <span class="badge badge-cat">{labels.searchTypeNews}</span>}
+                      </h3>
+                      {it.html && <div class="prose" set:html={it.html} />}
+                      {it.photo && (
+                        <button type="button" class="zoom" data-zoom aria-label={it.photo.alt ? undefined : labels.zoomImage}>
+                          <img src={it.photo.src} alt={it.photo.alt} loading="lazy" decoding="async" />
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+                {mem.length > 0 && (
+                  <div class="tl-memories">
+                    <h3>{labels.memoriesTitle}</h3>
+                    <div class="album" style="--cols:4">
+                      {mem.map((p) => (
+                        <button type="button" class="zoom" data-zoom aria-label={p.alt ? undefined : labels.zoomImage}>
+                          <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </section>
+            );
+          })}
+        </>
+      ) : (
+        <p class="empty">{labels.timelineEmpty}</p>
+      )}
+    </div>
+  </section>
+</Base>

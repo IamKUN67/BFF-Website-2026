@@ -1,0 +1,80 @@
+---
+// ศูนย์ดาวน์โหลดเอกสาร: รวมเอกสารที่ครูแต่ละคอร์สฝากไว้ จัดตามวิชา กรองและค้นหาได้
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import DocList from '../components/DocList.astro';
+import { labels, url } from '../lib/site';
+import { fileInfo } from '../lib/files';
+
+const pages = (await getCollection('pages')).sort((a, b) => a.data.title.localeCompare(b.data.title, 'th'));
+const groups = pages
+  .map((p) => ({ page: p, courses: p.data.courses.filter((c) => c.documents.length > 0) }))
+  .filter((g) => g.courses.length > 0);
+const docs = (c: any) => c.documents.map((d: any) => ({ title: d.title, note: d.note, href: url(d.file), ...fileInfo(d.file) }));
+---
+<Base title={labels.downloadsTitle}>
+  <section class="section">
+    <div class="mid" data-downloads>
+      <div class="section-head"><h1 class="section-title">{labels.downloadsTitle}</h1></div>
+      {groups.length > 0 ? (
+        <>
+          <div class="filters">
+            <label><span class="sr-only">{labels.downloadsSearch}</span><input type="search" data-q placeholder={labels.downloadsSearch} aria-label={labels.downloadsSearch} /></label>
+            <label>
+              <span class="sr-only">{labels.allSubjects}</span>
+              <select data-subject aria-label={labels.allSubjects}>
+                <option value="">{labels.allSubjects}</option>
+                {groups.map((g) => <option value={g.page.id}>{g.page.data.title}</option>)}
+              </select>
+            </label>
+          </div>
+          <p class="empty" data-empty hidden>{labels.noDownloadsMatch}</p>
+          {groups.map((g) => (
+            <section class="dl-group" data-group={g.page.id}>
+              <h2 class="dl-subject">
+                <span>{g.page.data.title}</span>
+                <a href={url(`/pages/${g.page.data.slug ?? g.page.id}/`)}>{labels.openSubjectPage} →</a>
+              </h2>
+              {g.courses.map((c) => (
+                <article class="dl-course" data-search={`${g.page.data.title} ${c.title} ${c.documents.map((d: any) => d.title).join(' ')}`.toLowerCase()}>
+                  <h3>{c.title}</h3>
+                  <DocList docs={docs(c)} />
+                </article>
+              ))}
+            </section>
+          ))}
+        </>
+      ) : (
+        <p class="empty">{labels.noDownloads}</p>
+      )}
+    </div>
+  </section>
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-downloads]');
+  const q = root?.querySelector<HTMLInputElement>('[data-q]');
+  const sel = root?.querySelector<HTMLSelectElement>('[data-subject]');
+  if (root && q && sel) {
+    const groups = Array.from(root.querySelectorAll<HTMLElement>('[data-group]'));
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const run = () => {
+      const term = q.value.trim().toLowerCase();
+      let any = false;
+      groups.forEach((g) => {
+        const subjectOk = !sel.value || g.dataset.group === sel.value;
+        let seen = false;
+        g.querySelectorAll<HTMLElement>('.dl-course').forEach((c) => {
+          const ok = subjectOk && (!term || (c.dataset.search || '').includes(term));
+          c.hidden = !ok;
+          if (ok) seen = true;
+        });
+        g.hidden = !seen;
+        if (seen) any = true;
+      });
+      empty.hidden = any;
+    };
+    q.addEventListener('input', run);
+    sel.addEventListener('change', run);
+  }
+</script>

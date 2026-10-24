@@ -1,7 +1,10 @@
 ---
-// คอร์สเรียน: จัดกลุ่มตามหมวดหมู่คอร์ส แต่ละคอร์สแสดง ชื่อ ช่วงเวลา วัน/เวลาเรียน ครูผู้สอน รายละเอียด และลิงก์แนบ
+// คอร์สเรียน: จัดกลุ่มตามหมวดหมู่คอร์ส แต่ละคอร์สมีแท็บ รายละเอียด / เอกสารดาวน์โหลด + ป้ายสถานะ + ปุ่มสมัคร (ครูแนบลิงก์ฟอร์มเอง)
 import { getCollection } from 'astro:content';
-import { labels, img, md, fmtDate } from '../lib/site';
+import DocList from './DocList.astro';
+import { labels, img, md, fmtDate, url } from '../lib/site';
+import { fileInfo } from '../lib/files';
+
 const { courses = [] } = Astro.props;
 const teachers = new Map((await getCollection('teachers')).map((t) => [t.id, t]));
 const groups: { name: string; items: any[] }[] = [];
@@ -13,6 +16,7 @@ for (const c of courses) {
 }
 const period = (c: any): string[] =>
   c.startDate && c.endDate ? [fmtDate(c.startDate), fmtDate(c.endDate)] : c.startDate ? [fmtDate(c.startDate)] : [];
+let n = 0;
 ---
 {courses.length > 0 && (
   <section class="courses">
@@ -22,32 +26,52 @@ const period = (c: any): string[] =>
         {g.name && <h3 class="group-title">{g.name}</h3>}
         <div class="course-list">
           {g.items.map((c) => {
-            const ts = (c.teachers ?? []).map((id: string) => teachers.get(id)).filter(Boolean) as any[];
+            const id = `course-${++n}`;
+            const ts = (c.teachers ?? []).map((tid: string) => teachers.get(tid)).filter(Boolean) as any[];
             const p = period(c);
+            const docs = (c.documents ?? []).map((d: any) => ({ title: d.title, note: d.note, href: url(d.file), ...fileInfo(d.file) }));
+            const applyHref = /^https?:\/\//i.test(c.applyUrl ?? '') ? c.applyUrl : null;
+            const status = c.ended ? 'ended' : c.closed ? 'closed' : applyHref ? 'open' : null;
+            const statusText = status === 'ended' ? labels.courseEnded : status === 'closed' ? labels.courseClosed : labels.courseOpen;
             return (
-              <article class="course">
+              <article class:list={['course', c.ended && 'is-ended']} data-course>
                 <h4>{c.title}</h4>
-                <dl class="course-info">
-                  {p.length > 0 && (<><dt>{labels.coursePeriod}</dt><dd>{p.map((x, i) => (<>{i > 0 && ' – '}<span class="nowrap">{x}</span></>))}</dd></>)}
-                  {c.schedule && (<><dt>{labels.courseSchedule}</dt><dd class="pre">{c.schedule}</dd></>)}
-                  {ts.length > 0 && (
-                    <><dt>{labels.courseTeachers}</dt><dd>
-                      <ul class="chip-list">
-                        {ts.map((t) => {
-                          const ph = img(t.data.photo, `(ครู: ${t.data.name})`);
-                          return <li class="chip">{ph ? <img src={ph.src} alt="" /> : <span class="mini" aria-hidden="true">{t.data.name.charAt(0)}</span>}{t.data.name}</li>;
-                        })}
-                      </ul>
-                    </dd></>
-                  )}
-                </dl>
-                {c.description && <div class="prose" set:html={md(c.description)} />}
-                {c.links.length > 0 && (
-                  <div class="course-links">
-                    {c.links.map((l: any) => (
-                      <a class="btn btn-outline" href={l.url} target="_blank" rel="noopener">{l.label}<span class="sr-only"> ({labels.externalHint})</span></a>
-                    ))}
+                {status && <div class="badges"><span class={`badge badge-${status}`}>{statusText}</span></div>}
+                {docs.length > 0 && (
+                  <div class="course-tabs" role="tablist" hidden data-tablist>
+                    <button type="button" role="tab" class="tab" id={`${id}-t0`} aria-controls={`${id}-p0`} aria-selected="true">{labels.courseTabInfo}</button>
+                    <button type="button" role="tab" class="tab" id={`${id}-t1`} aria-controls={`${id}-p1`} aria-selected="false" tabindex="-1">{labels.courseTabDocs} ({docs.length})</button>
                   </div>
+                )}
+                <div class="course-panel" id={`${id}-p0`} role={docs.length > 0 ? 'tabpanel' : undefined} aria-labelledby={docs.length > 0 ? `${id}-t0` : undefined}>
+                  <dl class="course-info">
+                    {p.length > 0 && (<><dt>{labels.coursePeriod}</dt><dd>{p.map((x, i) => (<>{i > 0 && ' – '}<span class="nowrap">{x}</span></>))}</dd></>)}
+                    {c.schedule && (<><dt>{labels.courseSchedule}</dt><dd class="pre">{c.schedule}</dd></>)}
+                    {ts.length > 0 && (
+                      <><dt>{labels.courseTeachers}</dt><dd>
+                        <ul class="chip-list">
+                          {ts.map((t) => {
+                            const ph = img(t.data.photo, `(ครู: ${t.data.name})`);
+                            return <li class="chip">{ph ? <img src={ph.src} alt="" /> : <span class="mini" aria-hidden="true">{t.data.name.charAt(0)}</span>}{t.data.name}</li>;
+                          })}
+                        </ul>
+                      </dd></>
+                    )}
+                  </dl>
+                  {c.description && <div class="prose" set:html={md(c.description)} />}
+                  {c.links.length > 0 && (
+                    <div class="course-links">
+                      {c.links.map((l: any) => (
+                        <a class="btn btn-outline" href={l.url} target="_blank" rel="noopener">{l.label}<span class="sr-only"> ({labels.externalHint})</span></a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {docs.length > 0 && (
+                  <div class="course-panel" id={`${id}-p1`} role="tabpanel" aria-labelledby={`${id}-t1`}><DocList docs={docs} /></div>
+                )}
+                {status === 'open' && (
+                  <div class="course-apply"><a class="btn" href={applyHref} target="_blank" rel="noopener">{labels.courseApply}<span class="sr-only"> ({labels.externalHint})</span></a></div>
                 )}
               </article>
             );
@@ -57,3 +81,29 @@ const period = (c: any): string[] =>
     ))}
   </section>
 )}
+
+<script>
+  // แท็บในการ์ดคอร์ส: ถ้าไม่มี JavaScript จะแสดงทั้งสองส่วนต่อกัน (เอกสารยังเข้าถึงได้)
+  document.querySelectorAll<HTMLElement>('[data-course]').forEach((card) => {
+    const list = card.querySelector<HTMLElement>('[data-tablist]');
+    if (!list) return;
+    const tabs = Array.from(list.querySelectorAll<HTMLElement>('[role=tab]'));
+    const panels = Array.from(card.querySelectorAll<HTMLElement>('[role=tabpanel]'));
+    const select = (i: number) => {
+      tabs.forEach((t, k) => { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
+      panels.forEach((p, k) => (p.hidden = k !== i));
+    };
+    list.hidden = false;
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
+        if (n === null) return;
+        const k = (n + tabs.length) % tabs.length;
+        select(k);
+        tabs[k].focus();
+      });
+    });
+    select(0);
+  });
+</script>

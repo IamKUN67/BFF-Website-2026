@@ -433,3 +433,52 @@ html[data-fs="2"] { font-size: 130%; }
 .embed iframe { display: block; width: 100%; height: var(--h, 900px); border: 1px solid var(--border); border-radius: 14px; background: #fff; }
 .embed .center { margin: 1rem 0 0; }
 .embed + .contact-cards { margin-top: 2rem; }
+
+/* ───── แท็บข่าวหน้าแรก / แท็บในการ์ดคอร์ส ───── */
+.tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-bottom: 1.8rem; }
+.tab { padding: .55rem 1.3rem; border-radius: 999px; border: 2px solid var(--border); background: var(--surface); color: var(--text); font: inherit; font-weight: 600; cursor: pointer; }
+.tab:hover { border-color: var(--primary); }
+.tab[aria-selected="true"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.course-tabs { display: flex; gap: .3rem; border-bottom: 2px solid var(--border); }
+.course-tabs .tab { padding: .45rem 1rem; border: 0; border-bottom: 3px solid transparent; border-radius: 10px 10px 0 0; background: none; color: var(--text); }
+.course-tabs .tab[aria-selected="true"] { background: var(--tint); color: var(--link); border-bottom-color: var(--primary); }
+.course-panel { display: flex; flex-direction: column; gap: .8rem; }
+
+/* ───── ป้ายสถานะ ───── */
+.badge-upd { background: var(--c-blue); color: #00263d; }
+.badge-open { background: var(--c-green); color: #052e16; }
+.badge-closed { background: #fde8e8; color: #9b1c1c; border: 1px solid #f5b5b5; }
+.badge-ended { background: #e8edf2; color: #425466; border: 1px solid var(--border); }
+.course.is-ended { background: color-mix(in srgb, var(--tint) 60%, #fff); }
+.course-apply { margin-top: auto; }
+.course-apply .btn { width: 100%; text-align: center; }
+
+/* ───── รายการเอกสารดาวน์โหลด ───── */
+.doc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+.doc { display: flex; align-items: center; gap: .9rem; padding: .8rem 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.doc-ext { flex: none; min-width: 3.4rem; padding: .3rem .4rem; border-radius: 8px; background: var(--tint); color: var(--link); font-size: .8rem; font-weight: 700; text-align: center; }
+.doc-text { flex: 1; min-width: 0; display: grid; overflow-wrap: anywhere; }
+.doc-text span, .doc-text small { color: var(--muted); font-size: .9rem; }
+.doc-dl { flex: none; display: inline-flex; align-items: center; gap: .4rem; padding: .4rem .9rem; }
+@media (max-width: 480px) { .doc { flex-wrap: wrap; } .doc-dl { width: 100%; justify-content: center; } }
+.mid { width: min(100% - 2rem, 900px); margin-inline: auto; }
+.dl-group { margin-top: 2.6rem; }
+.dl-subject { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1rem; margin: 0 0 1rem; padding-bottom: .5rem; font-size: 1.5rem; border-bottom: 4px solid transparent; border-image: var(--rainbow) 1; }
+.dl-subject a { font-size: 1rem; font-weight: 500; }
+.dl-course { margin-bottom: 1.4rem; padding: 1.2rem 1.3rem; background: var(--surface); border: 1px solid var(--border); border-top: 6px solid var(--c-blue); border-radius: var(--radius); box-shadow: var(--shadow); }
+.dl-course h3 { margin: 0 0 .8rem; font-size: 1.2rem; }
+
+/* ───── ไทม์ไลน์และความทรงจำ ───── */
+.tl-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-bottom: 2rem; }
+.tl-nav a { padding: .35rem 1rem; border: 2px solid var(--border); border-radius: 999px; color: var(--text); font-weight: 600; text-decoration: none; }
+.tl-nav a:hover { border-color: var(--primary); color: var(--link); }
+.tl-year { margin-top: 3.5rem; scroll-margin-top: 90px; }
+.tl { position: relative; list-style: none; margin: 0 auto; padding: 0 0 0 1.8rem; max-width: 760px; border-left: 4px solid transparent; border-image: linear-gradient(var(--c-green), var(--c-blue), var(--c-red)) 1; }
+.tl-item { position: relative; margin: 0 0 1.6rem; padding: 1.1rem 1.3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
+.tl-item::before { content: ''; position: absolute; left: calc(-1.8rem - 10px); top: 1.4rem; width: 16px; height: 16px; border-radius: 50%; background: var(--c-blue); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--c-blue); }
+.tl-item time { color: var(--muted); font-size: .9rem; }
+.tl-item h3 { margin: .1rem 0 .4rem; font-size: 1.2rem; }
+.tl-item h3 .badge { margin-left: .5rem; vertical-align: middle; }
+.tl-item .zoom { margin-top: .8rem; max-width: 420px; }
+.tl-memories { margin-top: 2rem; }
+.tl-memories h3 { margin: 0 0 .8rem; text-align: center; }

@@ -1,0 +1,51 @@
+---
+// ข่าวหน้าแรกแบบแท็บ: ทั้งหมด + แต่ละหมวด (ล่าสุดหมวดละ 6 เรื่อง) ปุ่ม "ดูข่าวทั้งหมด" เปลี่ยนตามแท็บ
+import PostCard from './PostCard.astro';
+import { labels, url } from '../lib/site';
+const { posts = [], limit = 6 } = Astro.props;
+const cats = labels.newsCategories as string[];
+const tabs = [
+  { label: labels.tabAll, href: url('/news/'), items: posts.slice(0, limit) },
+  ...cats.map((c) => ({
+    label: c,
+    href: url(`/news/?category=${encodeURIComponent(c)}`),
+    items: posts.filter((p: any) => p.data.category === c).slice(0, limit),
+  })),
+];
+---
+<div class="news-tabs" data-news-tabs>
+  <div class="tabs" role="tablist" aria-label={labels.latestNewsTitle}>
+    {tabs.map((t, i) => (
+      <button type="button" role="tab" class="tab" id={`nt-${i}`} aria-controls={`np-${i}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1} data-href={t.href}>{t.label}</button>
+    ))}
+  </div>
+  {tabs.map((t, i) => (
+    <div role="tabpanel" id={`np-${i}`} aria-labelledby={`nt-${i}`} hidden={i !== 0}>
+      {t.items.length > 0 ? <div class="card-grid">{t.items.map((p: any) => <PostCard post={p} />)}</div> : <p class="empty">{labels.noNews}</p>}
+    </div>
+  ))}
+  <p class="center"><a class="btn btn-outline" data-all href={tabs[0].href}>{labels.allNews}</a></p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-news-tabs]').forEach((box) => {
+    const tabs = Array.from(box.querySelectorAll<HTMLElement>('[role=tab]'));
+    const panels = Array.from(box.querySelectorAll<HTMLElement>('[role=tabpanel]'));
+    const all = box.querySelector<HTMLAnchorElement>('[data-all]')!;
+    const select = (i: number) => {
+      tabs.forEach((t, k) => { t.setAttribute('aria-selected', String(k === i)); t.tabIndex = k === i ? 0 : -1; });
+      panels.forEach((p, k) => (p.hidden = k !== i));
+      all.href = tabs[i].dataset.href!;
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
+        if (n === null) return;
+        const k = (n + tabs.length) % tabs.length;
+        select(k);
+        tabs[k].focus();
+      });
+    });
+  });
+</script>

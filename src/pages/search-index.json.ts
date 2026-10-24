@@ -23,7 +23,7 @@ export async function GET() {
     const u = pageUrl(p);
     items.push({ t: d.title, type: labels.searchTypePage, u, x: j(d.description, p.body, secText(d.sections)) });
     for (const c of d.courses) {
-      items.push({ t: c.title, type: labels.searchTypeCourse, u, x: j(d.title, c.group, c.schedule, c.description, ...c.teachers.map((id) => teachers.get(id)?.data.name)) });
+      items.push({ t: c.title, type: labels.searchTypeCourse, u, x: j(d.title, c.group, c.schedule, c.description, ...c.teachers.map((id) => teachers.get(id)?.data.name), ...c.documents.map((x) => x.title)) });
     }
     for (const id of d.teachers) {
       const t = teachers.get(id);
@@ -33,6 +33,8 @@ export async function GET() {
   const execPage = pages.find((p) => p.data.showExecutives);
   if (execPage) for (const m of board) items.push({ t: m.data.name, type: labels.boardTitle, u: pageUrl(execPage), x: j(m.data.position) });
   for (const e of events) items.push({ t: e.data.title, type: labels.searchTypeEvent, u: url('/calendar/'), x: j(e.data.location, e.data.details) });
+
+  for (const m of await getCollection('milestones')) items.push({ t: m.data.title, type: labels.searchTypeTimeline, u: url('/timeline/'), x: j(m.data.text) });
 
   return new Response(JSON.stringify(items), { headers: { 'Content-Type': 'application/json' } });
 }

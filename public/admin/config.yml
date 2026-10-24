@@ -157,6 +157,27 @@ collections:
           - { name: fontSize0, label: "ขนาดตัวอักษร: ปกติ", widget: string }
           - { name: fontSize1, label: "ขนาดตัวอักษร: ใหญ่", widget: string }
           - { name: fontSize2, label: "ขนาดตัวอักษร: ใหญ่มาก", widget: string }
+          - { name: tabAll, label: "แท็บข่าว: ทั้งหมด", widget: string }
+          - { name: updateBadge, label: "ป้ายข่าวที่แก้ไขภายหลัง", widget: string }
+          - { name: courseApply, label: "ปุ่มสมัครคอร์ส", widget: string }
+          - { name: courseOpen, label: "ป้าย: เปิดรับสมัคร", widget: string }
+          - { name: courseClosed, label: "ป้าย: ปิดรับสมัครแล้ว", widget: string }
+          - { name: courseEnded, label: "ป้าย: คอร์สนี้จบแล้ว", widget: string }
+          - { name: courseTabInfo, label: "แท็บคอร์ส: รายละเอียด", widget: string }
+          - { name: courseTabDocs, label: "แท็บคอร์ส: เอกสาร", widget: string }
+          - { name: docDownload, label: "ปุ่มดาวน์โหลดเอกสาร", widget: string }
+          - { name: downloadsTitle, label: "หัวข้อหน้าดาวน์โหลดเอกสาร", widget: string }
+          - { name: downloadsSearch, label: "ช่องค้นหาเอกสาร", widget: string }
+          - { name: allSubjects, label: "ตัวเลือก: ทุกวิชา", widget: string }
+          - { name: noDownloads, label: "ข้อความเมื่อยังไม่มีเอกสาร", widget: string }
+          - { name: noDownloadsMatch, label: "ข้อความเมื่อค้นเอกสารไม่เจอ", widget: string }
+          - { name: openSubjectPage, label: "ลิงก์ไปหน้าวิชา", widget: string }
+          - { name: timelineTitle, label: "หัวข้อหน้าไทม์ไลน์", widget: string }
+          - { name: timelineEmpty, label: "ข้อความเมื่อไทม์ไลน์ว่าง", widget: string }
+          - { name: memoriesTitle, label: "หัวข้อกลุ่มรูปแต่ละปี", widget: string }
+          - { name: yearPrefix, label: "คำนำหน้าปี", widget: string }
+          - { name: timelineJump, label: "ชื่อแถบเลือกปี (โปรแกรมอ่านจอ)", widget: string }
+          - { name: searchTypeTimeline, label: "ป้ายประเภทค้นหา: ไทม์ไลน์", widget: string }
           - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
           - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
           - { name: boardTitle, label: "หัวข้อส่วนผู้บริหาร", widget: string }
@@ -429,6 +450,19 @@ collections:
             multiple: true
             required: false
           - { name: description, label: "รายละเอียดคอร์ส", widget: markdown, required: false }
+          - name: documents
+            label: "เอกสารให้ดาวน์โหลด (ครูฝากไฟล์ไว้ที่นี่ เช่น ใบงาน สไลด์ PDF)"
+            label_singular: "เอกสาร"
+            widget: list
+            required: false
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: "ชื่อเอกสาร", widget: string }
+              - { name: file, label: "ไฟล์ (PDF, Word, PowerPoint, Excel ฯลฯ)", widget: file }
+              - { name: note, label: "หมายเหตุสั้นๆ (ไม่บังคับ)", widget: string, required: false }
+          - { name: applyUrl, label: "ลิงก์ฟอร์มสมัครคอร์สนี้ (ครูวางเอง ขึ้นต้นด้วย https:// ถ้าไม่ใส่ จะไม่มีปุ่มสมัคร)", widget: string, required: false }
+          - { name: closed, label: "ปิดรับสมัครแล้ว (ติ๊ก = ปุ่มสมัครหายไป ขึ้นป้าย ปิดรับสมัครแล้ว)", widget: boolean, default: false }
+          - { name: ended, label: "คอร์สนี้จบแล้ว (ติ๊ก = ขึ้นป้าย คอร์สนี้จบแล้ว)", widget: boolean, default: false }
           - name: links
             label: "ลิงก์แนบ (เช่น ลิงก์คะแนน)"
             label_singular: "ลิงก์"
@@ -594,3 +628,37 @@ collections:
       - { name: email, label: "อีเมล", widget: string, required: false }
       - { name: phone, label: "เบอร์โทร", widget: string, required: false }
       - { name: order, label: "ลำดับ (เลขน้อยขึ้นก่อน)", widget: number, value_type: int, default: 100 }
+
+  # ───────────── ไทม์ไลน์ ─────────────
+  - name: milestones
+    label: "ไทม์ไลน์ (เหตุการณ์สำคัญของ BFF)"
+    label_singular: "เหตุการณ์"
+    folder: src/content/milestones
+    extension: json
+    format: json
+    create: true
+    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
+    summary: "{{date}} — {{title}}"
+    sortable_fields: [date, title]
+    fields:
+      - { name: date, label: "วันที่", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false }
+      - { name: yearOnly, label: "แสดงเฉพาะปี (ไม่แสดงวันที่) ใช้เมื่อไม่ทราบวันที่แน่ชัด", widget: boolean, default: false }
+      - { name: title, label: "หัวข้อเหตุการณ์ เช่น ก่อตั้ง BFF", widget: string }
+      - { name: text, label: "รายละเอียด", widget: markdown, required: false }
+      - name: image
+        label: "รูปประกอบ"
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: "ไฟล์รูป", widget: image, required: false }
+          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
+      - { name: link, label: "ลิงก์ (ถ้าอยากให้หัวข้อกดไปหน้าอื่น เช่น /news/xxx/ หรือ https://...)", widget: string, required: false }
+      - name: album
+        label: "รูปความทรงจำเพิ่มเติม (แสดงรวมกับรูปจากข่าวในปีนั้น)"
+        label_singular: "รูป"
+        widget: list
+        required: false
+        summary: "{{fields.alt}}"
+        fields:
+          - { name: src, label: "ไฟล์รูป", widget: image }
+          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
