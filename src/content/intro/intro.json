@@ -4,20 +4,7 @@
   "subtitle": "เพื่อนกันตลอดไป",
   "autoplay": true,
   "interval": 6,
-  "slides": [
-    {
-      "file": "/uploads/pasted-image-1792760065081.webp",
-      "youtube": "",
-      "alt": "",
-      "caption": ""
-    },
-    {
-      "file": "/uploads/unnamed (4).webp",
-      "youtube": "",
-      "alt": "",
-      "caption": ""
-    }
-  ],
+  "slides": [],
   "buttons": [
     {
       "label": "เข้าสู่หน้าหลัก",
