@@ -8,18 +8,37 @@ showExecutives: false
 newsCategory: ข่าวการศึกษา
 teachers:
   - 20261024-084247
-links:
-  - label: Prakan
-    url: Prakan.ac.th
-    note: PpP
+links: []
 courses:
-  - title: DDD
+  - title: คณิตศาสตร์พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
     group: ''
-    startDate: ''
-    endDate: ''
+    startDate: 2023-11-01
+    endDate: 2024-04-24
+    schedule: ''
+    teachers:
+      - 20261024-084247
+    description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
+    links:
+      - label: ระบบรายงานคะแนน
+        url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
+  - title: คณิตศาสตร์เพิ่มเติม ชั้นมัธยมศึกษาตอนต้น
+    group: ''
+    startDate: 2023-10-04
+    endDate: 2024-05-04
+    schedule: ''
+    teachers:
+      - 20261024-084247
+    description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
+    links:
+      - label: ระบบรายงานคะแนน
+        url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
+  - title: โครงงานคณิตศาสตร์พื้นฐาน
+    group: ''
+    startDate: 2024-09-30
+    endDate: 2024-10-16
     schedule: ''
     teachers: []
-    description: ''
+    description: โครงงานคณิตศาสตร์พื้นฐานเน้นการศึกษาศาสตร์ต่างๆ ที่มีความสัมพันธ์กับคณิตศาสตร์ เน้นการสืบเสาะ หาความรู้ต่างๆ อย่างมีเหตุผล โดยใช้คณิตศาสตร์
     links: []
 sections: []
 ---
