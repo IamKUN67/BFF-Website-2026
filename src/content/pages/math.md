@@ -28,7 +28,7 @@ courses:
     schedule: ''
     teachers:
       - 20261024-084247
-    description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
+    description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้เพิ่มเติม ชั้นมัธยมศึกษาตอนต้น
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
