@@ -2,13 +2,19 @@
   "items": [
     {
       "label": "หน้าหลัก",
+      "icon": "",
       "link": "/home/",
       "children": []
     },
     {
       "label": "ข่าวสาร",
+      "icon": "",
       "link": "/news/",
       "children": [
+        {
+          "label": "ไทม์ไลน์และความทรงจำ",
+          "link": "/timeline/"
+        },
         {
           "label": "ข่าวประชาสัมพันธ์ทั่วไป",
           "link": "/news/?category=ข่าวประชาสัมพันธ์ทั่วไป"
@@ -21,46 +27,40 @@
     },
     {
       "label": "การศึกษา",
+      "icon": "",
+      "link": "",
       "children": [
         {
           "label": "ข่าวประชาสัมพันธ์",
           "link": "/news/?category=ข่าวการศึกษา"
         },
         {
-          "label": "วิชาภาษาไทย",
+          "label": "กลุ่มสาระการเรียนรู้ภาษาไทย",
           "link": "/pages/thai/"
         },
         {
-          "label": "วิทยาศาสตร์",
+          "label": "กลุ่มสาระการเรียนรู้วิทยาศาสตร์",
           "link": "/pages/science/"
         },
         {
-          "label": "คณิตศาสตร์",
+          "label": "กลุ่มสาระการเรียนรู้คณิตศาสตร์",
           "link": "/pages/math/"
         },
         {
-          "label": "ภาษาอังกฤษ",
-          "link": "/pages/english/"
+          "label": "กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ",
+          "link": "/pages/foreign/"
         },
         {
-          "label": "ภาษาจีน",
-          "link": "/pages/chinese/"
-        },
-        {
-          "label": "สังคมศึกษา",
+          "label": "กลุ่มสาระการเรียนรู้สังคมศึกษา",
           "link": "/pages/social/"
         },
         {
-          "label": "เก็นชินอิมแพกต์",
+          "label": "กลุ่มสาระการเรียนรู้เก็นชินอิมแพกต์",
           "link": "/pages/genshin/"
         },
         {
           "label": "กิจกรรมพัฒนาผู้เรียน",
           "link": "/pages/student-activities/"
-        },
-        {
-          "label": "สมัครเรียน",
-          "link": "/pages/apply/"
         },
         {
           "label": "ดาวน์โหลดเอกสาร",
@@ -70,6 +70,8 @@
     },
     {
       "label": "ผลงาน",
+      "icon": "",
+      "link": "",
       "children": [
         {
           "label": "BFF MMORPG",
@@ -78,15 +80,12 @@
         {
           "label": "BFF FOREVER CRAFT",
           "link": "/pages/bff-forever-craft/"
-        },
-        {
-          "label": "ไทม์ไลน์และความทรงจำ",
-          "link": "/timeline/"
         }
       ]
     },
     {
       "label": "ติดต่อเรา",
+      "icon": "",
       "link": "/pages/contact/",
       "children": []
     }
