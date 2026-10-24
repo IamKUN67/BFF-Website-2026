@@ -32,6 +32,17 @@ courses:
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1Q7Ww2HGuyWtEoQk1pYyS-UzSnnhKDYqtUkGFe7nax5c/edit?usp=sharing
+  - title: โครงงานวิทยาศาสตร์เบื้องต้น
+    group: ''
+    startDate: 2024-09-30
+    endDate: 2024-10-21
+    schedule: ''
+    teachers:
+      - 20261023-155802
+    description: รายวิชาโครงงานวิทยาศาสตร์เบื้องต้น เน้นการจัดการเรียนรู้แบบ Project base learning เน้นการลงมือทำอย่างจริง พร้อมกับการนำเสนอหน้าชั้นเรียน
+    links:
+      - label: ระบบรายงานคะแนน
+        url: https://docs.google.com/spreadsheets/d/18i2ikFwoZcNYIYTWhJzRLSPHqXOOH2AaJx9wR8nEwnQ/edit?usp=sharing
 sections: []
 ---
 
