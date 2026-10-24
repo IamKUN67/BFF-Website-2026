@@ -15,7 +15,7 @@ sections:
     image: null
     imageSize: '100'
     imageAlign: center
-    text: ''
+    text: สวัสดีปีใหม่ทดสอบ
     textAlign: center
     textSize: normal
     album:
@@ -23,7 +23,7 @@ sections:
         alt: Best Friend Forever
       - src: /uploads/unnamed (4).webp
         alt: Best Friend Forever
-    albumSize: '3'
+    albumSize: '2'
     videos:
       - url: https://www.youtube.com/@IamKUNYT
         title: BFF Christmas And Newyear Party 2025
