@@ -1,5 +1,5 @@
 ---
-title: วิทยาศาสตร์
+title: กลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี
 slug: science
 description: ''
 legacy: false
