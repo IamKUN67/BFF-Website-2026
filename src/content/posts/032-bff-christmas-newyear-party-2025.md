@@ -24,9 +24,7 @@ sections:
       - src: /uploads/unnamed (4).webp
         alt: Best Friend Forever
     albumSize: '2'
-    videos:
-      - url: https://www.youtube.com/@IamKUNYT
-        title: BFF Christmas And Newyear Party 2025
+    videos: []
 gallery:
   - alt: Happy New Year!
     src: /uploads/unnamed (3).webp
