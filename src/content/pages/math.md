@@ -9,6 +9,7 @@ newsCategory: ข่าวการศึกษา
 teachers:
   - 20261024-084247
 links: []
+embeds: []
 courses:
   - title: คณิตศาสตร์พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
     group: ''
@@ -18,6 +19,40 @@ courses:
     teachers:
       - 20261024-084247
     description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
+    documents:
+      - title: เอกสารประกอบการเรียน หน่วย 1 จำนวนและตัวเลข
+        file: /uploads/1 คณิตพื้น จำนวนและตัวเลข_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 2 เศษส่วนและทศนิยม
+        file: /uploads/2 คณิตพื้น เศษส่วนและทศนิยม_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 3 ร้อยละ
+        file: /uploads/3 คณิตพื้น ร้อยละ_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 4 แบบรูป
+        file: /uploads/4 คณิตพื้น แบบรูป_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 5 ห.ร.ม. และ ค.ร.น.
+        file: /uploads/5 คณิตพื้น ห.ร.ม. ค.ร.น._2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 6 สมการเชิงเส้นตัวแปรเดียว
+        file: /uploads/6 คณิตพื้น สมการเชิงเส้นตัวแปรเดียว_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 7 เรขาคณิตสองมิติ
+        file: /uploads/7 คณิตพื้น เรขาคณิตสองมิติ_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 8 เรขาคณิตสามมิติ
+        file: /uploads/8 คณิตพื้น เรขาคณิตสามมิติ_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 9 สถิติพื้นฐาน
+        file: /uploads/9 คณิตพื้น สถิติพื้นฐาน_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 10 กราฟและความสัมพันธ์เชิงเส้น
+        file: /uploads/10 คณิตพื้น กราฟ_2.pdf
+        note: ''
+    applyUrl: ''
+    closed: false
+    ended: false
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
@@ -29,6 +64,10 @@ courses:
     teachers:
       - 20261024-084247
     description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้เพิ่มเติม ชั้นมัธยมศึกษาตอนต้น
+    documents: []
+    applyUrl: ''
+    closed: false
+    ended: false
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
@@ -40,6 +79,10 @@ courses:
     teachers:
       - 20261024-084247
     description: โครงงานคณิตศาสตร์พื้นฐานเน้นการศึกษาศาสตร์ต่างๆ ที่มีความสัมพันธ์กับคณิตศาสตร์ เน้นการสืบเสาะ หาความรู้ต่างๆ อย่างมีเหตุผล โดยใช้คณิตศาสตร์
+    documents: []
+    applyUrl: ''
+    closed: false
+    ended: false
     links: []
   - title: คณิตศาสตร์มัธยมต้นเพื่อการสอบแข่งขัน
     group: ''
@@ -49,6 +92,10 @@ courses:
     teachers:
       - 20261024-084247
     description: ศึกษา วิเคราะห์ หลักการทางคณิตศาสตร์ระดับมัธยมต้น เพื่อต่อยอดเป็นองค์ความรู้หรือวิธีการเพิ่มเติมและนํา ไปสู่การแก้ปัญหาทางคณิตศาสตร์ที่มีความซับซ้อน ตั้งแต่ระดับ ง่าย ปานกลาง และ ยาก
+    documents: []
+    applyUrl: ''
+    closed: false
+    ended: false
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1LQIKOsR2CoPF1I6NnmdW_EnC7A8pmAr7bYiYrISRbp0/edit?usp=sharing
