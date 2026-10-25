@@ -574,3 +574,8 @@ html[data-fs="2"] { font-size: 130%; }
 .link-card.blk { width: var(--w, 100%); }
 .tl-item .zoom.blk { margin-top: 1rem; }
 @media (max-width: 560px) { .sec-main .sec-image.zoom { width: 100% !important; } }
+
+/* ───── อัลบั้ม: รูปเรียงเป็นแถว แถวที่ไม่เต็ม (เช่น แถวสุดท้าย) จัดกึ่งกลางเสมอ รักษาสัดส่วนรูปจริง ───── */
+.album { columns: auto; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .8rem; }
+.album .zoom { flex: 0 0 calc((100% - (var(--cols, 3) - 1) * .8rem) / var(--cols, 3)); width: auto; margin: 0; break-inside: auto; }
+@media (max-width: 560px) { .album { --cols: 2 !important; } }
