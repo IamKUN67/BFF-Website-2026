@@ -8,30 +8,50 @@ type Photo = { src: string; alt: string };
 type Item = { date: Date; yearOnly: boolean; title: string; html: string; photo: Photo | null; href: string | null; external: boolean; major: boolean; size: number; align: string; ta: string; fs: string };
 const pick = (v: any, ok: string[], x: string) => (ok.includes(v) ? v : x);
 const items: Item[] = [];
-const photos = new Map<number, (Photo | null)[]>();
-const add = (y: number, list: (Photo | null)[]) => photos.set(y, [...(photos.get(y) ?? []), ...list]);
+const manual = new Map<number, (Photo | null)[]>(); // รูปจากอัลบั้มในเหตุการณ์ที่เพิ่มเอง: แสดงทั้งหมด
+const pool = new Map<number, (Photo | null)[]>(); // รูปจากข่าว: สุ่มมาแสดง = จำนวนข่าวในปีนั้น × 1.5
+const newsCount = new Map<number, number>();
+const add = (m: Map<number, (Photo | null)[]>, y: number, list: (Photo | null)[]) => m.set(y, [...(m.get(y) ?? []), ...list]);
 
 for (const m of await getCollection('milestones')) {
   const d = m.data;
   const where = `(ไทม์ไลน์: ${d.title})`;
   const photo = img(d.image, where);
   items.push({ date: d.date, yearOnly: d.yearOnly, title: d.title, html: md(d.text), photo, href: d.link ? url(d.link) : null, external: /^https?:/i.test(d.link ?? ''), major: true, size: d.imageSize ?? 100, align: pick(d.imageAlign, ['left', 'center', 'right'], 'left'), ta: pick(d.textAlign, ['left', 'center', 'right', 'justify'], 'left'), fs: pick(d.textSize, ['normal', 'large', 'xlarge'], 'normal') });
-  add(d.date.getUTCFullYear(), d.album.map((a) => img(a, where)));
+  add(manual, d.date.getUTCFullYear(), d.album.map((a) => img(a, where)));
 }
 for (const p of await getPublishedPosts()) {
   const d = p.data;
   if (!d.date) continue;
   const where = `(ข่าว: ${d.title})`;
   items.push({ date: d.date, yearOnly: false, title: d.title, html: '', photo: null, href: url(`/news/${p.id}/`), external: false, major: false, size: 100, align: 'left', ta: 'left', fs: 'normal' });
-  add(d.date.getUTCFullYear(), [img(d.cover, where), ...d.sections.flatMap((s) => [img(s.image, where), ...s.album.map((a) => img(a, where))])]);
+  newsCount.set(d.date.getUTCFullYear(), (newsCount.get(d.date.getUTCFullYear()) ?? 0) + 1);
+  add(pool, d.date.getUTCFullYear(), [img(d.cover, where), ...d.sections.flatMap((s) => [img(s.image, where), ...s.album.map((a) => img(a, where))])]);
 }
 
 const years = [...new Set(items.map((i) => i.date.getUTCFullYear()))].sort((a, b) => a - b);
 const byYear = (y: number) => items.filter((i) => i.date.getUTCFullYear() === y).sort((a, b) => a.date.getTime() - b.date.getTime());
+// สุ่มแบบคงที่ (ใช้ปีเป็นเมล็ด) สำหรับการแสดงผลครั้งแรก — เมื่อเปิดหน้าเว็บ จะสุ่มใหม่ทุกครั้งในเบราว์เซอร์
+const seeded = (seed: number) => {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let x = Math.imul(a ^ (a >>> 15), 1 | a);
+    x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x;
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+};
 const memories = (y: number) => {
-  const shown = new Set(byYear(y).map((i) => i.photo?.src));
-  const seen = new Set<string>();
-  return (photos.get(y) ?? []).filter((p): p is Photo => !!p && !shown.has(p.src) && !seen.has(p.src) && !!seen.add(p.src));
+  const taken = new Set(byYear(y).map((i) => i.photo?.src).filter(Boolean) as string[]);
+  const uniq = (list: (Photo | null)[]) => list.filter((p): p is Photo => !!p && !taken.has(p.src) && !!taken.add(p.src));
+  const man = uniq(manual.get(y) ?? []);
+  const all = uniq(pool.get(y) ?? []);
+  const rnd = seeded(y);
+  for (let k = all.length - 1; k > 0; k--) {
+    const r = Math.floor(rnd() * (k + 1));
+    [all[k], all[r]] = [all[r], all[k]];
+  }
+  return { man, pool: all, quota: Math.min(all.length, Math.ceil((newsCount.get(y) ?? 0) * 1.5)) };
 };
 ---
 <Base title={labels.timelineTitle}>
@@ -76,16 +96,21 @@ const memories = (y: number) => {
                             </>
                           )}
                         </div>
-                        <div class="tl-mid" aria-hidden="true"><span class="tl-arc up"></span><span class="tl-arc down"></span><span class="tl-dot"></span></div>
+                        <div class="tl-mid" aria-hidden="true"><span class="tl-c1"></span><span class="tl-c2"></span><span class="tl-stub"></span><span class="tl-dot"></span></div>
                       </li>
                     ))}
                   </ol>
-                  {mem.length > 0 && (
-                    <div class="tl-memories">
+                  {mem.man.length + mem.pool.length > 0 && (
+                    <div class="tl-memories" data-memories data-n={mem.quota}>
                       <h3>{labels.memoriesTitle}</h3>
                       <div class="album uniform" style="--cols:4;--ar:4 / 3">
-                        {mem.map((p) => (
+                        {mem.man.map((p) => (
                           <button type="button" class="zoom" data-zoom aria-label={p.alt ? undefined : labels.zoomImage}>
+                            <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
+                          </button>
+                        ))}
+                        {mem.pool.map((p, i) => (
+                          <button type="button" class="zoom" data-zoom data-pool hidden={i >= mem.quota} aria-label={p.alt ? undefined : labels.zoomImage}>
                             <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
                           </button>
                         ))}
@@ -105,6 +130,20 @@ const memories = (y: number) => {
 </Base>
 
 <script>
+  // ภาพความทรงจำ: สุ่มรูปจากข่าวมาแสดงใหม่ทุกครั้งที่เปิดหน้า (จำนวน = ข่าว × 1.5)
+  document.querySelectorAll<HTMLElement>('[data-memories]').forEach((box) => {
+    const pool = Array.from(box.querySelectorAll<HTMLElement>('[data-pool]'));
+    const n = Number(box.dataset.n) || 0;
+    if (pool.length <= n) return;
+    const idx = pool.map((_, i) => i);
+    for (let k = idx.length - 1; k > 0; k--) {
+      const r = Math.floor(Math.random() * (k + 1));
+      [idx[k], idx[r]] = [idx[r], idx[k]];
+    }
+    const pick = new Set(idx.slice(0, n));
+    pool.forEach((el, i) => (el.hidden = !pick.has(i)));
+  });
+
   const root = document.querySelector<HTMLElement>('[data-timeline]');
   const years = root?.querySelector<HTMLElement>('[data-years]');
   const nav = root?.querySelector<HTMLElement>('[data-nav]');

@@ -33,7 +33,7 @@ import { labels } from '../lib/site';
     };
     const open = (el: HTMLImageElement) => {
       const scope: ParentNode = el.closest('[data-lb-scope]') ?? document;
-      items = Array.from(scope.querySelectorAll<HTMLImageElement>('[data-zoom] img, .prose img'));
+      items = Array.from(scope.querySelectorAll<HTMLImageElement>('[data-zoom] img, .prose img')).filter((i) => i.offsetParent !== null);
       show(Math.max(0, items.indexOf(el)));
       dlg.showModal();
     };
