@@ -16,10 +16,10 @@ courses: []
 sections:
   - title: อัลบั้มรูปภาพ BFF FOREVER CRAFT
     image: null
-    imageSize: '50'
-    imageAlign: left
+    imageSize: '100'
+    imageAlign: center
     text: ''
-    textAlign: left
+    textAlign: center
     textSize: normal
     album:
       - src: /uploads/unnamed (12).webp
@@ -30,7 +30,7 @@ sections:
         alt: BFF FOREVER CRAFT SS.2
       - src: /uploads/unnamed (9).webp
         alt: BFF FOREVER CRAFT SS.1
-    albumSize: '3'
+    albumSize: '2'
     videos: []
 ---
 
