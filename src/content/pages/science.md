@@ -21,7 +21,7 @@ courses:
     description: ปรับพื้นฐานวิทยาศาสตร์พื้นฐานเพื่อเตรียมความพร้อมนักเรียนเข้าสู่ชั้นมัธยมศึกษาปีที่ 1
     documents:
       - title: เอกสารประกอบการเรียน
-        file: /uploads/pasted-image-1792760065081.webp
+        file: https://www.prakan.ac.th
         note: ''
       - title: เอกสารประกอบการเรียน
         file: /uploads/bff-2026-update4.zip
