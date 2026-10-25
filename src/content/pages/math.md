@@ -115,7 +115,16 @@ courses:
     teachers:
       - 20261024-084247
     description: โครงงานคณิตศาสตร์พื้นฐานเน้นการศึกษาศาสตร์ต่างๆ ที่มีความสัมพันธ์กับคณิตศาสตร์ เน้นการสืบเสาะ หาความรู้ต่างๆ อย่างมีเหตุผล โดยใช้คณิตศาสตร์
-    documents: []
+    documents:
+      - title: เอกสารประกอบการเรียน หน่วย 1 ความหมายของคณิตศาสตร์
+        file: /uploads/MathProject_Unit1.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 2 ความรู้เบื้องต้นของโครงงานคณิตศาสตร์
+        file: /uploads/MathProject_Unit2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 3 ตัวอย่างโครงงานคณิตศาสตร์
+        file: /uploads/MathProject_Unit3.pdf
+        note: ''
     applyUrl: ''
     closed: false
     ended: true
