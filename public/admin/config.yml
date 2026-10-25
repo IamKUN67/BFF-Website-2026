@@ -420,6 +420,15 @@ collections:
               - { label: "ชิดซ้าย", value: "left" }
               - { label: "กึ่งกลาง", value: "center" }
               - { label: "ชิดขวา", value: "right" }
+          - name: videosAlign
+            label: "การจัดแถววิดีโอ (วิดีโอที่ไม่เต็มบรรทัด)"
+            widget: select
+            default: "center"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
           - name: videos
             label: "วิดีโอ YouTube"
             label_singular: "วิดีโอ"
@@ -429,16 +438,7 @@ collections:
             fields:
               - { name: url, label: "ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)", widget: string }
               - { name: title, label: "ชื่อวิดีโอ (แสดงใต้วิดีโอ)", widget: string, required: false }
-              - { name: width, label: "ความกว้างวิดีโอ (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-              - name: align
-                label: "ตำแหน่งวิดีโอ (เมื่อกว้างไม่เต็ม)"
-                widget: select
-                default: "center"
-                required: false
-                options:
-                  - { label: "ชิดซ้าย", value: "left" }
-                  - { label: "กึ่งกลาง", value: "center" }
-                  - { label: "ชิดขวา", value: "right" }
+              - { name: width, label: "ความกว้างวิดีโอ (%) — ใส่ 50 + 50 หรือ 33 + 33 + 33 ติดกัน = อยู่บรรทัดเดียวกัน", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
               - name: ratio
                 label: "สัดส่วนจอวิดีโอ"
                 widget: select
@@ -678,6 +678,15 @@ collections:
               - { label: "ชิดซ้าย", value: "left" }
               - { label: "กึ่งกลาง", value: "center" }
               - { label: "ชิดขวา", value: "right" }
+          - name: videosAlign
+            label: "การจัดแถววิดีโอ (วิดีโอที่ไม่เต็มบรรทัด)"
+            widget: select
+            default: "center"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
           - name: videos
             label: "วิดีโอ YouTube"
             label_singular: "วิดีโอ"
@@ -687,16 +696,7 @@ collections:
             fields:
               - { name: url, label: "ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)", widget: string }
               - { name: title, label: "ชื่อวิดีโอ (แสดงใต้วิดีโอ)", widget: string, required: false }
-              - { name: width, label: "ความกว้างวิดีโอ (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-              - name: align
-                label: "ตำแหน่งวิดีโอ (เมื่อกว้างไม่เต็ม)"
-                widget: select
-                default: "center"
-                required: false
-                options:
-                  - { label: "ชิดซ้าย", value: "left" }
-                  - { label: "กึ่งกลาง", value: "center" }
-                  - { label: "ชิดขวา", value: "right" }
+              - { name: width, label: "ความกว้างวิดีโอ (%) — ใส่ 50 + 50 หรือ 33 + 33 + 33 ติดกัน = อยู่บรรทัดเดียวกัน", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
               - name: ratio
                 label: "สัดส่วนจอวิดีโอ"
                 widget: select

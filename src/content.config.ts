@@ -41,6 +41,7 @@ const sections = list(
     albumAlign: str, // left | center | right
     album: list(z.object({ src: z.string(), alt: str })),
     videos: list(z.object({ url: z.string(), title: str, width: pct, align: str, ratio: str })),
+    videosAlign: str, // left | center | right (การจัดแถววิดีโอ)
   }),
 );
 

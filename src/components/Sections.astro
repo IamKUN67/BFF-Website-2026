@@ -47,9 +47,9 @@ const RATIO: Record<string, string> = { '16:9': '16 / 9', '4:3': '4 / 3', '1:1':
         </div>
       )}
       {videos.length > 0 && (
-        <div class="videos">
+        <div class={`videos jc-${pick(s.videosAlign, LR, 'center')}`}>
           {videos.map((v: any) => (
-            <figure class={`video blk al-${pick(v.align, LR, 'center')}`} style={`--w:${v.width ?? 100}%;--r:${RATIO[v.ratio] ?? '16 / 9'}`}>
+            <figure class={`video${v.ratio === '9:16' ? ' vertical' : ''}`} style={`--w:${v.width ?? 100}%;--r:${RATIO[v.ratio] ?? '16 / 9'}`}>
               {v.id ? (
                 <iframe src={`https://www.youtube-nocookie.com/embed/${v.id}`} title={v.title ?? labels.videoDefaultTitle} loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
               ) : (

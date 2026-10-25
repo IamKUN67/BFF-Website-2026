@@ -579,3 +579,10 @@ html[data-fs="2"] { font-size: 130%; }
 .album { columns: auto; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .8rem; }
 .album .zoom { flex: 0 0 calc((100% - (var(--cols, 3) - 1) * .8rem) / var(--cols, 3)); width: auto; margin: 0; break-inside: auto; }
 @media (max-width: 560px) { .album { --cols: 2 !important; } }
+
+/* ───── วิดีโอ: เรียงต่อกันเป็นแถว ตัวที่ความกว้างรวมกันไม่เกิน 100% จะอยู่บรรทัดเดียวกัน ───── */
+.videos { --g: 1.2rem; display: flex; flex-wrap: wrap; gap: 0; align-items: flex-start; justify-content: center; margin-inline: calc(var(--g) / -2); }
+.videos.jc-left { justify-content: flex-start; }
+.videos.jc-right { justify-content: flex-end; }
+.videos .video { box-sizing: border-box; flex: 0 0 var(--w, 100%); width: var(--w, 100%); max-width: 100%; margin: 0 0 var(--g); padding: 0 calc(var(--g) / 2); }
+@media (max-width: 640px) { .videos .video { flex-basis: 100%; width: 100%; } .videos .video.vertical { max-width: 360px; } }
