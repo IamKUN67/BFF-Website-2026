@@ -11,7 +11,7 @@ const { docs = [] } = Astro.props;
       <span class="doc-text">
         <strong>{d.title}</strong>
         {d.note && <span>{d.note}</span>}
-        {d.size && <small>{d.ext} · {d.size}</small>}
+        {d.size && <small>{d.size}</small>}
       </span>
       <a class="btn btn-outline doc-dl" href={d.href} download><Icon name="download" size={18} />{labels.docDownload}<span class="sr-only"> {d.title}</span></a>
     </li>

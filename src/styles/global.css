@@ -482,3 +482,26 @@ html[data-fs="2"] { font-size: 130%; }
 .tl-item .zoom { margin-top: .8rem; max-width: 420px; }
 .tl-memories { margin-top: 2rem; }
 .tl-memories h3 { margin: 0 0 .8rem; text-align: center; }
+
+/* ───── รายการเอกสาร: จัดตามความกว้างของกรอบ ไม่ใช่ความกว้างหน้าจอ (การ์ดแคบ = ปุ่มอยู่ใต้ข้อความ) ───── */
+.doc-list { container-type: inline-size; }
+.doc { display: grid; grid-template-columns: auto 1fr; gap: .6rem .9rem; align-items: center; }
+.doc-text strong { line-height: 1.5; }
+.doc-dl { grid-column: 1 / -1; width: 100%; justify-content: center; }
+@container (min-width: 30rem) {
+  .doc { grid-template-columns: auto 1fr auto; }
+  .doc-dl { grid-column: auto; width: auto; }
+}
+
+/* ───── ไทม์ไลน์: เหตุการณ์ที่เพิ่มเอง = ใหญ่เด่น / ข่าวอัตโนมัติ = บรรทัดเล็ก ลิงก์ไม่ขีดเส้นใต้ ───── */
+.tl-item a { color: inherit; text-decoration: none; }
+.tl-item a:hover { color: var(--link); text-decoration: underline; }
+.tl-item.is-major { padding: 1.5rem 1.7rem; border-left: 6px solid var(--c-blue); }
+.tl-item.is-major::before { left: calc(-1.8rem - 14px); top: 1.7rem; width: 24px; height: 24px; background: var(--c-red); box-shadow: 0 0 0 3px var(--c-red); }
+.tl-item.is-major time { display: inline-block; margin-bottom: .3rem; padding: .1rem .9rem; border-radius: 999px; background: var(--tint); color: var(--link); font-size: 1rem; font-weight: 600; }
+.tl-item.is-major h3 { margin: .2rem 0 .6rem; font-size: clamp(1.4rem, 1rem + 1.6vw, 1.8rem); line-height: 1.4; }
+.tl-item.is-major .zoom { max-width: 100%; margin-top: 1rem; }
+.tl-item.is-minor { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .8rem; margin-bottom: .8rem; padding: .5rem .95rem; border-radius: 10px; box-shadow: none; background: transparent; font-size: .95rem; }
+.tl-item.is-minor::before { left: calc(-1.8rem - 7px); top: .95rem; width: 10px; height: 10px; border-width: 2px; box-shadow: none; background: var(--c-green); }
+.tl-item.is-minor time { flex: none; color: var(--muted); font-size: .9rem; }
+.tl-item.is-minor a { font-weight: 500; }

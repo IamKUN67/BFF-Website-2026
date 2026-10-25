@@ -4,6 +4,13 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const str = z.string().nullish();
+// วันที่ที่ไม่บังคับ: หน้าแอดมินอาจบันทึกช่องว่างเป็น null, "" หรือ "Invalid date" ให้ถือว่า "ไม่มีวันที่" ทั้งหมด
+const optDate = z.preprocess((v) => {
+  if (v == null) return undefined;
+  if (typeof v === 'string' && (!v.trim() || /invalid/i.test(v))) return undefined;
+  if (v instanceof Date && Number.isNaN(v.getTime())) return undefined;
+  return v;
+}, z.coerce.date().optional());
 const bool = z.boolean().nullish().transform((v) => v ?? false);
 const list = <T extends z.ZodTypeAny>(item: T) =>
   z.array(item).nullish().transform((v) => v ?? []);
@@ -31,8 +38,8 @@ const sections = list(
 const course = z.object({
   title: z.string(),
   group: str,
-  startDate: z.coerce.date().nullish(),
-  endDate: z.coerce.date().nullish(),
+  startDate: optDate,
+  endDate: optDate,
   schedule: str,
   teachers: list(z.string()),
   description: str,
@@ -99,8 +106,8 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     status: z.enum(['draft', 'published']).nullish().transform((v) => v ?? 'draft'),
-    date: z.coerce.date().nullish(),
-    updated: z.coerce.date().nullish(),
+    date: optDate,
+    updated: optDate,
     category: str,
     pinned: bool,
     isNew: bool,
@@ -133,7 +140,7 @@ const events = defineCollection({
   schema: z.object({
     title: z.string(),
     start: z.coerce.date(),
-    end: z.coerce.date().nullish(),
+    end: optDate,
     location: str,
     details: str,
     link: str,
