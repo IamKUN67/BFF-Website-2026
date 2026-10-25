@@ -9,6 +9,7 @@ newsCategory: ข่าวการศึกษา
 teachers:
   - 20261024-084344
 links: []
+embeds: []
 courses:
   - title: เก็นชินอิมแพกต์ เกมเพลย์ และการคำนวณพื้นฐาน
     group: ''
@@ -18,6 +19,16 @@ courses:
     teachers:
       - 20261024-084344
     description: ศึกษาและวิเคราะห์เนื้อเรื่องหลักของ Genshin Impact ผ่านการเดินทางของตัวเอกเพื่อตามหาฝาแฝดและค้นหาความจริงของโลก พร้อมเรียนรู้ระบบการเล่นพื้นฐาน ธาตุทั้ง 7 และปฏิกิริยาระหว่างธาตุ การคำนวณพลังโจมตี การพัฒนาตัวละคร และระบบสำคัญภายในเกม เพื่อเสริมสร้างความเข้าใจและทักษะในการเล่นตั้งแต่ระดับเริ่มต้นจนสามารถผ่านเนื้อหาและความท้าทายต่าง ๆ ภายในเกมได้อย่างมีประสิทธิภาพ
+    documents:
+      - title: เอกสารประกอบการเรียน หน่วย 1 เนิ้อเรื่องหลัก Genshin Impact
+        file: /uploads/เอกสารประกอบการเรียน หน่วย 1 เนิ้อเรื่องหลัก Genshin Impact.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 2 เกมเพลย์พื้นฐาน Genshin Impact
+        file: /uploads/เอกสารประกอบการเรียน หน่วย 2 เกมเพลย์พื้นฐาน Genshin Impact.pdf
+        note: ''
+    applyUrl: ''
+    closed: false
+    ended: false
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1f4AzLBpGzA7Hrn8MHb9X7qO_Eg95ha1vXsoJgVf029w/edit?usp=sharing
