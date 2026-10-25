@@ -420,6 +420,17 @@ collections:
               - { label: "ชิดซ้าย", value: "left" }
               - { label: "กึ่งกลาง", value: "center" }
               - { label: "ชิดขวา", value: "right" }
+          - name: albumRatio
+            label: "สัดส่วนรูปย่อในอัลบั้ม (ตอนกดขยายจะเห็นรูปเต็มตามจริงเสมอ)"
+            widget: select
+            default: "4:3"
+            required: false
+            options:
+              - { label: "เท่ากันทุกรูป 4:3 (แนะนำ)", value: "4:3" }
+              - { label: "เท่ากันทุกรูป 16:9 (แนวนอนกว้าง)", value: "16:9" }
+              - { label: "เท่ากันทุกรูป 1:1 (จัตุรัส)", value: "1:1" }
+              - { label: "เท่ากันทุกรูป 3:4 (แนวตั้ง)", value: "3:4" }
+              - { label: "ตามสัดส่วนรูปจริง (ขนาดไม่เท่ากัน)", value: "auto" }
           - name: videosAlign
             label: "การจัดแถววิดีโอ (วิดีโอที่ไม่เต็มบรรทัด)"
             widget: select
@@ -678,6 +689,17 @@ collections:
               - { label: "ชิดซ้าย", value: "left" }
               - { label: "กึ่งกลาง", value: "center" }
               - { label: "ชิดขวา", value: "right" }
+          - name: albumRatio
+            label: "สัดส่วนรูปย่อในอัลบั้ม (ตอนกดขยายจะเห็นรูปเต็มตามจริงเสมอ)"
+            widget: select
+            default: "4:3"
+            required: false
+            options:
+              - { label: "เท่ากันทุกรูป 4:3 (แนะนำ)", value: "4:3" }
+              - { label: "เท่ากันทุกรูป 16:9 (แนวนอนกว้าง)", value: "16:9" }
+              - { label: "เท่ากันทุกรูป 1:1 (จัตุรัส)", value: "1:1" }
+              - { label: "เท่ากันทุกรูป 3:4 (แนวตั้ง)", value: "3:4" }
+              - { label: "ตามสัดส่วนรูปจริง (ขนาดไม่เท่ากัน)", value: "auto" }
           - name: videosAlign
             label: "การจัดแถววิดีโอ (วิดีโอที่ไม่เต็มบรรทัด)"
             widget: select

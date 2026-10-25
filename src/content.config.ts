@@ -39,6 +39,7 @@ const sections = list(
     albumSize: str, // 2–6 (จำนวนคอลัมน์)
     albumWidth: pct, // % ความกว้างของอัลบั้มทั้งชุด
     albumAlign: str, // left | center | right
+    albumRatio: str, // 4:3 | 16:9 | 1:1 | 3:4 | auto (สัดส่วนรูปย่อ)
     album: list(z.object({ src: z.string(), alt: str })),
     videos: list(z.object({ url: z.string(), title: str, width: pct, align: str, ratio: str })),
     videosAlign: str, // left | center | right (การจัดแถววิดีโอ)

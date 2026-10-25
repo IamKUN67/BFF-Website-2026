@@ -83,7 +83,7 @@ const memories = (y: number) => {
                   {mem.length > 0 && (
                     <div class="tl-memories">
                       <h3>{labels.memoriesTitle}</h3>
-                      <div class="album" style="--cols:4">
+                      <div class="album uniform" style="--cols:4;--ar:4 / 3">
                         {mem.map((p) => (
                           <button type="button" class="zoom" data-zoom aria-label={p.alt ? undefined : labels.zoomImage}>
                             <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />

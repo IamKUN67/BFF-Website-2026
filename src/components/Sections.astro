@@ -4,6 +4,7 @@ import { img, md, youtubeId, labels } from '../lib/site';
 const { sections = [] } = Astro.props;
 const pick = (v: any, ok: string[], d: string) => (ok.includes(v) ? v : d);
 const LR = ['left', 'center', 'right'];
+const AR: Record<string, string> = { '4:3': '4 / 3', '16:9': '16 / 9', '1:1': '1 / 1', '3:4': '3 / 4' };
 const RATIO: Record<string, string> = { '16:9': '16 / 9', '4:3': '4 / 3', '1:1': '1 / 1', '9:16': '9 / 16' };
 ---
 {sections.map((s: any) => {
@@ -20,6 +21,7 @@ const RATIO: Record<string, string> = { '16:9': '16 / 9', '4:3': '4 / 3', '1:1':
   const cols = pick(String(s.albumSize ?? '3'), ['2', '3', '4', '5', '6'], '3');
   const albumW: number = s.albumWidth ?? 100;
   const albumA = pick(s.albumAlign, LR, 'center');
+  const ar = pick(s.albumRatio, ['4:3', '16:9', '1:1', '3:4', 'auto'], '4:3');
   const album = (s.album ?? []).map((a: any) => img(a, where)).filter(Boolean) as { src: string; alt: string }[];
   const videos = (s.videos ?? []).filter((v: any) => v?.url).map((v: any) => ({ ...v, id: youtubeId(v.url) }));
   return (
@@ -37,7 +39,7 @@ const RATIO: Record<string, string> = { '16:9': '16 / 9', '4:3': '4 / 3', '1:1':
       )}
       {album.length > 0 && (
         <div class={`blk al-${albumA} album-box`} style={`--w:${albumW}%`}>
-          <div class="album" style={`--cols:${cols}`}>
+          <div class={`album${ar === 'auto' ? '' : ' uniform'}`} style={`--cols:${cols};--ar:${AR[ar] ?? '4 / 3'}`}>
             {album.map((a) => (
               <button type="button" class="zoom" data-zoom aria-label={a.alt ? undefined : labels.zoomImage}>
                 <img src={a.src} alt={a.alt} loading="lazy" decoding="async" />

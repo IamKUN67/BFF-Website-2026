@@ -586,3 +586,7 @@ html[data-fs="2"] { font-size: 130%; }
 .videos.jc-right { justify-content: flex-end; }
 .videos .video { box-sizing: border-box; flex: 0 0 var(--w, 100%); width: var(--w, 100%); max-width: 100%; margin: 0 0 var(--g); padding: 0 calc(var(--g) / 2); }
 @media (max-width: 640px) { .videos .video { flex-basis: 100%; width: 100%; } .videos .video.vertical { max-width: 360px; } }
+
+/* ───── อัลบั้ม: รูปย่อสัดส่วนเท่ากัน (ครอบจากตรงกลาง) — ตอนกดขยายแสดงรูปเต็มตามจริง ───── */
+.album.uniform .zoom { aspect-ratio: var(--ar, 4 / 3); }
+.album.uniform .zoom img { width: 100%; height: 100%; object-fit: cover; }
