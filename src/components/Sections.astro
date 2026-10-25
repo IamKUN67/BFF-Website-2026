@@ -1,24 +1,30 @@
 ---
-// "ส่วนเนื้อหา": หัวข้อ → รูปประกอบ (ปรับขนาด/ตำแหน่งได้) + ข้อความ (จัดชิด/ขนาดได้) → อัลบั้ม → วิดีโอ YouTube
+// "ส่วนเนื้อหา": หัวข้อ → รูปประกอบ + ข้อความ → อัลบั้ม → วิดีโอ YouTube ทุกอย่างปรับขนาด (%) และตำแหน่ง (ซ้าย/กลาง/ขวา) ได้
 import { img, md, youtubeId, labels } from '../lib/site';
 const { sections = [] } = Astro.props;
 const pick = (v: any, ok: string[], d: string) => (ok.includes(v) ? v : d);
+const LR = ['left', 'center', 'right'];
+const RATIO: Record<string, string> = { '16:9': '16 / 9', '4:3': '4 / 3', '1:1': '1 / 1', '9:16': '9 / 16' };
 ---
 {sections.map((s: any) => {
   const where = `(ส่วน: ${s.title ?? ''})`;
   const lead = img(s.image, where);
   const html = md(s.text);
-  const size = pick(s.imageSize, ['25', '50', '75', '100'], '50');
-  const align = pick(s.imageAlign, ['left', 'center', 'right'], 'left');
-  const pos = size === '100' ? 'block-full' : !html || align === 'center' ? `block-${align}` : `float-${align}`;
-  const ta = pick(s.textAlign, ['left', 'center', 'right', 'justify'], 'left');
+  const size: number = s.imageSize ?? 50;
+  const align = pick(s.imageAlign, LR, 'left');
+  const pos = size >= 100 ? 'block-full' : !html || align === 'center' || size > 60 ? `block-${align}` : `float-${align}`;
+  const ta = pick(s.textAlign, [...LR, 'justify'], 'left');
   const fs = pick(s.textSize, ['normal', 'large', 'xlarge'], 'normal');
-  const cols = pick(s.albumSize, ['2', '3', '4'], '3');
+  const tta = pick(s.titleAlign, LR, 'left');
+  const tfs = pick(s.titleSize, ['normal', 'large', 'xlarge'], 'normal');
+  const cols = pick(String(s.albumSize ?? '3'), ['2', '3', '4', '5', '6'], '3');
+  const albumW: number = s.albumWidth ?? 100;
+  const albumA = pick(s.albumAlign, LR, 'center');
   const album = (s.album ?? []).map((a: any) => img(a, where)).filter(Boolean) as { src: string; alt: string }[];
   const videos = (s.videos ?? []).filter((v: any) => v?.url).map((v: any) => ({ ...v, id: youtubeId(v.url) }));
   return (
     <section class="sec" data-lb-scope>
-      {s.title && <h2 class="sec-title">{s.title}</h2>}
+      {s.title && <h2 class={`sec-title ta-${tta} fs-${tfs}`}>{s.title}</h2>}
       {(lead || html) && (
         <div class="sec-main">
           {lead && (
@@ -30,18 +36,20 @@ const pick = (v: any, ok: string[], d: string) => (ok.includes(v) ? v : d);
         </div>
       )}
       {album.length > 0 && (
-        <div class="album" style={`--cols:${cols}`}>
-          {album.map((a) => (
-            <button type="button" class="zoom" data-zoom aria-label={a.alt ? undefined : labels.zoomImage}>
-              <img src={a.src} alt={a.alt} loading="lazy" decoding="async" />
-            </button>
-          ))}
+        <div class={`blk al-${albumA} album-box`} style={`--w:${albumW}%`}>
+          <div class="album" style={`--cols:${cols}`}>
+            {album.map((a) => (
+              <button type="button" class="zoom" data-zoom aria-label={a.alt ? undefined : labels.zoomImage}>
+                <img src={a.src} alt={a.alt} loading="lazy" decoding="async" />
+              </button>
+            ))}
+          </div>
         </div>
       )}
       {videos.length > 0 && (
         <div class="videos">
           {videos.map((v: any) => (
-            <figure class="video">
+            <figure class={`video blk al-${pick(v.align, LR, 'center')}`} style={`--w:${v.width ?? 100}%;--r:${RATIO[v.ratio] ?? '16 / 9'}`}>
               {v.id ? (
                 <iframe src={`https://www.youtube-nocookie.com/embed/${v.id}`} title={v.title ?? labels.videoDefaultTitle} loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
               ) : (

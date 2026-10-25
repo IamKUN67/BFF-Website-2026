@@ -16,6 +16,10 @@ const { Content } = await render(post);
 const cover = img(d.cover, `(ข่าว: ${d.title})`);
 const hasIntro = !!post.body?.trim();
 const isUpdated = !!(d.updated && d.date && d.updated.getTime() - d.date.getTime() >= 86400000);
+const pick = (v: any, ok: string[], x: string) => (ok.includes(v) ? v : x);
+const coverAlign = pick(d.coverAlign, ['left', 'center', 'right'], 'center');
+const bodyAlign = pick(d.bodyAlign, ['left', 'center', 'right', 'justify'], 'left');
+const bodySize = pick(d.bodySize, ['normal', 'large', 'xlarge'], 'normal');
 ---
 <Base title={d.title} description={plain(post.body) || d.title} image={cover?.src}>
   <header class="page-band">
@@ -36,8 +40,8 @@ const isUpdated = !!(d.updated && d.date && d.updated.getTime() - d.date.getTime
   <article class="section pull-up">
     <div class="container narrow">
       <div class="paper" data-lb-scope>
-        {cover && <img class="post-cover" src={cover.src} alt={cover.alt} />}
-        {hasIntro && <div class="prose"><Content /></div>}
+        {cover && <img class={`post-cover blk al-${coverAlign}`} style={`--w:${d.coverSize ?? 100}%`} src={cover.src} alt={cover.alt} />}
+        {hasIntro && <div class={`prose ta-${bodyAlign} fs-${bodySize}`}><Content /></div>}
         <Sections sections={d.sections} />
       </div>
       <Share />

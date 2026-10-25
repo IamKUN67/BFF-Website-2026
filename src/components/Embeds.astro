@@ -14,12 +14,15 @@ const prep = (raw: string) => {
     return null;
   }
 };
+const pick = (v: any, d: string) => (['left', 'center', 'right'].includes(v) ? v : d);
 const items = embeds.map((e: any) => ({ ...e, ...prep(e.url) })).filter((e: any) => e.src);
 ---
 {items.map((e: any) => (
   <section class="embed" style={`--h:${Math.min(3000, Math.max(300, e.height ?? 900))}px`}>
     {e.title && <h2 class="sec-title">{e.title}</h2>}
-    <iframe src={e.src} title={e.title ?? labels.embedDefaultTitle} loading="lazy"></iframe>
-    <p class="center"><a class="btn btn-outline" href={e.open} target="_blank" rel="noopener">{labels.embedOpen}<span class="sr-only"> ({labels.externalHint})</span></a></p>
+    <div class={`blk al-${pick(e.align, 'center')}`} style={`--w:${e.width ?? 100}%`}>
+      <iframe src={e.src} title={e.title ?? labels.embedDefaultTitle} loading="lazy"></iframe>
+      <p class="center"><a class="btn btn-outline" href={e.open} target="_blank" rel="noopener">{labels.embedOpen}<span class="sr-only"> ({labels.externalHint})</span></a></p>
+    </div>
   </section>
 ))}

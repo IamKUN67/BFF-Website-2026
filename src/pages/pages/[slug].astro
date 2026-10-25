@@ -21,6 +21,9 @@ const d = page.data;
 const { Content } = await render(page);
 const site = await getSite();
 const hasBody = !!page.body?.trim();
+const pick = (v: any, ok: string[], x: string) => (ok.includes(v) ? v : x);
+const bodyAlign = pick(d.bodyAlign, ['left', 'center', 'right', 'justify'], 'left');
+const bodySize = pick(d.bodySize, ['normal', 'large', 'xlarge'], 'normal');
 const news = d.newsCategory ? (await getPublishedPosts()).filter((p) => p.data.category === d.newsCategory).slice(0, 6) : [];
 const hasMain = d.showContact || d.links.length > 0 || d.embeds.length > 0 || hasBody || d.sections.length > 0;
 ---
@@ -34,7 +37,7 @@ const hasMain = d.showContact || d.links.length > 0 || d.embeds.length > 0 || ha
           {d.links.length > 0 && (
             <div class="link-cards">
               {d.links.map((l) => (
-                <a class="link-card" href={url(l.url)} target="_blank" rel="noopener">
+                <a class={`link-card blk al-${pick(l.align, ['left', 'center', 'right'], 'center')}`} style={`--w:${l.width ?? 100}%`} href={url(l.url)} target="_blank" rel="noopener">
                   <span class="lc-icon"><Icon name="external" size={26} /></span>
                   <span class="lc-text"><strong>{l.label}</strong>{l.note && <span>{l.note}</span>}</span>
                   <span class="lc-go">{labels.openLink}<span class="sr-only"> ({labels.externalHint})</span></span>
@@ -44,7 +47,7 @@ const hasMain = d.showContact || d.links.length > 0 || d.embeds.length > 0 || ha
           )}
           {d.embeds.length > 0 && <Embeds embeds={d.embeds} />}
           {d.showContact && <ContactChannels site={site} />}
-          {hasBody && <div class="prose"><Content /></div>}
+          {hasBody && <div class={`prose ta-${bodyAlign} fs-${bodySize}`}><Content /></div>}
           <Sections sections={d.sections} />
         </div>
       )}

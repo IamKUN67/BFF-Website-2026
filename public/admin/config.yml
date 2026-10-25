@@ -297,7 +297,36 @@ collections:
         fields:
           - { name: src, label: "ไฟล์รูป", widget: image, required: false }
           - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
+      - { name: coverSize, label: "ขนาดรูปปกในหน้าข่าว (% ของความกว้าง)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
+      - name: coverAlign
+        label: "ตำแหน่งรูปปก (เมื่อกว้างไม่เต็ม)"
+        widget: select
+        default: "center"
+        required: false
+        options:
+          - { label: "ชิดซ้าย", value: "left" }
+          - { label: "กึ่งกลาง", value: "center" }
+          - { label: "ชิดขวา", value: "right" }
       - { name: body, label: "ข้อความนำ (ไม่บังคับ แสดงก่อนส่วนเนื้อหา)", widget: markdown, required: false }
+      - name: bodyAlign
+        label: "การจัดข้อความนำ"
+        widget: select
+        default: "left"
+        required: false
+        options:
+          - { label: "ชิดซ้าย", value: "left" }
+          - { label: "กึ่งกลาง", value: "center" }
+          - { label: "ชิดขวา", value: "right" }
+          - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
+      - name: bodySize
+        label: "ขนาดตัวอักษรข้อความนำ"
+        widget: select
+        default: "normal"
+        required: false
+        options:
+          - { label: "ปกติ", value: "normal" }
+          - { label: "ใหญ่", value: "large" }
+          - { label: "ใหญ่มาก", value: "xlarge" }
       - name: sections
         label: "ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)"
         label_singular: "ส่วน"
@@ -306,6 +335,24 @@ collections:
         summary: "{{fields.title}}"
         fields:
           - { name: title, label: "หัวข้อของส่วนนี้ เช่น กิจกรรมปีใหม่", widget: string, required: false }
+          - name: titleAlign
+            label: "ตำแหน่งหัวข้อ"
+            widget: select
+            default: "left"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
+          - name: titleSize
+            label: "ขนาดหัวข้อ"
+            widget: select
+            default: "normal"
+            required: false
+            options:
+              - { label: "ปกติ", value: "normal" }
+              - { label: "ใหญ่", value: "large" }
+              - { label: "ใหญ่มาก", value: "xlarge" }
           - name: image
             label: "รูปประกอบข้อความ (แสดงข้างข้อความ)"
             widget: object
@@ -313,16 +360,7 @@ collections:
             fields:
               - { name: src, label: "ไฟล์รูป", widget: image, required: false }
               - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
-          - name: imageSize
-            label: "ขนาดรูปประกอบ"
-            widget: select
-            default: "50"
-            required: false
-            options:
-              - { label: "เล็ก (25% ของความกว้าง)", value: "25" }
-              - { label: "กลาง (50%)", value: "50" }
-              - { label: "ใหญ่ (75%)", value: "75" }
-              - { label: "เต็มความกว้าง (100%)", value: "100" }
+          - { name: imageSize, label: "ขนาดรูปประกอบ (% ของความกว้าง)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 50, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง) รูปที่ใหญ่เกิน 60% จะไม่ให้ข้อความไหลล้อม" }
           - name: imageAlign
             label: "ตำแหน่งรูป (ชิดซ้าย/ขวา = ข้อความไหลล้อมรูป, กึ่งกลาง = รูปอยู่เหนือข้อความ)"
             widget: select
@@ -362,14 +400,26 @@ collections:
               - { name: src, label: "ไฟล์รูป", widget: image }
               - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
           - name: albumSize
-            label: "ขนาดรูปในอัลบั้ม"
+            label: "จำนวนคอลัมน์ในอัลบั้ม (มาก = รูปเล็ก)"
             widget: select
             default: "3"
             required: false
             options:
-              - { label: "เล็ก (4 คอลัมน์)", value: "4" }
-              - { label: "กลาง (3 คอลัมน์)", value: "3" }
-              - { label: "ใหญ่ (2 คอลัมน์)", value: "2" }
+              - { label: "2 คอลัมน์ (รูปใหญ่)", value: "2" }
+              - { label: "3 คอลัมน์", value: "3" }
+              - { label: "4 คอลัมน์", value: "4" }
+              - { label: "5 คอลัมน์", value: "5" }
+              - { label: "6 คอลัมน์ (รูปเล็ก)", value: "6" }
+          - { name: albumWidth, label: "ความกว้างของอัลบั้มทั้งชุด (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
+          - name: albumAlign
+            label: "ตำแหน่งอัลบั้ม (เมื่อกว้างไม่เต็ม)"
+            widget: select
+            default: "center"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
           - name: videos
             label: "วิดีโอ YouTube"
             label_singular: "วิดีโอ"
@@ -379,6 +429,26 @@ collections:
             fields:
               - { name: url, label: "ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)", widget: string }
               - { name: title, label: "ชื่อวิดีโอ (แสดงใต้วิดีโอ)", widget: string, required: false }
+              - { name: width, label: "ความกว้างวิดีโอ (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
+              - name: align
+                label: "ตำแหน่งวิดีโอ (เมื่อกว้างไม่เต็ม)"
+                widget: select
+                default: "center"
+                required: false
+                options:
+                  - { label: "ชิดซ้าย", value: "left" }
+                  - { label: "กึ่งกลาง", value: "center" }
+                  - { label: "ชิดขวา", value: "right" }
+              - name: ratio
+                label: "สัดส่วนจอวิดีโอ"
+                widget: select
+                default: "16:9"
+                required: false
+                options:
+                  - { label: "16:9 (ปกติ)", value: "16:9" }
+                  - { label: "4:3", value: "4:3" }
+                  - { label: "1:1 (สี่เหลี่ยมจัตุรัส)", value: "1:1" }
+                  - { label: "9:16 (แนวตั้ง เช่น Shorts ควรตั้งความกว้าง 30–50%)", value: "9:16" }
 
   # ───────────── 4) หน้าทั่วไป ─────────────
   - name: pages
@@ -421,6 +491,16 @@ collections:
           - { name: label, label: "ชื่อปุ่ม", widget: string }
           - { name: url, label: "ลิงก์", widget: string }
           - { name: note, label: "ข้อความเล็กใต้ชื่อ", widget: string, required: false }
+          - { name: width, label: "ความกว้างของปุ่ม (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
+          - name: align
+            label: "ตำแหน่งปุ่ม (เมื่อกว้างไม่เต็ม)"
+            widget: select
+            default: "center"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
       - name: embeds
         label: "ฝังแบบฟอร์ม/เอกสารในหน้า (เช่น Google Forms กรอกได้ในหน้าเว็บเลย)"
         label_singular: "กรอบฝัง"
@@ -431,6 +511,16 @@ collections:
           - { name: title, label: "ชื่อที่แสดงเหนือกรอบ", widget: string, required: false }
           - { name: url, label: "ลิงก์ฟอร์ม (ต้องขึ้นต้นด้วย https://)", widget: string, hint: "Google Forms: เปิดฟอร์ม กด ส่ง แล้วเลือกลิงก์ (ไอคอนโซ่) แล้วกด ย่อ URL ออก (ติ๊กออก) ก่อนคัดลอก ลิงก์ย่อ forms.gle ใช้ฝังไม่ได้ ระบบจะเติมตัวเลือกฝังให้เอง" }
           - { name: height, label: "ความสูงของกรอบ (พิกเซล)", widget: number, value_type: int, min: 300, max: 3000, default: 900, required: false }
+          - { name: width, label: "ความกว้างของกรอบ (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
+          - name: align
+            label: "ตำแหน่งกรอบ (เมื่อกว้างไม่เต็ม)"
+            widget: select
+            default: "center"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
       - name: courses
         label: "คอร์สเรียนของวิชานี้ (เพิ่มได้หลายคอร์ส ลากเรียงลำดับได้)"
         label_singular: "คอร์ส"
@@ -476,6 +566,25 @@ collections:
               - { name: label, label: "ชื่อปุ่ม เช่น ดูคะแนน", widget: string }
               - { name: url, label: "ลิงก์", widget: string }
       - { name: body, label: "ข้อความนำ (ไม่บังคับ)", widget: markdown, required: false }
+      - name: bodyAlign
+        label: "การจัดข้อความนำ"
+        widget: select
+        default: "left"
+        required: false
+        options:
+          - { label: "ชิดซ้าย", value: "left" }
+          - { label: "กึ่งกลาง", value: "center" }
+          - { label: "ชิดขวา", value: "right" }
+          - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
+      - name: bodySize
+        label: "ขนาดตัวอักษรข้อความนำ"
+        widget: select
+        default: "normal"
+        required: false
+        options:
+          - { label: "ปกติ", value: "normal" }
+          - { label: "ใหญ่", value: "large" }
+          - { label: "ใหญ่มาก", value: "xlarge" }
       - name: sections
         label: "ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)"
         label_singular: "ส่วน"
@@ -484,6 +593,24 @@ collections:
         summary: "{{fields.title}}"
         fields:
           - { name: title, label: "หัวข้อของส่วนนี้ เช่น กิจกรรมปีใหม่", widget: string, required: false }
+          - name: titleAlign
+            label: "ตำแหน่งหัวข้อ"
+            widget: select
+            default: "left"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
+          - name: titleSize
+            label: "ขนาดหัวข้อ"
+            widget: select
+            default: "normal"
+            required: false
+            options:
+              - { label: "ปกติ", value: "normal" }
+              - { label: "ใหญ่", value: "large" }
+              - { label: "ใหญ่มาก", value: "xlarge" }
           - name: image
             label: "รูปประกอบข้อความ (แสดงข้างข้อความ)"
             widget: object
@@ -491,16 +618,7 @@ collections:
             fields:
               - { name: src, label: "ไฟล์รูป", widget: image, required: false }
               - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
-          - name: imageSize
-            label: "ขนาดรูปประกอบ"
-            widget: select
-            default: "50"
-            required: false
-            options:
-              - { label: "เล็ก (25% ของความกว้าง)", value: "25" }
-              - { label: "กลาง (50%)", value: "50" }
-              - { label: "ใหญ่ (75%)", value: "75" }
-              - { label: "เต็มความกว้าง (100%)", value: "100" }
+          - { name: imageSize, label: "ขนาดรูปประกอบ (% ของความกว้าง)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 50, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง) รูปที่ใหญ่เกิน 60% จะไม่ให้ข้อความไหลล้อม" }
           - name: imageAlign
             label: "ตำแหน่งรูป (ชิดซ้าย/ขวา = ข้อความไหลล้อมรูป, กึ่งกลาง = รูปอยู่เหนือข้อความ)"
             widget: select
@@ -540,14 +658,26 @@ collections:
               - { name: src, label: "ไฟล์รูป", widget: image }
               - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
           - name: albumSize
-            label: "ขนาดรูปในอัลบั้ม"
+            label: "จำนวนคอลัมน์ในอัลบั้ม (มาก = รูปเล็ก)"
             widget: select
             default: "3"
             required: false
             options:
-              - { label: "เล็ก (4 คอลัมน์)", value: "4" }
-              - { label: "กลาง (3 คอลัมน์)", value: "3" }
-              - { label: "ใหญ่ (2 คอลัมน์)", value: "2" }
+              - { label: "2 คอลัมน์ (รูปใหญ่)", value: "2" }
+              - { label: "3 คอลัมน์", value: "3" }
+              - { label: "4 คอลัมน์", value: "4" }
+              - { label: "5 คอลัมน์", value: "5" }
+              - { label: "6 คอลัมน์ (รูปเล็ก)", value: "6" }
+          - { name: albumWidth, label: "ความกว้างของอัลบั้มทั้งชุด (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
+          - name: albumAlign
+            label: "ตำแหน่งอัลบั้ม (เมื่อกว้างไม่เต็ม)"
+            widget: select
+            default: "center"
+            required: false
+            options:
+              - { label: "ชิดซ้าย", value: "left" }
+              - { label: "กึ่งกลาง", value: "center" }
+              - { label: "ชิดขวา", value: "right" }
           - name: videos
             label: "วิดีโอ YouTube"
             label_singular: "วิดีโอ"
@@ -557,6 +687,26 @@ collections:
             fields:
               - { name: url, label: "ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)", widget: string }
               - { name: title, label: "ชื่อวิดีโอ (แสดงใต้วิดีโอ)", widget: string, required: false }
+              - { name: width, label: "ความกว้างวิดีโอ (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
+              - name: align
+                label: "ตำแหน่งวิดีโอ (เมื่อกว้างไม่เต็ม)"
+                widget: select
+                default: "center"
+                required: false
+                options:
+                  - { label: "ชิดซ้าย", value: "left" }
+                  - { label: "กึ่งกลาง", value: "center" }
+                  - { label: "ชิดขวา", value: "right" }
+              - name: ratio
+                label: "สัดส่วนจอวิดีโอ"
+                widget: select
+                default: "16:9"
+                required: false
+                options:
+                  - { label: "16:9 (ปกติ)", value: "16:9" }
+                  - { label: "4:3", value: "4:3" }
+                  - { label: "1:1 (สี่เหลี่ยมจัตุรัส)", value: "1:1" }
+                  - { label: "9:16 (แนวตั้ง เช่น Shorts ควรตั้งความกว้าง 30–50%)", value: "9:16" }
 
   # ───────────── 5) ปฏิทินกิจกรรม ─────────────
   - name: events
@@ -648,6 +798,25 @@ collections:
       - { name: yearOnly, label: "แสดงเฉพาะปี (ไม่แสดงวันที่) ใช้เมื่อไม่ทราบวันที่แน่ชัด", widget: boolean, default: false }
       - { name: title, label: "หัวข้อเหตุการณ์ เช่น ก่อตั้ง BFF", widget: string }
       - { name: text, label: "รายละเอียด", widget: markdown, required: false }
+      - name: textAlign
+        label: "การจัดข้อความ"
+        widget: select
+        default: "left"
+        required: false
+        options:
+          - { label: "ชิดซ้าย", value: "left" }
+          - { label: "กึ่งกลาง", value: "center" }
+          - { label: "ชิดขวา", value: "right" }
+          - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
+      - name: textSize
+        label: "ขนาดตัวอักษร"
+        widget: select
+        default: "normal"
+        required: false
+        options:
+          - { label: "ปกติ", value: "normal" }
+          - { label: "ใหญ่", value: "large" }
+          - { label: "ใหญ่มาก", value: "xlarge" }
       - name: image
         label: "รูปประกอบ"
         widget: object
@@ -655,6 +824,16 @@ collections:
         fields:
           - { name: src, label: "ไฟล์รูป", widget: image, required: false }
           - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
+      - { name: imageSize, label: "ขนาดรูปประกอบ (% ของความกว้าง)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
+      - name: imageAlign
+        label: "ตำแหน่งรูปประกอบ (เมื่อกว้างไม่เต็ม)"
+        widget: select
+        default: "left"
+        required: false
+        options:
+          - { label: "ชิดซ้าย", value: "left" }
+          - { label: "กึ่งกลาง", value: "center" }
+          - { label: "ชิดขวา", value: "right" }
       - { name: link, label: "ลิงก์ (ถ้าอยากให้หัวข้อกดไปหน้าอื่น เช่น /news/xxx/ หรือ https://...)", widget: string, required: false }
       - name: album
         label: "รูปความทรงจำเพิ่มเติม (แสดงรวมกับรูปจากข่าวในปีนั้น)"

@@ -11,6 +11,12 @@ const optDate = z.preprocess((v) => {
   if (v instanceof Date && Number.isNaN(v.getTime())) return undefined;
   return v;
 }, z.coerce.date().optional());
+// ขนาดเป็นเปอร์เซ็นต์ (5–100) รับได้ทั้งเลขและข้อความ เช่น 50 หรือ "50" ค่าที่เกินช่วงจะถูกปรับให้อยู่ในช่วง
+const pct = z.preprocess((v) => {
+  if (v == null || v === '') return undefined;
+  const n = Number(v);
+  return Number.isFinite(n) ? Math.min(100, Math.max(5, n)) : undefined;
+}, z.number().optional());
 const bool = z.boolean().nullish().transform((v) => v ?? false);
 const list = <T extends z.ZodTypeAny>(item: T) =>
   z.array(item).nullish().transform((v) => v ?? []);
@@ -22,15 +28,19 @@ const image = z.object({ src: str, alt: str }).nullish();
 const sections = list(
   z.object({
     title: str,
+    titleAlign: str, // left | center | right
+    titleSize: str, // normal | large | xlarge
     text: str,
     image,
-    imageSize: str, // 25 | 50 | 75 | 100 (% ความกว้าง)
+    imageSize: pct, // % ความกว้าง
     imageAlign: str, // left | center | right
     textAlign: str, // left | center | right | justify
     textSize: str, // normal | large | xlarge
-    albumSize: str, // 4 | 3 | 2 (จำนวนคอลัมน์)
+    albumSize: str, // 2–6 (จำนวนคอลัมน์)
+    albumWidth: pct, // % ความกว้างของอัลบั้มทั้งชุด
+    albumAlign: str, // left | center | right
     album: list(z.object({ src: z.string(), alt: str })),
-    videos: list(z.object({ url: z.string(), title: str })),
+    videos: list(z.object({ url: z.string(), title: str, width: pct, align: str, ratio: str })),
   }),
 );
 
@@ -113,6 +123,10 @@ const posts = defineCollection({
     isNew: bool,
     notes: str, // หมายเหตุภายใน (ไม่แสดงบนเว็บ)
     cover: image,
+    coverSize: pct,
+    coverAlign: str,
+    bodyAlign: str,
+    bodySize: str,
     sections,
   }),
 });
@@ -123,11 +137,13 @@ const pages = defineCollection({
     title: z.string(),
     slug: str,
     description: str,
+    bodyAlign: str,
+    bodySize: str,
     legacy: bool,
     showContact: bool, // แสดงการ์ดช่องทางติดต่อจากหน้าตั้งค่า
     showExecutives: bool, // แสดงรายชื่อผู้บริหารท้ายหน้า
-    links: list(z.object({ label: z.string(), url: z.string(), note: str })), // ปุ่มลิงก์ใหญ่ เช่น ฟอร์ม
-    embeds: list(z.object({ title: str, url: z.string(), height: z.number().nullish() })), // ฝังแบบฟอร์ม/เอกสาร
+    links: list(z.object({ label: z.string(), url: z.string(), note: str, width: pct, align: str })), // ปุ่มลิงก์ใหญ่ เช่น ฟอร์ม
+    embeds: list(z.object({ title: str, url: z.string(), height: z.number().nullish(), width: pct, align: str })), // ฝังแบบฟอร์ม/เอกสาร
     newsCategory: str, // แสดงข่าวหมวดนี้ท้ายหน้า (เว้นว่าง = ไม่แสดง)
     teachers: list(z.string()), // ครูผู้สอนประจำวิชา (รหัสจากโฟลเดอร์ teachers)
     courses: list(course),
@@ -184,7 +200,11 @@ const milestones = defineCollection({
     yearOnly: bool,
     title: z.string(),
     text: str,
+    textAlign: str,
+    textSize: str,
     image,
+    imageSize: pct,
+    imageAlign: str,
     link: str,
     album: list(z.object({ src: z.string(), alt: str })),
   }),
