@@ -1,5 +1,5 @@
 ---
-// ไทม์ไลน์และความทรงจำ: เส้นเวลาแยกตามปี (เหตุการณ์ที่ผู้ดูแลเพิ่ม + ข่าวที่เผยแพร่และมีวันที่) พร้อมรูปความทรงจำของแต่ละปี
+// ไทม์ไลน์และความทรงจำ: เส้นทางงูแยกตามปี (เหตุการณ์ที่ผู้ดูแลเพิ่ม = ใหญ่ / ข่าวที่เผยแพร่และมีวันที่ = บรรทัดเล็ก) เลือกเรียงเก่า→ใหม่ หรือ ใหม่→เก่าได้
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { getPublishedPosts, labels, url, img, md, fmtDate, iso } from '../lib/site';
@@ -35,54 +35,66 @@ const memories = (y: number) => {
 ---
 <Base title={labels.timelineTitle}>
   <section class="section">
-    <div class="container narrow">
+    <div class="container" data-timeline>
       <div class="section-head"><h1 class="section-title">{labels.timelineTitle}</h1></div>
       {years.length > 0 ? (
         <>
-          <nav class="tl-nav" aria-label={labels.timelineJump}>
+          <div class="tl-tools" role="group" aria-label={labels.timelineSortLabel}>
+            <span>{labels.timelineSortLabel}</span>
+            <button type="button" class="tab" data-order="old" aria-pressed="true">{labels.timelineOldest}</button>
+            <button type="button" class="tab" data-order="new" aria-pressed="false">{labels.timelineNewest}</button>
+          </div>
+          <nav class="tl-nav" aria-label={labels.timelineJump} data-nav>
             {years.map((y) => <a href={`#y${y}`}>{labels.yearPrefix} {y + 543}</a>)}
           </nav>
-          {years.map((y) => {
-            const mem = memories(y);
-            return (
-              <section class="tl-year" id={`y${y}`} data-lb-scope>
-                <h2 class="section-title">{labels.yearPrefix} {y + 543}</h2>
-                <ol class="tl">
-                  {byYear(y).map((it) => (
-                    it.major ? (
-                      <li class="tl-item is-major">
-                        {!it.yearOnly && <time datetime={iso(it.date)}>{fmtDate(it.date)}</time>}
-                        <h3>{it.href ? <a href={it.href} target={it.external ? '_blank' : undefined} rel={it.external ? 'noopener' : undefined}>{it.title}</a> : it.title}</h3>
-                        {it.html && <div class="prose" set:html={it.html} />}
-                        {it.photo && (
-                          <button type="button" class="zoom" data-zoom aria-label={it.photo.alt ? undefined : labels.zoomImage}>
-                            <img src={it.photo.src} alt={it.photo.alt} loading="lazy" decoding="async" />
+          <div data-years>
+            {years.map((y) => {
+              const mem = memories(y);
+              return (
+                <section class="tl-year" id={`y${y}`} data-lb-scope>
+                  <h2 class="section-title">{labels.yearPrefix} {y + 543}</h2>
+                  <ol class="tl">
+                    {byYear(y).map((it) => (
+                      <li class:list={['tl-item', 'reveal', it.major ? 'is-major' : 'is-minor']}>
+                        <div class="tl-card">
+                          {it.major ? (
+                            <>
+                              {!it.yearOnly && <time datetime={iso(it.date)}>{fmtDate(it.date)}</time>}
+                              <h3>{it.href ? <a href={it.href} target={it.external ? '_blank' : undefined} rel={it.external ? 'noopener' : undefined}>{it.title}</a> : it.title}</h3>
+                              {it.html && <div class="prose" set:html={it.html} />}
+                              {it.photo && (
+                                <button type="button" class="zoom" data-zoom aria-label={it.photo.alt ? undefined : labels.zoomImage}>
+                                  <img src={it.photo.src} alt={it.photo.alt} loading="lazy" decoding="async" />
+                                </button>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              <time datetime={iso(it.date)}>{fmtDate(it.date)}</time>
+                              <a href={it.href ?? undefined}>{it.title}</a>
+                            </>
+                          )}
+                        </div>
+                        <div class="tl-mid" aria-hidden="true"><span class="tl-arc up"></span><span class="tl-arc down"></span><span class="tl-dot"></span></div>
+                      </li>
+                    ))}
+                  </ol>
+                  {mem.length > 0 && (
+                    <div class="tl-memories">
+                      <h3>{labels.memoriesTitle}</h3>
+                      <div class="album" style="--cols:4">
+                        {mem.map((p) => (
+                          <button type="button" class="zoom" data-zoom aria-label={p.alt ? undefined : labels.zoomImage}>
+                            <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
                           </button>
-                        )}
-                      </li>
-                    ) : (
-                      <li class="tl-item is-minor">
-                        <time datetime={iso(it.date)}>{fmtDate(it.date)}</time>
-                        <a href={it.href ?? undefined}>{it.title}</a>
-                      </li>
-                    )
-                  ))}
-                </ol>
-                {mem.length > 0 && (
-                  <div class="tl-memories">
-                    <h3>{labels.memoriesTitle}</h3>
-                    <div class="album" style="--cols:4">
-                      {mem.map((p) => (
-                        <button type="button" class="zoom" data-zoom aria-label={p.alt ? undefined : labels.zoomImage}>
-                          <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
-                        </button>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </section>
-            );
-          })}
+                  )}
+                </section>
+              );
+            })}
+          </div>
         </>
       ) : (
         <p class="empty">{labels.timelineEmpty}</p>
@@ -90,3 +102,26 @@ const memories = (y: number) => {
     </div>
   </section>
 </Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-timeline]');
+  const years = root?.querySelector<HTMLElement>('[data-years]');
+  const nav = root?.querySelector<HTMLElement>('[data-nav]');
+  if (root && years && nav) {
+    const btns = Array.from(root.querySelectorAll<HTMLElement>('[data-order]'));
+    const flip = (parent: Element) => Array.from(parent.children).reverse().forEach((c) => parent.append(c));
+    let current = 'old'; // ลำดับตามที่สร้างจากเซิร์ฟเวอร์ = เก่าไปใหม่
+    const set = (order: string) => {
+      if (order !== current) {
+        flip(years);
+        years.querySelectorAll('.tl').forEach(flip);
+        flip(nav);
+        current = order;
+      }
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.order === order)));
+      try { localStorage.setItem('tlOrder', order); } catch (e) {}
+    };
+    btns.forEach((b) => b.addEventListener('click', () => set(b.dataset.order!)));
+    try { if (localStorage.getItem('tlOrder') === 'new') set('new'); } catch (e) {}
+  }
+</script>

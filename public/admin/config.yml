@@ -178,6 +178,9 @@ collections:
           - { name: yearPrefix, label: "คำนำหน้าปี", widget: string }
           - { name: timelineJump, label: "ชื่อแถบเลือกปี (โปรแกรมอ่านจอ)", widget: string }
           - { name: searchTypeTimeline, label: "ป้ายประเภทค้นหา: ไทม์ไลน์", widget: string }
+          - { name: timelineSortLabel, label: "คำว่า เรียงลำดับ (ไทม์ไลน์)", widget: string }
+          - { name: timelineOldest, label: "ปุ่ม: เรียงจากเก่าไปใหม่", widget: string }
+          - { name: timelineNewest, label: "ปุ่ม: เรียงจากใหม่ไปเก่า", widget: string }
           - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
           - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
           - { name: boardTitle, label: "หัวข้อส่วนผู้บริหาร", widget: string }

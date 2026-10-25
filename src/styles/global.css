@@ -469,19 +469,6 @@ html[data-fs="2"] { font-size: 130%; }
 .dl-course h3 { margin: 0 0 .8rem; font-size: 1.2rem; }
 
 /* ───── ไทม์ไลน์และความทรงจำ ───── */
-.tl-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-bottom: 2rem; }
-.tl-nav a { padding: .35rem 1rem; border: 2px solid var(--border); border-radius: 999px; color: var(--text); font-weight: 600; text-decoration: none; }
-.tl-nav a:hover { border-color: var(--primary); color: var(--link); }
-.tl-year { margin-top: 3.5rem; scroll-margin-top: 90px; }
-.tl { position: relative; list-style: none; margin: 0 auto; padding: 0 0 0 1.8rem; max-width: 760px; border-left: 4px solid transparent; border-image: linear-gradient(var(--c-green), var(--c-blue), var(--c-red)) 1; }
-.tl-item { position: relative; margin: 0 0 1.6rem; padding: 1.1rem 1.3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
-.tl-item::before { content: ''; position: absolute; left: calc(-1.8rem - 10px); top: 1.4rem; width: 16px; height: 16px; border-radius: 50%; background: var(--c-blue); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--c-blue); }
-.tl-item time { color: var(--muted); font-size: .9rem; }
-.tl-item h3 { margin: .1rem 0 .4rem; font-size: 1.2rem; }
-.tl-item h3 .badge { margin-left: .5rem; vertical-align: middle; }
-.tl-item .zoom { margin-top: .8rem; max-width: 420px; }
-.tl-memories { margin-top: 2rem; }
-.tl-memories h3 { margin: 0 0 .8rem; text-align: center; }
 
 /* ───── รายการเอกสาร: จัดตามความกว้างของกรอบ ไม่ใช่ความกว้างหน้าจอ (การ์ดแคบ = ปุ่มอยู่ใต้ข้อความ) ───── */
 .doc-list { container-type: inline-size; }
@@ -494,14 +481,75 @@ html[data-fs="2"] { font-size: 130%; }
 }
 
 /* ───── ไทม์ไลน์: เหตุการณ์ที่เพิ่มเอง = ใหญ่เด่น / ข่าวอัตโนมัติ = บรรทัดเล็ก ลิงก์ไม่ขีดเส้นใต้ ───── */
-.tl-item a { color: inherit; text-decoration: none; }
-.tl-item a:hover { color: var(--link); text-decoration: underline; }
-.tl-item.is-major { padding: 1.5rem 1.7rem; border-left: 6px solid var(--c-blue); }
-.tl-item.is-major::before { left: calc(-1.8rem - 14px); top: 1.7rem; width: 24px; height: 24px; background: var(--c-red); box-shadow: 0 0 0 3px var(--c-red); }
-.tl-item.is-major time { display: inline-block; margin-bottom: .3rem; padding: .1rem .9rem; border-radius: 999px; background: var(--tint); color: var(--link); font-size: 1rem; font-weight: 600; }
-.tl-item.is-major h3 { margin: .2rem 0 .6rem; font-size: clamp(1.4rem, 1rem + 1.6vw, 1.8rem); line-height: 1.4; }
-.tl-item.is-major .zoom { max-width: 100%; margin-top: 1rem; }
-.tl-item.is-minor { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .8rem; margin-bottom: .8rem; padding: .5rem .95rem; border-radius: 10px; box-shadow: none; background: transparent; font-size: .95rem; }
-.tl-item.is-minor::before { left: calc(-1.8rem - 7px); top: .95rem; width: 10px; height: 10px; border-width: 2px; box-shadow: none; background: var(--c-green); }
-.tl-item.is-minor time { flex: none; color: var(--muted); font-size: .9rem; }
-.tl-item.is-minor a { font-weight: 500; }
+
+/* ───── ไทม์ไลน์แบบทางงู: การ์ดสลับซ้าย-ขวา เส้นทางโค้งต่อเนื่อง มีแอนิเมชันตอนเลื่อนถึง ───── */
+.tab[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.tl-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .5rem; margin-bottom: 1.2rem; }
+.tl-tools > span { color: var(--muted); font-weight: 600; }
+.tl-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; margin-bottom: 2rem; }
+.tl-nav a { padding: .35rem 1rem; border: 2px solid var(--border); border-radius: 999px; color: var(--text); font-weight: 600; text-decoration: none; }
+.tl-nav a:hover { border-color: var(--primary); color: var(--link); }
+.tl-year { margin-top: 3.5rem; scroll-margin-top: 90px; }
+.tl-memories { margin-top: 2.5rem; }
+.tl-memories h3 { margin: 0 0 .8rem; text-align: center; }
+
+.tl { list-style: none; margin: 0 auto; padding: 0; max-width: 1000px; }
+.tl-item { --c: var(--c-green); position: relative; display: grid; grid-template-columns: 1fr 120px 1fr; align-items: center; min-height: 96px; }
+.tl-item:nth-child(3n+2) { --c: var(--c-blue); }
+.tl-item:nth-child(3n) { --c: var(--c-red); }
+.tl-item.reveal { opacity: 1; transform: none; }
+.tl-card { grid-row: 1; margin: .7rem 0; padding: .55rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
+.tl-item:nth-child(odd) .tl-card { grid-column: 1; }
+.tl-item:nth-child(even) .tl-card { grid-column: 3; }
+.tl-card a { color: inherit; text-decoration: none; }
+.tl-card a:hover { color: var(--link); text-decoration: underline; }
+
+/* เส้นทางงู = ครึ่งวงรีสลับขวา/ซ้าย ต่อกันทุกการ์ด (วาดด้วยเส้นขอบ CSS จึงหนาเท่ากันไม่ว่าการ์ดสูงเท่าไร) */
+.tl-mid { grid-column: 2; grid-row: 1; position: relative; align-self: stretch; }
+.tl-arc { position: absolute; width: 50%; height: 50%; box-sizing: border-box; border: 5px solid var(--c); }
+.tl-arc.up { left: calc(50% - 2.5px); top: 0; border-left: 0; border-radius: 0 100% 100% 0 / 0 50% 50% 0; }
+.tl-arc.down { right: calc(50% - 2.5px); top: 50%; border-right: 0; border-radius: 100% 0 0 100% / 50% 0 0 50%; }
+.tl-mid::after { content: ''; position: absolute; top: calc(50% - 2px); width: 50%; height: 4px; border-radius: 2px; background: var(--c); }
+.tl-item:nth-child(odd) .tl-mid::after { right: 50%; }
+.tl-item:nth-child(even) .tl-mid::after { left: 50%; }
+.tl-dot { position: absolute; z-index: 2; left: 50%; top: 50%; width: 18px; height: 18px; border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--c); transform: translate(-50%, -50%); }
+
+/* เหตุการณ์ที่ผู้ดูแลเพิ่มเอง = ใหญ่เด่น / ข่าวอัตโนมัติ = บรรทัดเล็ก */
+.is-major .tl-card { padding: 1.4rem 1.6rem; border-top: 6px solid var(--c); }
+.is-major .tl-dot { width: 28px; height: 28px; border-width: 4px; }
+.is-major time { display: inline-block; margin-bottom: .3rem; padding: .1rem .9rem; border-radius: 999px; background: var(--tint); color: var(--link); font-weight: 600; }
+.is-major h3 { margin: .2rem 0 .6rem; font-size: clamp(1.35rem, 1rem + 1.4vw, 1.75rem); line-height: 1.4; }
+.is-major .zoom { max-width: 100%; margin-top: 1rem; }
+.is-minor .tl-card { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .7rem; font-size: .95rem; box-shadow: none; background: transparent; }
+.is-minor time { flex: none; color: var(--muted); font-size: .9rem; }
+.is-minor .tl-card a { font-weight: 500; }
+
+/* แอนิเมชัน: การ์ดไหลเข้าจากฝั่งของมัน → เส้นโค้งวาดลงมา → จุดเด้งขึ้น → ก้านเชื่อมยืดออก */
+.js .tl-card { opacity: 0; transition: opacity .6s ease .15s, transform .6s ease .15s; }
+.js .tl-item:nth-child(odd) .tl-card { transform: translateX(-40px); }
+.js .tl-item:nth-child(even) .tl-card { transform: translateX(40px); }
+.js .tl-item.in .tl-card { opacity: 1; transform: none; }
+.js .tl-arc { clip-path: inset(0 0 100% 0); transition: clip-path .5s ease-out; }
+.js .tl-arc.down { transition-delay: .5s; }
+.js .tl-item.in .tl-arc { clip-path: inset(0); }
+.js .tl-dot { transform: translate(-50%, -50%) scale(0); transition: transform .45s cubic-bezier(.34, 1.56, .64, 1) .2s; }
+.js .tl-item.in .tl-dot { transform: translate(-50%, -50%) scale(1); }
+.js .tl-mid::after { transform: scaleX(0); transition: transform .4s ease .35s; }
+.js .tl-item:nth-child(odd) .tl-mid::after { transform-origin: right center; }
+.js .tl-item:nth-child(even) .tl-mid::after { transform-origin: left center; }
+.js .tl-item.in .tl-mid::after { transform: scaleX(1); }
+
+@media (max-width: 720px) {
+  .tl-item { grid-template-columns: 44px 1fr; }
+  .tl-item .tl-card { grid-column: 2 !important; }
+  .tl-item .tl-mid { grid-column: 1; }
+  .tl-item .tl-mid::after { left: 50% !important; right: auto !important; transform-origin: left center !important; }
+  .js .tl-item .tl-card { transform: translateX(30px) !important; }
+  .js .tl-item.in .tl-card { transform: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .tl-card { opacity: 1 !important; transform: none !important; }
+  .js .tl-arc { clip-path: none !important; }
+  .js .tl-dot { transform: translate(-50%, -50%) !important; }
+  .js .tl-mid::after { transform: none !important; }
+}
