@@ -52,7 +52,7 @@ courses:
         note: ''
     applyUrl: ''
     closed: false
-    ended: false
+    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
@@ -64,10 +64,46 @@ courses:
     teachers:
       - 20261024-084247
     description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้เพิ่มเติม ชั้นมัธยมศึกษาตอนต้น
-    documents: []
+    documents:
+      - title: เอกสารประกอบการเรียน หน่วย 1 ระบบจำนวนเต็มและจำนวนจริง
+        file: /uploads/1 ระบบจำนวนเต็มและจำนวนจริง_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 2 เอกนามและพหุนาม
+        file: /uploads/2 เอกนามและพหุนาม _2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 3 สมบัติเลขยกกำลัง
+        file: /uploads/3 สมบัติเลขยกกำลัง_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 4 สมการ
+        file: /uploads/4 สมการ_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 5 แบบรูปและการนำไปใช้
+        file: /uploads/5 แบบรูป และการนำไปใช้_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย (เก่า) การสร้างทางเรขาคณิต
+        file: /uploads/6 (เก่า) การสร้างทางเรขาคณิต_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 6 (ใหม่) การแปรผัน
+        file: /uploads/6 (ใหม่) การแปรผัน_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 7 ตรีโกณมิติ
+        file: /uploads/7 ตรีโกณ_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 8 รูปสามเหลี่ยมและสี่เหลี่ยม
+        file: /uploads/8 รูปสามเหลี่ยมสี่เหลี่ยม_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 9 วงกลม
+        file: /uploads/9 วงกลม_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 10 รูปเรขาคณิตสามมิติ
+        file: /uploads/10 รูปเรขาคณิตสามมิติ_2.pdf
+        note: ''
+      - title: เอกสารประกอบการเรียน หน่วย 11 กราฟความสัมพันธ์
+        file: /uploads/11 กราฟคณิตเพิ่ม_2.pdf
+        note: ''
     applyUrl: ''
     closed: false
-    ended: false
+    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
@@ -82,7 +118,7 @@ courses:
     documents: []
     applyUrl: ''
     closed: false
-    ended: false
+    ended: true
     links: []
   - title: คณิตศาสตร์มัธยมต้นเพื่อการสอบแข่งขัน
     group: ''
@@ -95,7 +131,7 @@ courses:
     documents: []
     applyUrl: ''
     closed: false
-    ended: false
+    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1LQIKOsR2CoPF1I6NnmdW_EnC7A8pmAr7bYiYrISRbp0/edit?usp=sharing
