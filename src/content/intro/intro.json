@@ -3,18 +3,10 @@
   "title": "Best Friend Forever 2026",
   "subtitle": "เพื่อนกันตลอดไป",
   "autoplay": true,
+  "showTitle": false,
   "interval": 6,
   "fit": "contain",
-  "slides": [
-    {
-      "file": "/uploads/pasted-image-1792996017707.webp",
-      "youtube": "",
-      "alt": "ยินดีต้อนรับเข้าสู่เว็ปไซต์ทางการ Best Friend Forever",
-      "caption": "ยินดีต้อนรับเข้าสู่เว็ปไซต์ทางการ Best Friend Forever",
-      "fit": "contain",
-      "focus": "center"
-    }
-  ],
+  "slides": [],
   "buttons": [
     {
       "label": "เข้าสู่หน้าหลัก",
