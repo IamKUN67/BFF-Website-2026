@@ -1,0 +1,29 @@
+---
+// หน้าเข้าสู่ระบบสำหรับครูและผู้ดูแล: ตอนนี้เป็นประตูไปหน้าจัดการเนื้อหา (/admin/) เตรียมไว้ให้ต่อระบบบัญชีรายบุคคลได้ในอนาคต
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { getSite, labels, url } from '../lib/site';
+
+const site = await getSite();
+---
+<Base bare title={labels.loginTitle}>
+  <Fragment slot="head"><meta name="robots" content="noindex" /></Fragment>
+  <section class="login">
+    <div class="login-bg" aria-hidden="true"></div>
+    <a class="login-back" href={url('/home/')}>← {labels.loginBack}</a>
+    <div class="login-card">
+      <span class="login-key" aria-hidden="true"><Icon name="key" size={34} /></span>
+      <p class="login-site">{site.siteName}</p>
+      <h1>{labels.loginTitle}</h1>
+      <p class="login-intro">{labels.loginIntro}</p>
+      <a class="btn login-cta" href={url('/admin/')}>{labels.loginCta}</a>
+      <ol class="login-steps">
+        <li>{labels.loginStep1}</li>
+        <li>{labels.loginStep2}</li>
+        <li>{labels.loginStep3}</li>
+      </ol>
+      <p class="login-help">{labels.loginHelp} <a href={url('/pages/contact/')}>{labels.loginHelpLink}</a></p>
+      <p class="login-note">{labels.loginNote}</p>
+    </div>
+  </section>
+</Base>

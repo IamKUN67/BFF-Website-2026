@@ -94,6 +94,7 @@ const settings = defineCollection({
     email: str,
     address: str,
     footerText: str,
+    showLogin: z.boolean().nullish().transform((v) => v ?? true), // แสดงไอคอนกุญแจเข้าสู่ระบบบนแถบเมนู
     goatcounterCode: str, // GoatCounter (นับยอดเข้าชม ไม่ใช้คุกกี้)
     cloudflareToken: str, // หรือ Cloudflare Web Analytics
   }),
@@ -190,6 +191,7 @@ const intro = defineCollection({
     autoplay: z.boolean().nullish().transform((v) => v ?? true),
     interval: z.number().nullish().transform((v) => v ?? 6),
     fit: str, // cover | contain (ค่าเริ่มต้นของทุกสไลด์)
+    showTitle: bool, // แสดงหัวข้อ/ข้อความรองทับสไลด์ (ปิด = เหลือเฉพาะปุ่ม)
     slides: list(z.object({ file: str, youtube: str, alt: str, caption: str, fit: str, focus: str })),
     buttons: list(z.object({ label: z.string(), url: z.string(), color: str })),
   }),

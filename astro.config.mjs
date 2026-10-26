@@ -109,6 +109,6 @@ export default defineConfig({
   site: process.env.GITHUB_REPOSITORY ? `https://${owner}.github.io` : 'http://localhost:4321',
   base,
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !/\/login\/?$/.test(page) })],
   markdown: { rehypePlugins: [rehypeYoutube, rehypeSiteLinks] },
 });

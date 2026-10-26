@@ -26,6 +26,7 @@ const slides = (intro?.slides ?? [])
     return { ...s, yt, f, kind, fit, pos: FOCUS[s.focus ?? ''] ?? 'center', name: decodeURIComponent((s.file ?? '').split('/').pop() ?? '') };
   })
   .filter((s) => s.kind);
+const showText = intro?.showTitle === true;
 const hasVideo = slides.some((s) => s.kind === 'video');
 
 const buttons = (intro?.buttons?.length ? intro.buttons : [{ label: labels.enterHome, url: '/home/', color: null }]).map((b) => ({
@@ -113,7 +114,7 @@ const subtitle = intro?.subtitle ?? site.tagline;
 
       <div class="intro-body">
         {slides.length === 0 && logo && <img class="intro-logo-big" src={logo.src} alt={logo.alt} />}
-        <div class="intro-panel">
+        <div class:list={['intro-panel', slides.length > 0 && 'compact', slides.length > 0 && !showText && 'no-text']}>
           <p class="intro-cap" data-cap hidden={!slides[0]?.caption}>{slides[0]?.caption}</p>
           <h1>{title}</h1>
           {subtitle && <p class="intro-sub">{subtitle}</p>}

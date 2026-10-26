@@ -36,6 +36,7 @@ const here = (l?: string) => !!l && !l.includes('?') && path === url(l);
     </nav>
     <div class="header-tools">
       <button type="button" class="icon-btn search-btn" data-search-open aria-label={labels.searchButton}><Icon name="search" size={20} /></button>
+      {site.showLogin !== false && (<a class="icon-btn login-btn" href={url('/login/')} aria-label={labels.loginButton} title={labels.loginButton}><Icon name="key" size={20} /></a>)}
       <button type="button" class="icon-btn nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label={labels.menuButton}><span aria-hidden="true">☰</span></button>
     </div>
   </div>

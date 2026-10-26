@@ -1,20 +1,13 @@
-# ตั้งค่าหน้าแอดมิน (Sveltia CMS) ป้ายกำกับทั้งหมดเป็นภาษาไทย
-# *** แก้เฉพาะบรรทัด repo: ด้านล่างครั้งเดียวตอนติดตั้ง ***
-
+# ตั้งค่าหน้าแอดมิน (Sveltia CMS) — จัดระเบียบฟอร์มโดย Claude (ข้อมูลทุกช่องเหมือนเดิม)
 backend:
   name: github
   repo: IamKUN67/BFF-Website-2026
   branch: main
-
 locale: th
 publish_mode: simple
 site_url: https://iamkun67.github.io/BFF-Website-2026/
-
-# รูปที่อัปโหลดเก็บใน public/uploads
 media_folder: public/uploads
 public_folder: /uploads
-
-# ย่อรูปและแปลงเป็น WebP อัตโนมัติตั้งแต่ตอนอัปโหลด
 media_libraries:
   default:
     config:
@@ -25,871 +18,1783 @@ media_libraries:
           quality: 85
           width: 2000
           height: 2000
-
 collections:
-  # ───────────── 1) ตั้งค่าเว็บไซต์ + 2) เมนู ─────────────
-  - name: settings
-    label: "ตั้งค่าเว็บไซต์"
-    files:
-      - name: site
-        label: "ตั้งค่าทั่วไป"
-        file: src/content/settings/site.json
-        format: json
-        fields:
-          - { name: siteName, label: "ชื่อเว็บไซต์", widget: string }
-          - { name: tagline, label: "ชื่อรอง", widget: string, required: false }
-          - { name: welcomeTitle, label: "หัวข้อต้อนรับหน้าแรก", widget: string, required: false }
-          - { name: welcomeText, label: "ข้อความต้อนรับหน้าแรก", widget: text, required: false }
-          - name: logo
-            label: "รูปโลโก้"
-            widget: object
-            required: false
-            fields:
-              - { name: src, label: "ไฟล์รูป", widget: image, required: false }
-              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
-          - name: cover
-            label: "รูปปก"
-            widget: object
-            required: false
-            fields:
-              - { name: src, label: "ไฟล์รูป", widget: image, required: false }
-              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
-          - name: colors
-            label: "สีของเว็บไซต์"
-            widget: object
-            fields:
-              - { name: primary, label: "สีหลัก", widget: color, default: "#1a73c4" }
-              - { name: accent, label: "สีเน้น", widget: color, default: "#d32f2f" }
-          - name: social
-            label: "ลิงก์โซเชียล"
-            widget: object
-            fields:
-              - { name: instagram, label: "Instagram (ลิงก์เต็ม)", widget: string, required: false }
-              - { name: facebook, label: "Facebook (ลิงก์เต็ม)", widget: string, required: false }
-              - { name: youtube, label: "YouTube (ลิงก์เต็ม)", widget: string, required: false }
-              - { name: line, label: "LINE (ลิงก์เต็ม)", widget: string, required: false }
-              - { name: discord, label: "Discord (ลิงก์เชิญ)", widget: string, required: false }
-          - { name: email, label: "อีเมล", widget: string, required: false }
-          - { name: address, label: "ที่อยู่", widget: text, required: false }
-          - { name: footerText, label: "ข้อความท้ายเว็บ", widget: string, required: false }
-          - { name: goatcounterCode, label: "รหัส GoatCounter นับยอดเข้าชม (เช่น bff ถ้าหน้าสถิติคือ bff.goatcounter.com) เว้นว่าง = ไม่นับ", widget: string, required: false }
-          - { name: cloudflareToken, label: "โทเคน Cloudflare Web Analytics (ใช้แทน GoatCounter ได้ เว้นว่าง = ไม่ใช้)", widget: string, required: false }
-
-      - name: labels
-        label: "ข้อความในหน้าเว็บ"
-        file: src/data/labels.json
-        format: json
-        fields:
-          - { name: skipToContent, label: "ลิงก์ข้ามไปเนื้อหา (สำหรับโปรแกรมอ่านจอ)", widget: string }
-          - { name: menuButton, label: "ปุ่มเปิด/ปิดเมนู (โปรแกรมอ่านจอ)", widget: string }
-          - { name: mainNav, label: "ชื่อกลุ่มเมนูหลัก (โปรแกรมอ่านจอ)", widget: string }
-          - { name: subMenuButton, label: "ปุ่มเปิด/ปิดเมนูย่อย (โปรแกรมอ่านจอ)", widget: string }
-          - { name: heroCta, label: "ปุ่มในส่วนต้อนรับ", widget: string }
-          - { name: latestNewsTitle, label: "หัวข้อ: ข่าวล่าสุด", widget: string }
-          - { name: allNews, label: "ปุ่ม: ดูข่าวทั้งหมด", widget: string }
-          - { name: calendarTitle, label: "หัวข้อ: ปฏิทินกิจกรรม", widget: string }
-          - { name: upcomingEvents, label: "หัวข้อ: กิจกรรมที่กำลังจะมาถึง", widget: string }
-          - { name: noEvents, label: "ข้อความเมื่อไม่มีกิจกรรม", widget: string }
-          - { name: prevMonth, label: "ปุ่มเดือนก่อนหน้า", widget: string }
-          - { name: nextMonth, label: "ปุ่มเดือนถัดไป", widget: string }
-          - { name: eventLocation, label: "คำว่า สถานที่", widget: string }
-          - { name: eventLink, label: "ลิงก์ดูรายละเอียดกิจกรรม", widget: string }
-          - { name: contactTitle, label: "หัวข้อ: ติดต่อเรา", widget: string }
-          - { name: contactEmpty, label: "ข้อความเมื่อยังไม่มีข้อมูลติดต่อ", widget: string }
-          - { name: emailLabel, label: "คำว่า อีเมล", widget: string }
-          - { name: addressLabel, label: "คำว่า ที่อยู่", widget: string }
-          - { name: moreContact, label: "ปุ่มช่องทางติดต่อเพิ่มเติม", widget: string }
-          - { name: newsPageTitle, label: "หัวข้อหน้าข่าว", widget: string }
-          - { name: searchLabel, label: "ชื่อช่องค้นหา", widget: string }
-          - { name: searchPlaceholder, label: "ข้อความในช่องค้นหา", widget: string }
-          - { name: categoryLabel, label: "ชื่อตัวกรองหมวดหมู่", widget: string }
-          - { name: allCategories, label: "ตัวเลือก: ทุกหมวดหมู่", widget: string }
-          - { name: noResults, label: "ข้อความเมื่อค้นไม่เจอ", widget: string }
-          - { name: noNews, label: "ข้อความเมื่อยังไม่มีข่าว", widget: string }
-          - { name: prevPage, label: "ปุ่มหน้าก่อนหน้า", widget: string }
-          - { name: nextPage, label: "ปุ่มหน้าถัดไป", widget: string }
-          - { name: pageOf, label: "ข้อความเลขหน้า (คง {page} และ {total} ไว้)", widget: string }
-          - { name: newBadge, label: "ป้าย New", widget: string }
-          - { name: pinnedBadge, label: "ป้ายปักหมุด", widget: string }
-          - { name: postedOn, label: "คำว่า โพสต์เมื่อ", widget: string }
-          - { name: updatedOn, label: "คำว่า อัปเดตเมื่อ", widget: string }
-          - { name: openChannel, label: "ข้อความบนการ์ดช่องทางติดต่อ", widget: string }
-          - { name: openLink, label: "ปุ่มบนการ์ดลิงก์ใหญ่", widget: string }
-          - { name: socialYoutube, label: "ชื่อ YouTube", widget: string }
-          - { name: closeImage, label: "ปุ่มปิดรูปขยาย (โปรแกรมอ่านจอ)", widget: string }
-          - { name: prevImage, label: "ปุ่มรูปก่อนหน้า (โปรแกรมอ่านจอ)", widget: string }
-          - { name: nextImage, label: "ปุ่มรูปถัดไป (โปรแกรมอ่านจอ)", widget: string }
-          - { name: zoomImage, label: "ข้อความรูปที่กดขยายได้ (โปรแกรมอ่านจอ)", widget: string }
-          - { name: videoDefaultTitle, label: "ชื่อวิดีโอเริ่มต้น (โปรแกรมอ่านจอ)", widget: string }
-          - { name: teachersTitle, label: "หัวข้อ: ครูผู้สอน", widget: string }
-          - { name: coursesTitle, label: "หัวข้อ: คอร์สเรียน", widget: string }
-          - { name: courseSchedule, label: "คำว่า วันและเวลาเรียน", widget: string }
-          - { name: coursePeriod, label: "คำว่า ช่วงเวลาที่เปิดสอน", widget: string }
-          - { name: courseTeachers, label: "คำว่า ครูผู้สอน (ในการ์ดคอร์ส)", widget: string }
-          - { name: relatedNews, label: "หัวข้อ: ข่าวประชาสัมพันธ์ (ท้ายหน้าวิชา)", widget: string }
-          - { name: enterHome, label: "ปุ่มเข้าสู่หน้าหลัก (ถ้าไม่ได้ตั้งปุ่มเอง)", widget: string }
-          - { name: introLabel, label: "ชื่อกลุ่มสไลด์ (โปรแกรมอ่านจอ)", widget: string }
-          - { name: slidePrev, label: "ปุ่มสไลด์ก่อนหน้า", widget: string }
-          - { name: slideNext, label: "ปุ่มสไลด์ถัดไป", widget: string }
-          - { name: slidePause, label: "ปุ่มหยุดเลื่อนอัตโนมัติ", widget: string }
-          - { name: slidePlay, label: "ปุ่มเริ่มเลื่อนอัตโนมัติ", widget: string }
-          - { name: slideGoto, label: "จุดเลือกสไลด์ (คง {n} ไว้)", widget: string }
-          - { name: openFile, label: "ปุ่มเปิดไฟล์ในสไลด์", widget: string }
-          - { name: searchButton, label: "ปุ่มค้นหา (โปรแกรมอ่านจอ)", widget: string }
-          - { name: searchTitle, label: "ชื่อกล่องค้นหา", widget: string }
-          - { name: searchClose, label: "ปุ่มปิดการค้นหา", widget: string }
-          - { name: searchHint, label: "ข้อความแนะนำในกล่องค้นหา", widget: string }
-          - { name: searchCount, label: "ข้อความจำนวนผลลัพธ์ (คง {n} ไว้)", widget: string }
-          - { name: searchNoResult, label: "ข้อความเมื่อค้นไม่เจอ", widget: string }
-          - { name: searchTypeNews, label: "ป้ายประเภท: ข่าว", widget: string }
-          - { name: searchTypePage, label: "ป้ายประเภท: หน้า", widget: string }
-          - { name: searchTypeCourse, label: "ป้ายประเภท: คอร์สเรียน", widget: string }
-          - { name: searchTypeTeacher, label: "ป้ายประเภท: ครู", widget: string }
-          - { name: searchTypeEvent, label: "ป้ายประเภท: กิจกรรม", widget: string }
-          - { name: embedDefaultTitle, label: "ชื่อกรอบฝังเริ่มต้น (โปรแกรมอ่านจอ)", widget: string }
-          - { name: embedOpen, label: "ปุ่มเปิดแบบฟอร์มในแท็บใหม่", widget: string }
-          - { name: shareTitle, label: "ข้อความ: แชร์ข่าวนี้", widget: string }
-          - { name: shareCopy, label: "ปุ่มคัดลอกลิงก์", widget: string }
-          - { name: shareCopied, label: "ข้อความหลังคัดลอกลิงก์", widget: string }
-          - { name: shareLine, label: "ปุ่มแชร์ LINE", widget: string }
-          - { name: shareFacebook, label: "ปุ่มแชร์ Facebook", widget: string }
-          - { name: fontSizeButton, label: "ปุ่มปรับขนาดตัวอักษร", widget: string }
-          - { name: fontSize0, label: "ขนาดตัวอักษร: ปกติ", widget: string }
-          - { name: fontSize1, label: "ขนาดตัวอักษร: ใหญ่", widget: string }
-          - { name: fontSize2, label: "ขนาดตัวอักษร: ใหญ่มาก", widget: string }
-          - { name: tabAll, label: "แท็บข่าว: ทั้งหมด", widget: string }
-          - { name: updateBadge, label: "ป้ายข่าวที่แก้ไขภายหลัง", widget: string }
-          - { name: courseApply, label: "ปุ่มสมัครคอร์ส", widget: string }
-          - { name: courseOpen, label: "ป้าย: เปิดรับสมัคร", widget: string }
-          - { name: courseClosed, label: "ป้าย: ปิดรับสมัครแล้ว", widget: string }
-          - { name: courseEnded, label: "ป้าย: คอร์สนี้จบแล้ว", widget: string }
-          - { name: courseTabInfo, label: "แท็บคอร์ส: รายละเอียด", widget: string }
-          - { name: courseTabDocs, label: "แท็บคอร์ส: เอกสาร", widget: string }
-          - { name: docDownload, label: "ปุ่มดาวน์โหลดเอกสาร", widget: string }
-          - { name: downloadsTitle, label: "หัวข้อหน้าดาวน์โหลดเอกสาร", widget: string }
-          - { name: downloadsSearch, label: "ช่องค้นหาเอกสาร", widget: string }
-          - { name: allSubjects, label: "ตัวเลือก: ทุกวิชา", widget: string }
-          - { name: noDownloads, label: "ข้อความเมื่อยังไม่มีเอกสาร", widget: string }
-          - { name: noDownloadsMatch, label: "ข้อความเมื่อค้นเอกสารไม่เจอ", widget: string }
-          - { name: openSubjectPage, label: "ลิงก์ไปหน้าวิชา", widget: string }
-          - { name: timelineTitle, label: "หัวข้อหน้าไทม์ไลน์", widget: string }
-          - { name: timelineEmpty, label: "ข้อความเมื่อไทม์ไลน์ว่าง", widget: string }
-          - { name: memoriesTitle, label: "หัวข้อกลุ่มรูปแต่ละปี", widget: string }
-          - { name: yearPrefix, label: "คำนำหน้าปี", widget: string }
-          - { name: timelineJump, label: "ชื่อแถบเลือกปี (โปรแกรมอ่านจอ)", widget: string }
-          - { name: searchTypeTimeline, label: "ป้ายประเภทค้นหา: ไทม์ไลน์", widget: string }
-          - { name: timelineSortLabel, label: "คำว่า เรียงลำดับ (ไทม์ไลน์)", widget: string }
-          - { name: timelineOldest, label: "ปุ่ม: เรียงจากเก่าไปใหม่", widget: string }
-          - { name: timelineNewest, label: "ปุ่ม: เรียงจากใหม่ไปเก่า", widget: string }
-          - { name: slideSound, label: "ปุ่มเปิด/ปิดเสียงวิดีโอ (โปรแกรมอ่านจอ)", widget: string }
-          - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
-          - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
-          - { name: boardTitle, label: "หัวข้อส่วนผู้บริหาร", widget: string }
-          - { name: noBoard, label: "ข้อความเมื่อยังไม่มีรายชื่อ", widget: string }
-          - { name: notFoundTitle, label: "หัวข้อหน้าไม่พบ", widget: string }
-          - { name: notFoundText, label: "ข้อความหน้าไม่พบ", widget: string }
-          - { name: backHome, label: "ปุ่มกลับหน้าแรก", widget: string }
-          - { name: externalHint, label: "คำอธิบายลิงก์ที่เปิดแท็บใหม่ (โปรแกรมอ่านจอ)", widget: string }
-          - { name: socialInstagram, label: "ชื่อ Instagram", widget: string }
-          - { name: socialFacebook, label: "ชื่อ Facebook", widget: string }
-          - { name: socialLine, label: "ชื่อ LINE", widget: string }
-          - { name: socialDiscord, label: "ชื่อ Discord", widget: string }
-          - { name: newsCategories, label: "หมวดหมู่ข่าวในตัวกรอง (ควรตรงกับหมวดในฟอร์มข่าว)", widget: list, field: { name: category, label: "ชื่อหมวด", widget: string } }
-
-      - name: intro
-        label: "หน้าสไลด์ต้อนรับ (หน้าแรกสุดของลิงก์เว็บ)"
-        file: src/content/intro/intro.json
-        format: json
-        fields:
-          - { name: enabled, label: "เปิดใช้หน้าสไลด์ต้อนรับ (ปิด = เข้าหน้าหลักทันที)", widget: boolean, default: true }
-          - { name: title, label: "หัวข้อ", widget: string, required: false }
-          - { name: subtitle, label: "ข้อความรอง", widget: string, required: false }
-          - { name: autoplay, label: "เลื่อนสไลด์อัตโนมัติ", widget: boolean, default: true }
-          - { name: interval, label: "เวลาต่อสไลด์ (วินาที)", widget: number, value_type: int, min: 3, max: 30, default: 6 }
-          - name: fit
-            label: "การแสดงรูป/วิดีโอในสไลด์ (ค่าเริ่มต้นของทุกสไลด์)"
-            widget: select
-            default: "cover"
-            required: false
-            options:
-              - { label: "เต็มจอ ตัดขอบเล็กน้อย (แนะนำ เหมาะกับรูป 16:9)", value: "cover" }
-              - { label: "พอดีทั้งรูป ไม่ตัด (มีพื้นหลังเบลอเติมข้างๆ)", value: "contain" }
-          - name: slides
-            label: "สไลด์ (ลากเรียงลำดับได้)"
-            label_singular: "สไลด์"
-            widget: list
-            required: false
-            summary: "{{fields.caption}} {{fields.file}} {{fields.youtube}}"
-            fields:
-              - { name: file, label: "ไฟล์ (รูป วิดีโอ MP4 หรือไฟล์อื่นๆ) แนะนำรูป 1920×1080 (16:9) — วิดีโอยาวให้ใช้ลิงก์ YouTube แทน", widget: file, required: false }
-              - { name: youtube, label: "หรือวางลิงก์ YouTube (ถ้าใส่ จะใช้ YouTube แทนไฟล์)", widget: string, required: false }
-              - { name: alt, label: "คำอธิบายรูป/วิดีโอ (alt) ภาษาไทย", widget: string, required: false }
-              - { name: caption, label: "ข้อความใต้สไลด์", widget: string, required: false }
-              - name: fit
-                label: "การแสดงสไลด์นี้ (ถ้าไม่เลือก ใช้ตามค่าเริ่มต้นด้านบน)"
-                widget: select
-                required: false
-                options:
-                  - { label: "เต็มจอ ตัดขอบเล็กน้อย", value: "cover" }
-                  - { label: "พอดีทั้งรูป ไม่ตัด", value: "contain" }
-              - name: focus
-                label: "จุดสนใจของรูป (เมื่อโดนตัดขอบ เช่น บนมือถือ)"
-                widget: select
-                default: "center"
-                required: false
-                options:
-                  - { label: "กลาง", value: "center" }
-                  - { label: "บน", value: "top" }
-                  - { label: "ล่าง", value: "bottom" }
-                  - { label: "ซ้าย", value: "left" }
-                  - { label: "ขวา", value: "right" }
-          - name: buttons
-            label: "ปุ่มในหน้าสไลด์ (เพิ่มเองได้ ลิงก์ในเว็บขึ้นต้นด้วย / เช่น /home/ หรือลิงก์นอกเว็บขึ้นต้นด้วย https://)"
-            label_singular: "ปุ่ม"
-            widget: list
-            required: false
-            summary: "{{fields.label}}"
-            fields:
-              - { name: label, label: "ข้อความบนปุ่ม", widget: string }
-              - { name: url, label: "ลิงก์ปลายทาง", widget: string }
-              - { name: color, label: "สีปุ่ม (สีตัวอักษรจะปรับให้อ่านชัดเอง)", widget: color, required: false }
-
-      - name: menu
-        label: "เมนู"
-        file: src/content/menu/menu.json
-        format: json
-        fields:
-          - name: items
-            label: "รายการเมนูหลัก (ลากเพื่อเรียงลำดับ)"
-            label_singular: "เมนู"
-            widget: list
-            summary: "{{fields.label}}"
-            fields:
-              - { name: label, label: "ชื่อเมนู", widget: string }
-              - name: icon
-                label: "ไอคอนแทนชื่อเมนู (เว้นว่าง = แสดงเป็นข้อความ)"
-                widget: select
-                required: false
-                options:
-                  - { label: "บ้าน", value: "house" }
-                  - { label: "โทรโข่ง", value: "megaphone" }
-                  - { label: "โรงเรียน", value: "school" }
-                  - { label: "ถาดสีศิลปะ", value: "palette" }
-                  - { label: "โทรศัพท์", value: "phone" }
-              - { name: link, label: "ลิงก์", widget: string, required: false, hint: "ลิงก์ในเว็บขึ้นต้นด้วย / เช่น /news/ หรือ /pages/thai/ ส่วนลิงก์นอกเว็บขึ้นต้นด้วย https:// ถ้าเมนูนี้มีเมนูย่อย เว้นว่างได้" }
-              - name: children
-                label: "เมนูย่อย (ลากเพื่อเรียงลำดับ)"
-                label_singular: "เมนูย่อย"
-                widget: list
-                required: false
-                summary: "{{fields.label}}"
-                fields:
-                  - { name: label, label: "ชื่อเมนูย่อย", widget: string }
-                  - { name: link, label: "ลิงก์", widget: string }
-
-  # ───────────── 3) โพสต์ข่าว/กิจกรรม ─────────────
-  - name: posts
-    label: "ข่าว/กิจกรรม"
-    label_singular: "ข่าว"
-    folder: src/content/posts
-    extension: md
-    format: frontmatter
-    create: true
-    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{title}} — {{status}}"
-    sortable_fields: [title, date, status]
+- name: posts
+  label: ข่าว/กิจกรรม
+  label_singular: ข่าว
+  folder: src/content/posts
+  extension: md
+  format: frontmatter
+  create: true
+  slug: '{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}'
+  summary: '{{title}} — {{status}}'
+  sortable_fields:
+  - title
+  - date
+  - status
+  fields:
+  - name: title
+    label: หัวข้อ
+    widget: string
+  - name: status
+    label: สถานะ
+    widget: select
+    default: draft
+    options:
+    - label: ร่าง (ยังไม่แสดงบนเว็บ)
+      value: draft
+    - label: เผยแพร่
+      value: published
+  - name: date
+    label: วันที่โพสต์
+    widget: datetime
+    format: YYYY-MM-DD
+    date_format: DD/MM/YYYY
+    time_format: false
+    picker_utc: false
+    required: false
+  - name: category
+    label: หมวดหมู่
+    widget: select
+    required: false
+    options:
+    - ข่าวประชาสัมพันธ์ทั่วไป
+    - ข่าวการศึกษา
+  - name: cover
+    label: รูปปก
+    widget: object
+    required: false
     fields:
-      - { name: title, label: "หัวข้อ", widget: string }
-      - name: status
-        label: "สถานะ"
-        widget: select
-        default: draft
-        options:
-          - { label: "ร่าง (ยังไม่แสดงบนเว็บ)", value: draft }
-          - { label: "เผยแพร่", value: published }
-      - { name: date, label: "วันที่โพสต์", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
-      - { name: updated, label: "วันที่อัปเดต", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
-      - name: category
-        label: "หมวดหมู่"
-        widget: select
-        required: false
-        options: ["ข่าวประชาสัมพันธ์ทั่วไป", "ข่าวการศึกษา"]
-      - { name: pinned, label: "ปักหมุดข่าว", widget: boolean, default: false }
-      - { name: isNew, label: "ป้าย New", widget: boolean, default: false }
-      - { name: notes, label: "หมายเหตุภายใน (ไม่แสดงบนเว็บ)", widget: text, required: false }
-      - name: cover
-        label: "รูปปก"
-        widget: object
-        required: false
-        fields:
-          - { name: src, label: "ไฟล์รูป", widget: image, required: false }
-          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
-      - { name: coverSize, label: "ขนาดรูปปกในหน้าข่าว (% ของความกว้าง)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-      - name: coverAlign
-        label: "ตำแหน่งรูปปก (เมื่อกว้างไม่เต็ม)"
-        widget: select
-        default: "center"
-        required: false
-        options:
-          - { label: "ชิดซ้าย", value: "left" }
-          - { label: "กึ่งกลาง", value: "center" }
-          - { label: "ชิดขวา", value: "right" }
-      - { name: body, label: "ข้อความนำ (ไม่บังคับ แสดงก่อนส่วนเนื้อหา)", widget: markdown, required: false }
-      - name: bodyAlign
-        label: "การจัดข้อความนำ"
-        widget: select
-        default: "left"
-        required: false
-        options:
-          - { label: "ชิดซ้าย", value: "left" }
-          - { label: "กึ่งกลาง", value: "center" }
-          - { label: "ชิดขวา", value: "right" }
-          - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
-      - name: bodySize
-        label: "ขนาดตัวอักษรข้อความนำ"
-        widget: select
-        default: "normal"
-        required: false
-        options:
-          - { label: "ปกติ", value: "normal" }
-          - { label: "ใหญ่", value: "large" }
-          - { label: "ใหญ่มาก", value: "xlarge" }
-      - name: sections
-        label: "ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)"
-        label_singular: "ส่วน"
-        widget: list
-        required: false
-        summary: "{{fields.title}}"
-        fields:
-          - { name: title, label: "หัวข้อของส่วนนี้ เช่น กิจกรรมปีใหม่", widget: string, required: false }
-          - name: titleAlign
-            label: "ตำแหน่งหัวข้อ"
-            widget: select
-            default: "left"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-          - name: titleSize
-            label: "ขนาดหัวข้อ"
-            widget: select
-            default: "normal"
-            required: false
-            options:
-              - { label: "ปกติ", value: "normal" }
-              - { label: "ใหญ่", value: "large" }
-              - { label: "ใหญ่มาก", value: "xlarge" }
-          - name: image
-            label: "รูปประกอบข้อความ (แสดงข้างข้อความ)"
-            widget: object
-            required: false
-            fields:
-              - { name: src, label: "ไฟล์รูป", widget: image, required: false }
-              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
-          - { name: imageSize, label: "ขนาดรูปประกอบ (% ของความกว้าง)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 50, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง) รูปที่ใหญ่เกิน 60% จะไม่ให้ข้อความไหลล้อม" }
-          - name: imageAlign
-            label: "ตำแหน่งรูป (ชิดซ้าย/ขวา = ข้อความไหลล้อมรูป, กึ่งกลาง = รูปอยู่เหนือข้อความ)"
-            widget: select
-            default: "left"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-          - { name: text, label: "ข้อความ", widget: markdown, required: false }
-          - name: textAlign
-            label: "การจัดข้อความ"
-            widget: select
-            default: "left"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-              - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
-          - name: textSize
-            label: "ขนาดตัวอักษร"
-            widget: select
-            default: "normal"
-            required: false
-            options:
-              - { label: "ปกติ", value: "normal" }
-              - { label: "ใหญ่", value: "large" }
-              - { label: "ใหญ่มาก", value: "xlarge" }
-          - name: album
-            label: "อัลบั้มรูปของส่วนนี้ (กดรูปเพื่อขยายได้)"
-            label_singular: "รูป"
-            widget: list
-            required: false
-            summary: "{{fields.alt}}"
-            fields:
-              - { name: src, label: "ไฟล์รูป", widget: image }
-              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
-          - name: albumSize
-            label: "จำนวนคอลัมน์ในอัลบั้ม (มาก = รูปเล็ก)"
-            widget: select
-            default: "3"
-            required: false
-            options:
-              - { label: "2 คอลัมน์ (รูปใหญ่)", value: "2" }
-              - { label: "3 คอลัมน์", value: "3" }
-              - { label: "4 คอลัมน์", value: "4" }
-              - { label: "5 คอลัมน์", value: "5" }
-              - { label: "6 คอลัมน์ (รูปเล็ก)", value: "6" }
-          - { name: albumWidth, label: "ความกว้างของอัลบั้มทั้งชุด (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-          - name: albumAlign
-            label: "ตำแหน่งอัลบั้ม (เมื่อกว้างไม่เต็ม)"
-            widget: select
-            default: "center"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-          - name: albumRatio
-            label: "สัดส่วนรูปย่อในอัลบั้ม (ตอนกดขยายจะเห็นรูปเต็มตามจริงเสมอ)"
-            widget: select
-            default: "4:3"
-            required: false
-            options:
-              - { label: "เท่ากันทุกรูป 4:3 (แนะนำ)", value: "4:3" }
-              - { label: "เท่ากันทุกรูป 16:9 (แนวนอนกว้าง)", value: "16:9" }
-              - { label: "เท่ากันทุกรูป 1:1 (จัตุรัส)", value: "1:1" }
-              - { label: "เท่ากันทุกรูป 3:4 (แนวตั้ง)", value: "3:4" }
-              - { label: "ตามสัดส่วนรูปจริง (ขนาดไม่เท่ากัน)", value: "auto" }
-          - name: videosAlign
-            label: "การจัดแถววิดีโอ (วิดีโอที่ไม่เต็มบรรทัด)"
-            widget: select
-            default: "center"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-          - name: videos
-            label: "วิดีโอ YouTube"
-            label_singular: "วิดีโอ"
-            widget: list
-            required: false
-            summary: "{{fields.title}}"
-            fields:
-              - { name: url, label: "ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)", widget: string }
-              - { name: title, label: "ชื่อวิดีโอ (แสดงใต้วิดีโอ)", widget: string, required: false }
-              - { name: width, label: "ความกว้างวิดีโอ (%) — ใส่ 50 + 50 หรือ 33 + 33 + 33 ติดกัน = อยู่บรรทัดเดียวกัน", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-              - name: ratio
-                label: "สัดส่วนจอวิดีโอ"
-                widget: select
-                default: "16:9"
-                required: false
-                options:
-                  - { label: "16:9 (ปกติ)", value: "16:9" }
-                  - { label: "4:3", value: "4:3" }
-                  - { label: "1:1 (สี่เหลี่ยมจัตุรัส)", value: "1:1" }
-                  - { label: "9:16 (แนวตั้ง เช่น Shorts ควรตั้งความกว้าง 30–50%)", value: "9:16" }
-
-  # ───────────── 4) หน้าทั่วไป ─────────────
-  - name: pages
-    label: "หน้าทั่วไป"
-    label_singular: "หน้า"
-    folder: src/content/pages
-    extension: md
-    format: frontmatter
-    create: true
-    slug: "{{fields.slug}}"
-    summary: "{{title}}"
+    - name: src
+      label: ไฟล์รูป
+      widget: image
+      required: false
+    - name: alt
+      label: คำอธิบายรูป (alt) ภาษาไทย
+      widget: string
+      required: false
+      hint: ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย
+  - name: body
+    label: ข้อความนำ (ไม่บังคับ แสดงก่อนส่วนเนื้อหา)
+    widget: markdown
+    required: false
+  - name: sections
+    label: 'ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)'
+    label_singular: ส่วน
+    widget: list
+    required: false
+    summary: '{{fields.title}}'
     fields:
-      - { name: title, label: "ชื่อหน้า", widget: string }
-      - { name: slug, label: "ชื่อลิงก์ (ภาษาอังกฤษพิมพ์เล็ก/ตัวเลข/ขีดกลางเท่านั้น)", widget: string, pattern: ["^[a-z0-9-]+$", "ใช้ได้เฉพาะ a-z 0-9 และ -"], hint: "เช่น thai-subject จะได้ลิงก์ /pages/thai-subject/" }
-      - { name: description, label: "คำอธิบายสั้น (ใช้ใน Google)", widget: text, required: false }
-      - { name: legacy, label: "ระบบเก่า (ซ่อนจากเมนูหลัก แต่เปิดผ่านลิงก์ได้)", widget: boolean, default: false }
-      - { name: showContact, label: "แสดงช่องทางติดต่อ (ดึงจากตั้งค่าเว็บไซต์) ในหน้านี้", widget: boolean, default: false }
-      - { name: showExecutives, label: "แสดงรายชื่อผู้บริหารท้ายหน้านี้", widget: boolean, default: false }
-      - name: newsCategory
-        label: "แสดงข่าวหมวดนี้ท้ายหน้า"
+    - name: title
+      label: หัวข้อของส่วนนี้ เช่น กิจกรรมปีใหม่
+      widget: string
+      required: false
+    - name: text
+      label: ข้อความ
+      widget: markdown
+      required: false
+    - name: image
+      label: รูปประกอบข้อความ (แสดงข้างข้อความ)
+      widget: object
+      required: false
+      fields:
+      - name: src
+        label: ไฟล์รูป
+        widget: image
+        required: false
+      - name: alt
+        label: คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป
+        widget: string
+        required: false
+    - name: album
+      label: อัลบั้มรูปของส่วนนี้ (กดรูปเพื่อขยายได้)
+      label_singular: รูป
+      widget: list
+      required: false
+      summary: '{{fields.alt}}'
+      fields:
+      - name: src
+        label: ไฟล์รูป
+        widget: image
+      - name: alt
+        label: คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป
+        widget: string
+      collapsed: true
+      minimize_collapsed: true
+    - name: videos
+      label: วิดีโอ YouTube
+      label_singular: วิดีโอ
+      widget: list
+      required: false
+      summary: '{{fields.title}}'
+      fields:
+      - name: url
+        label: ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)
+        widget: string
+      - name: title
+        label: ชื่อวิดีโอ (แสดงใต้วิดีโอ)
+        widget: string
+        required: false
+      - name: width
+        label: ความกว้างวิดีโอ (%) — ใส่ 50 + 50 หรือ 33 + 33 + 33 ติดกัน = อยู่บรรทัดเดียวกัน
+        widget: number
+        value_type: int
+        min: 5
+        max: 100
+        step: 5
+        default: 100
+        required: false
+        hint: พิมพ์ 5–100 (100 = เต็มความกว้าง)
+      - name: ratio
+        label: สัดส่วนจอวิดีโอ
         widget: select
-        required: false
-        options: ["ข่าวการศึกษา", "ข่าวประชาสัมพันธ์ทั่วไป"]
-      - name: teachers
-        label: "ครูผู้สอนประจำวิชานี้ (เลือกจากรายชื่อครู ต้องเพิ่มครูในเมนู ครูผู้สอน ก่อน)"
-        widget: relation
-        collection: teachers
-        search_fields: [name]
-        value_field: "{{slug}}"
-        display_fields: [name]
-        multiple: true
-        required: false
-      - name: links
-        label: "ปุ่มลิงก์ใหญ่ (เช่น ลิงก์แบบฟอร์ม)"
-        label_singular: "ลิงก์"
-        widget: list
-        required: false
-        summary: "{{fields.label}}"
-        fields:
-          - { name: label, label: "ชื่อปุ่ม", widget: string }
-          - { name: url, label: "ลิงก์", widget: string }
-          - { name: note, label: "ข้อความเล็กใต้ชื่อ", widget: string, required: false }
-          - { name: width, label: "ความกว้างของปุ่ม (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-          - name: align
-            label: "ตำแหน่งปุ่ม (เมื่อกว้างไม่เต็ม)"
-            widget: select
-            default: "center"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-      - name: embeds
-        label: "ฝังแบบฟอร์ม/เอกสารในหน้า (เช่น Google Forms กรอกได้ในหน้าเว็บเลย)"
-        label_singular: "กรอบฝัง"
-        widget: list
-        required: false
-        summary: "{{fields.title}}"
-        fields:
-          - { name: title, label: "ชื่อที่แสดงเหนือกรอบ", widget: string, required: false }
-          - { name: url, label: "ลิงก์ฟอร์ม (ต้องขึ้นต้นด้วย https://)", widget: string, hint: "Google Forms: เปิดฟอร์ม กด ส่ง แล้วเลือกลิงก์ (ไอคอนโซ่) แล้วกด ย่อ URL ออก (ติ๊กออก) ก่อนคัดลอก ลิงก์ย่อ forms.gle ใช้ฝังไม่ได้ ระบบจะเติมตัวเลือกฝังให้เอง" }
-          - { name: height, label: "ความสูงของกรอบ (พิกเซล)", widget: number, value_type: int, min: 300, max: 3000, default: 900, required: false }
-          - { name: width, label: "ความกว้างของกรอบ (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-          - name: align
-            label: "ตำแหน่งกรอบ (เมื่อกว้างไม่เต็ม)"
-            widget: select
-            default: "center"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-      - name: courses
-        label: "คอร์สเรียนของวิชานี้ (เพิ่มได้หลายคอร์ส ลากเรียงลำดับได้)"
-        label_singular: "คอร์ส"
-        widget: list
-        required: false
-        summary: "{{fields.title}}"
-        fields:
-          - { name: title, label: "ชื่อคอร์ส", widget: string }
-          - { name: group, label: "หมวดหมู่คอร์ส (ไม่บังคับ คอร์สที่ใส่หมวดเดียวกันจะอยู่ใต้หัวข้อเดียวกัน)", widget: string, required: false }
-          - { name: startDate, label: "วันเริ่มเรียน", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
-          - { name: endDate, label: "วันสิ้นสุดคอร์ส", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
-          - { name: schedule, label: "วันและเวลาเรียน (เช่น เสาร์ 09:00-11:00)", widget: text, required: false }
-          - name: teachers
-            label: "ครูผู้สอนคอร์สนี้ (เลือกได้หลายคน)"
-            widget: relation
-            collection: teachers
-            search_fields: [name]
-            value_field: "{{slug}}"
-            display_fields: [name]
-            multiple: true
-            required: false
-          - { name: description, label: "รายละเอียดคอร์ส", widget: markdown, required: false }
-          - name: documents
-            label: "เอกสารให้ดาวน์โหลด (ครูฝากไฟล์ไว้ที่นี่ เช่น ใบงาน สไลด์ PDF)"
-            label_singular: "เอกสาร"
-            widget: list
-            required: false
-            summary: "{{fields.title}}"
-            fields:
-              - { name: title, label: "ชื่อเอกสาร", widget: string }
-              - { name: file, label: "ไฟล์ (PDF, Word, PowerPoint, Excel ฯลฯ)", widget: file }
-              - { name: note, label: "หมายเหตุสั้นๆ (ไม่บังคับ)", widget: string, required: false }
-          - { name: applyUrl, label: "ลิงก์ฟอร์มสมัครคอร์สนี้ (ครูวางเอง ขึ้นต้นด้วย https:// ถ้าไม่ใส่ จะไม่มีปุ่มสมัคร)", widget: string, required: false }
-          - { name: closed, label: "ปิดรับสมัครแล้ว (ติ๊ก = ปุ่มสมัครหายไป ขึ้นป้าย ปิดรับสมัครแล้ว)", widget: boolean, default: false }
-          - { name: ended, label: "คอร์สนี้จบแล้ว (ติ๊ก = ขึ้นป้าย คอร์สนี้จบแล้ว)", widget: boolean, default: false }
-          - name: links
-            label: "ลิงก์แนบ (เช่น ลิงก์คะแนน)"
-            label_singular: "ลิงก์"
-            widget: list
-            required: false
-            summary: "{{fields.label}}"
-            fields:
-              - { name: label, label: "ชื่อปุ่ม เช่น ดูคะแนน", widget: string }
-              - { name: url, label: "ลิงก์", widget: string }
-      - { name: body, label: "ข้อความนำ (ไม่บังคับ)", widget: markdown, required: false }
-      - name: bodyAlign
-        label: "การจัดข้อความนำ"
-        widget: select
-        default: "left"
+        default: '16:9'
         required: false
         options:
-          - { label: "ชิดซ้าย", value: "left" }
-          - { label: "กึ่งกลาง", value: "center" }
-          - { label: "ชิดขวา", value: "right" }
-          - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
-      - name: bodySize
-        label: "ขนาดตัวอักษรข้อความนำ"
-        widget: select
-        default: "normal"
-        required: false
-        options:
-          - { label: "ปกติ", value: "normal" }
-          - { label: "ใหญ่", value: "large" }
-          - { label: "ใหญ่มาก", value: "xlarge" }
-      - name: sections
-        label: "ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)"
-        label_singular: "ส่วน"
-        widget: list
-        required: false
-        summary: "{{fields.title}}"
-        fields:
-          - { name: title, label: "หัวข้อของส่วนนี้ เช่น กิจกรรมปีใหม่", widget: string, required: false }
-          - name: titleAlign
-            label: "ตำแหน่งหัวข้อ"
-            widget: select
-            default: "left"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-          - name: titleSize
-            label: "ขนาดหัวข้อ"
-            widget: select
-            default: "normal"
-            required: false
-            options:
-              - { label: "ปกติ", value: "normal" }
-              - { label: "ใหญ่", value: "large" }
-              - { label: "ใหญ่มาก", value: "xlarge" }
-          - name: image
-            label: "รูปประกอบข้อความ (แสดงข้างข้อความ)"
-            widget: object
-            required: false
-            fields:
-              - { name: src, label: "ไฟล์รูป", widget: image, required: false }
-              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
-          - { name: imageSize, label: "ขนาดรูปประกอบ (% ของความกว้าง)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 50, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง) รูปที่ใหญ่เกิน 60% จะไม่ให้ข้อความไหลล้อม" }
-          - name: imageAlign
-            label: "ตำแหน่งรูป (ชิดซ้าย/ขวา = ข้อความไหลล้อมรูป, กึ่งกลาง = รูปอยู่เหนือข้อความ)"
-            widget: select
-            default: "left"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-          - { name: text, label: "ข้อความ", widget: markdown, required: false }
-          - name: textAlign
-            label: "การจัดข้อความ"
-            widget: select
-            default: "left"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-              - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
-          - name: textSize
-            label: "ขนาดตัวอักษร"
-            widget: select
-            default: "normal"
-            required: false
-            options:
-              - { label: "ปกติ", value: "normal" }
-              - { label: "ใหญ่", value: "large" }
-              - { label: "ใหญ่มาก", value: "xlarge" }
-          - name: album
-            label: "อัลบั้มรูปของส่วนนี้ (กดรูปเพื่อขยายได้)"
-            label_singular: "รูป"
-            widget: list
-            required: false
-            summary: "{{fields.alt}}"
-            fields:
-              - { name: src, label: "ไฟล์รูป", widget: image }
-              - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
-          - name: albumSize
-            label: "จำนวนคอลัมน์ในอัลบั้ม (มาก = รูปเล็ก)"
-            widget: select
-            default: "3"
-            required: false
-            options:
-              - { label: "2 คอลัมน์ (รูปใหญ่)", value: "2" }
-              - { label: "3 คอลัมน์", value: "3" }
-              - { label: "4 คอลัมน์", value: "4" }
-              - { label: "5 คอลัมน์", value: "5" }
-              - { label: "6 คอลัมน์ (รูปเล็ก)", value: "6" }
-          - { name: albumWidth, label: "ความกว้างของอัลบั้มทั้งชุด (%)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-          - name: albumAlign
-            label: "ตำแหน่งอัลบั้ม (เมื่อกว้างไม่เต็ม)"
-            widget: select
-            default: "center"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-          - name: albumRatio
-            label: "สัดส่วนรูปย่อในอัลบั้ม (ตอนกดขยายจะเห็นรูปเต็มตามจริงเสมอ)"
-            widget: select
-            default: "4:3"
-            required: false
-            options:
-              - { label: "เท่ากันทุกรูป 4:3 (แนะนำ)", value: "4:3" }
-              - { label: "เท่ากันทุกรูป 16:9 (แนวนอนกว้าง)", value: "16:9" }
-              - { label: "เท่ากันทุกรูป 1:1 (จัตุรัส)", value: "1:1" }
-              - { label: "เท่ากันทุกรูป 3:4 (แนวตั้ง)", value: "3:4" }
-              - { label: "ตามสัดส่วนรูปจริง (ขนาดไม่เท่ากัน)", value: "auto" }
-          - name: videosAlign
-            label: "การจัดแถววิดีโอ (วิดีโอที่ไม่เต็มบรรทัด)"
-            widget: select
-            default: "center"
-            required: false
-            options:
-              - { label: "ชิดซ้าย", value: "left" }
-              - { label: "กึ่งกลาง", value: "center" }
-              - { label: "ชิดขวา", value: "right" }
-          - name: videos
-            label: "วิดีโอ YouTube"
-            label_singular: "วิดีโอ"
-            widget: list
-            required: false
-            summary: "{{fields.title}}"
-            fields:
-              - { name: url, label: "ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)", widget: string }
-              - { name: title, label: "ชื่อวิดีโอ (แสดงใต้วิดีโอ)", widget: string, required: false }
-              - { name: width, label: "ความกว้างวิดีโอ (%) — ใส่ 50 + 50 หรือ 33 + 33 + 33 ติดกัน = อยู่บรรทัดเดียวกัน", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-              - name: ratio
-                label: "สัดส่วนจอวิดีโอ"
-                widget: select
-                default: "16:9"
-                required: false
-                options:
-                  - { label: "16:9 (ปกติ)", value: "16:9" }
-                  - { label: "4:3", value: "4:3" }
-                  - { label: "1:1 (สี่เหลี่ยมจัตุรัส)", value: "1:1" }
-                  - { label: "9:16 (แนวตั้ง เช่น Shorts ควรตั้งความกว้าง 30–50%)", value: "9:16" }
-
-  # ───────────── 5) ปฏิทินกิจกรรม ─────────────
-  - name: events
-    label: "ปฏิทินกิจกรรม"
-    label_singular: "กิจกรรม"
-    folder: src/content/events
-    extension: json
-    format: json
-    create: true
-    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{title}}"
-    fields:
-      - { name: title, label: "ชื่อกิจกรรม", widget: string }
-      - { name: start, label: "วันเริ่ม", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false }
-      - { name: end, label: "วันสิ้นสุด", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false, required: false }
-      - { name: location, label: "สถานที่", widget: string, required: false }
-      - { name: details, label: "รายละเอียด", widget: text, required: false }
-      - { name: link, label: "ลิงก์", widget: string, required: false }
-
-  # ───────────── 6) สมาชิก/บอร์ดบริหาร ─────────────
-  - name: board
-    label: "ผู้บริหาร"
-    label_singular: "ผู้บริหาร"
-    folder: src/content/board
-    extension: json
-    format: json
-    create: true
-    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{order}}. {{name}} — {{position}}"
-    sortable_fields: [order, name]
-    fields:
-      - { name: name, label: "ชื่อ", widget: string }
-      - { name: position, label: "ตำแหน่ง", widget: string, required: false }
-      - name: photo
-        label: "รูป"
-        widget: object
-        required: false
-        fields:
-          - { name: src, label: "ไฟล์รูป", widget: image, required: false }
-          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
-      - { name: instagram, label: "Instagram (ลิงก์เต็ม)", widget: string, required: false }
-      - { name: facebook, label: "Facebook (ลิงก์เต็ม)", widget: string, required: false }
-      - { name: youtube, label: "YouTube (ลิงก์เต็ม)", widget: string, required: false }
-      - { name: email, label: "อีเมล (เช่น Gmail)", widget: string, required: false }
-      - { name: phone, label: "เบอร์โทร", widget: string, required: false }
-      - { name: order, label: "ลำดับ (เลขน้อยขึ้นก่อน)", widget: number, value_type: int, default: 100 }
-
-  # ───────────── ครูผู้สอน ─────────────
+        - label: 16:9 (ปกติ)
+          value: '16:9'
+        - label: '4:3'
+          value: '4:3'
+        - label: 1:1 (สี่เหลี่ยมจัตุรัส)
+          value: '1:1'
+        - label: 9:16 (แนวตั้ง เช่น Shorts ควรตั้งความกว้าง 30–50%)
+          value: '9:16'
+      collapsed: true
+      minimize_collapsed: true
+    - name: titleAlign
+      label: ปรับแต่ง · ตำแหน่งหัวข้อ
+      widget: select
+      default: left
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    - name: titleSize
+      label: ปรับแต่ง · ขนาดหัวข้อ
+      widget: select
+      default: normal
+      required: false
+      options:
+      - label: ปกติ
+        value: normal
+      - label: ใหญ่
+        value: large
+      - label: ใหญ่มาก
+        value: xlarge
+    - name: imageSize
+      label: ปรับแต่ง · ขนาดรูปประกอบ (% ของความกว้าง)
+      widget: number
+      value_type: int
+      min: 5
+      max: 100
+      step: 5
+      default: 50
+      required: false
+      hint: พิมพ์ 5–100 (100 = เต็มความกว้าง) รูปที่ใหญ่เกิน 60% จะไม่ให้ข้อความไหลล้อม
+    - name: imageAlign
+      label: ปรับแต่ง · ตำแหน่งรูป (ชิดซ้าย/ขวา = ข้อความไหลล้อมรูป, กึ่งกลาง = รูปอยู่เหนือข้อความ)
+      widget: select
+      default: left
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    - name: textAlign
+      label: ปรับแต่ง · การจัดข้อความ
+      widget: select
+      default: left
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+      - label: เต็มบรรทัด (สองข้าง)
+        value: justify
+    - name: textSize
+      label: ปรับแต่ง · ขนาดตัวอักษร
+      widget: select
+      default: normal
+      required: false
+      options:
+      - label: ปกติ
+        value: normal
+      - label: ใหญ่
+        value: large
+      - label: ใหญ่มาก
+        value: xlarge
+    - name: albumSize
+      label: ปรับแต่ง · จำนวนคอลัมน์ในอัลบั้ม (มาก = รูปเล็ก)
+      widget: select
+      default: '3'
+      required: false
+      options:
+      - label: 2 คอลัมน์ (รูปใหญ่)
+        value: '2'
+      - label: 3 คอลัมน์
+        value: '3'
+      - label: 4 คอลัมน์
+        value: '4'
+      - label: 5 คอลัมน์
+        value: '5'
+      - label: 6 คอลัมน์ (รูปเล็ก)
+        value: '6'
+    - name: albumWidth
+      label: ปรับแต่ง · ความกว้างของอัลบั้มทั้งชุด (%)
+      widget: number
+      value_type: int
+      min: 5
+      max: 100
+      step: 5
+      default: 100
+      required: false
+      hint: พิมพ์ 5–100 (100 = เต็มความกว้าง)
+    - name: albumAlign
+      label: ปรับแต่ง · ตำแหน่งอัลบั้ม (เมื่อกว้างไม่เต็ม)
+      widget: select
+      default: center
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    - name: albumRatio
+      label: ปรับแต่ง · สัดส่วนรูปย่อในอัลบั้ม (ตอนกดขยายจะเห็นรูปเต็มตามจริงเสมอ)
+      widget: select
+      default: '4:3'
+      required: false
+      options:
+      - label: เท่ากันทุกรูป 4:3 (แนะนำ)
+        value: '4:3'
+      - label: เท่ากันทุกรูป 16:9 (แนวนอนกว้าง)
+        value: '16:9'
+      - label: เท่ากันทุกรูป 1:1 (จัตุรัส)
+        value: '1:1'
+      - label: เท่ากันทุกรูป 3:4 (แนวตั้ง)
+        value: '3:4'
+      - label: ตามสัดส่วนรูปจริง (ขนาดไม่เท่ากัน)
+        value: auto
+    - name: videosAlign
+      label: ปรับแต่ง · การจัดแถววิดีโอ (วิดีโอที่ไม่เต็มบรรทัด)
+      widget: select
+      default: center
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    collapsed: true
+  - name: pinned
+    label: ปักหมุดข่าว
+    widget: boolean
+    default: false
+  - name: isNew
+    label: ป้าย New
+    widget: boolean
+    default: false
+  - name: updated
+    label: วันที่อัปเดต
+    widget: datetime
+    format: YYYY-MM-DD
+    date_format: DD/MM/YYYY
+    time_format: false
+    picker_utc: false
+    required: false
+  - name: notes
+    label: หมายเหตุภายใน (ไม่แสดงบนเว็บ)
+    widget: text
+    required: false
+  - name: coverSize
+    label: ปรับแต่ง · ขนาดรูปปกในหน้าข่าว (% ของความกว้าง)
+    widget: number
+    value_type: int
+    min: 5
+    max: 100
+    step: 5
+    default: 100
+    required: false
+    hint: พิมพ์ 5–100 (100 = เต็มความกว้าง)
+  - name: coverAlign
+    label: ปรับแต่ง · ตำแหน่งรูปปก (เมื่อกว้างไม่เต็ม)
+    widget: select
+    default: center
+    required: false
+    options:
+    - label: ชิดซ้าย
+      value: left
+    - label: กึ่งกลาง
+      value: center
+    - label: ชิดขวา
+      value: right
+  - name: bodyAlign
+    label: ปรับแต่ง · การจัดข้อความนำ
+    widget: select
+    default: left
+    required: false
+    options:
+    - label: ชิดซ้าย
+      value: left
+    - label: กึ่งกลาง
+      value: center
+    - label: ชิดขวา
+      value: right
+    - label: เต็มบรรทัด (สองข้าง)
+      value: justify
+  - name: bodySize
+    label: ปรับแต่ง · ขนาดตัวอักษรข้อความนำ
+    widget: select
+    default: normal
+    required: false
+    options:
+    - label: ปกติ
+      value: normal
+    - label: ใหญ่
+      value: large
+    - label: ใหญ่มาก
+      value: xlarge
+  description: 'เขียนข่าวและกิจกรรม: ใส่หัวข้อ → เลือกสถานะ (ร่าง/เผยแพร่) → ใส่รูปปกและเนื้อหา → เพิ่ม "ส่วนเนื้อหา" สำหรับรูป อัลบั้ม และวิดีโอ ช่องที่ขึ้นต้นว่า "ปรับแต่ง" ใช้ปรับขนาดและตำแหน่ง'
+  view_filters:
+  - label: ร่าง (ยังไม่แสดงบนเว็บ)
+    field: status
+    pattern: draft
+  - label: เผยแพร่แล้ว
+    field: status
+    pattern: published
+  - label: ปักหมุด
+    field: pinned
+    pattern: true
+  view_groups:
+  - label: สถานะ
+    field: status
+  - label: หมวดหมู่
+    field: category
+- name: pages
+  label: หน้าทั่วไป
+  label_singular: หน้า
+  folder: src/content/pages
+  extension: md
+  format: frontmatter
+  create: true
+  slug: '{{fields.slug}}'
+  summary: '{{title}}'
+  fields:
+  - name: title
+    label: ชื่อหน้า
+    widget: string
+  - name: slug
+    label: ชื่อลิงก์ (ภาษาอังกฤษพิมพ์เล็ก/ตัวเลข/ขีดกลางเท่านั้น)
+    widget: string
+    pattern:
+    - ^[a-z0-9-]+$
+    - ใช้ได้เฉพาะ a-z 0-9 และ -
+    hint: เช่น thai-subject จะได้ลิงก์ /pages/thai-subject/
   - name: teachers
-    label: "ครูผู้สอน"
-    label_singular: "ครู"
-    folder: src/content/teachers
-    extension: json
-    format: json
-    create: true
-    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{order}}. {{name}} — {{position}}"
-    sortable_fields: [order, name]
+    label: ครูผู้สอนประจำวิชานี้ (เลือกจากรายชื่อครู ต้องเพิ่มครูในเมนู ครูผู้สอน ก่อน)
+    widget: relation
+    collection: teachers
+    search_fields:
+    - name
+    value_field: '{{slug}}'
+    display_fields:
+    - name
+    multiple: true
+    required: false
+  - name: courses
+    label: คอร์สเรียนของวิชานี้ (เพิ่มได้หลายคอร์ส ลากเรียงลำดับได้)
+    label_singular: คอร์ส
+    widget: list
+    required: false
+    summary: '{{fields.title}}'
     fields:
-      - { name: name, label: "ชื่อ", widget: string }
-      - { name: position, label: "ตำแหน่ง/วิชาที่สอน", widget: string, required: false }
-      - name: photo
-        label: "รูป"
-        widget: object
+    - name: title
+      label: ชื่อคอร์ส
+      widget: string
+    - name: group
+      label: หมวดหมู่คอร์ส (ไม่บังคับ คอร์สที่ใส่หมวดเดียวกันจะอยู่ใต้หัวข้อเดียวกัน)
+      widget: string
+      required: false
+    - name: startDate
+      label: วันเริ่มเรียน
+      widget: datetime
+      format: YYYY-MM-DD
+      date_format: DD/MM/YYYY
+      time_format: false
+      picker_utc: false
+      required: false
+    - name: endDate
+      label: วันสิ้นสุดคอร์ส
+      widget: datetime
+      format: YYYY-MM-DD
+      date_format: DD/MM/YYYY
+      time_format: false
+      picker_utc: false
+      required: false
+    - name: schedule
+      label: วันและเวลาเรียน (เช่น เสาร์ 09:00-11:00)
+      widget: text
+      required: false
+    - name: teachers
+      label: ครูผู้สอนคอร์สนี้ (เลือกได้หลายคน)
+      widget: relation
+      collection: teachers
+      search_fields:
+      - name
+      value_field: '{{slug}}'
+      display_fields:
+      - name
+      multiple: true
+      required: false
+    - name: applyUrl
+      label: ลิงก์ฟอร์มสมัครคอร์สนี้ (ครูวางเอง ขึ้นต้นด้วย https:// ถ้าไม่ใส่ จะไม่มีปุ่มสมัคร)
+      widget: string
+      required: false
+    - name: closed
+      label: ปิดรับสมัครแล้ว (ติ๊ก = ปุ่มสมัครหายไป ขึ้นป้าย ปิดรับสมัครแล้ว)
+      widget: boolean
+      default: false
+    - name: ended
+      label: คอร์สนี้จบแล้ว (ติ๊ก = ขึ้นป้าย คอร์สนี้จบแล้ว)
+      widget: boolean
+      default: false
+    - name: documents
+      label: เอกสารให้ดาวน์โหลด (ครูฝากไฟล์ไว้ที่นี่ เช่น ใบงาน สไลด์ PDF)
+      label_singular: เอกสาร
+      widget: list
+      required: false
+      summary: '{{fields.title}}'
+      fields:
+      - name: title
+        label: ชื่อเอกสาร
+        widget: string
+      - name: file
+        label: ไฟล์ (PDF, Word, PowerPoint, Excel ฯลฯ)
+        widget: file
+      - name: note
+        label: หมายเหตุสั้นๆ (ไม่บังคับ)
+        widget: string
         required: false
-        fields:
-          - { name: src, label: "ไฟล์รูป", widget: image, required: false }
-          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย", widget: string, required: false, hint: "ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย" }
-      - { name: instagram, label: "Instagram (ลิงก์เต็ม)", widget: string, required: false }
-      - { name: facebook, label: "Facebook (ลิงก์เต็ม)", widget: string, required: false }
-      - { name: youtube, label: "YouTube (ลิงก์เต็ม)", widget: string, required: false }
-      - { name: email, label: "อีเมล", widget: string, required: false }
-      - { name: phone, label: "เบอร์โทร", widget: string, required: false }
-      - { name: order, label: "ลำดับ (เลขน้อยขึ้นก่อน)", widget: number, value_type: int, default: 100 }
-
-  # ───────────── ไทม์ไลน์ ─────────────
-  - name: milestones
-    label: "ไทม์ไลน์ (เหตุการณ์สำคัญของ BFF)"
-    label_singular: "เหตุการณ์"
-    folder: src/content/milestones
-    extension: json
-    format: json
-    create: true
-    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
-    summary: "{{date}} — {{title}}"
-    sortable_fields: [date, title]
+      collapsed: true
+    - name: links
+      label: ลิงก์แนบ (เช่น ลิงก์คะแนน)
+      label_singular: ลิงก์
+      widget: list
+      required: false
+      summary: '{{fields.label}}'
+      fields:
+      - name: label
+        label: ชื่อปุ่ม เช่น ดูคะแนน
+        widget: string
+      - name: url
+        label: ลิงก์
+        widget: string
+      collapsed: true
+    - name: description
+      label: รายละเอียดคอร์ส
+      widget: markdown
+      required: false
+    collapsed: true
+  - name: body
+    label: ข้อความนำ (ไม่บังคับ)
+    widget: markdown
+    required: false
+  - name: sections
+    label: 'ส่วนเนื้อหา (เพิ่มได้หลายส่วน: หัวข้อ + รูป + ข้อความ + อัลบั้ม + วิดีโอ)'
+    label_singular: ส่วน
+    widget: list
+    required: false
+    summary: '{{fields.title}}'
     fields:
-      - { name: date, label: "วันที่", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, picker_utc: false }
-      - { name: yearOnly, label: "แสดงเฉพาะปี (ไม่แสดงวันที่) ใช้เมื่อไม่ทราบวันที่แน่ชัด", widget: boolean, default: false }
-      - { name: title, label: "หัวข้อเหตุการณ์ เช่น ก่อตั้ง BFF", widget: string }
-      - { name: text, label: "รายละเอียด", widget: markdown, required: false }
-      - name: textAlign
-        label: "การจัดข้อความ"
+    - name: title
+      label: หัวข้อของส่วนนี้ เช่น กิจกรรมปีใหม่
+      widget: string
+      required: false
+    - name: text
+      label: ข้อความ
+      widget: markdown
+      required: false
+    - name: image
+      label: รูปประกอบข้อความ (แสดงข้างข้อความ)
+      widget: object
+      required: false
+      fields:
+      - name: src
+        label: ไฟล์รูป
+        widget: image
+        required: false
+      - name: alt
+        label: คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป
+        widget: string
+        required: false
+    - name: album
+      label: อัลบั้มรูปของส่วนนี้ (กดรูปเพื่อขยายได้)
+      label_singular: รูป
+      widget: list
+      required: false
+      summary: '{{fields.alt}}'
+      fields:
+      - name: src
+        label: ไฟล์รูป
+        widget: image
+      - name: alt
+        label: คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป
+        widget: string
+      collapsed: true
+      minimize_collapsed: true
+    - name: videos
+      label: วิดีโอ YouTube
+      label_singular: วิดีโอ
+      widget: list
+      required: false
+      summary: '{{fields.title}}'
+      fields:
+      - name: url
+        label: ลิงก์ YouTube (วางลิงก์จากแถบที่อยู่หรือปุ่มแชร์)
+        widget: string
+      - name: title
+        label: ชื่อวิดีโอ (แสดงใต้วิดีโอ)
+        widget: string
+        required: false
+      - name: width
+        label: ความกว้างวิดีโอ (%) — ใส่ 50 + 50 หรือ 33 + 33 + 33 ติดกัน = อยู่บรรทัดเดียวกัน
+        widget: number
+        value_type: int
+        min: 5
+        max: 100
+        step: 5
+        default: 100
+        required: false
+        hint: พิมพ์ 5–100 (100 = เต็มความกว้าง)
+      - name: ratio
+        label: สัดส่วนจอวิดีโอ
         widget: select
-        default: "left"
+        default: '16:9'
         required: false
         options:
-          - { label: "ชิดซ้าย", value: "left" }
-          - { label: "กึ่งกลาง", value: "center" }
-          - { label: "ชิดขวา", value: "right" }
-          - { label: "เต็มบรรทัด (สองข้าง)", value: "justify" }
-      - name: textSize
-        label: "ขนาดตัวอักษร"
+        - label: 16:9 (ปกติ)
+          value: '16:9'
+        - label: '4:3'
+          value: '4:3'
+        - label: 1:1 (สี่เหลี่ยมจัตุรัส)
+          value: '1:1'
+        - label: 9:16 (แนวตั้ง เช่น Shorts ควรตั้งความกว้าง 30–50%)
+          value: '9:16'
+      collapsed: true
+      minimize_collapsed: true
+    - name: titleAlign
+      label: ปรับแต่ง · ตำแหน่งหัวข้อ
+      widget: select
+      default: left
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    - name: titleSize
+      label: ปรับแต่ง · ขนาดหัวข้อ
+      widget: select
+      default: normal
+      required: false
+      options:
+      - label: ปกติ
+        value: normal
+      - label: ใหญ่
+        value: large
+      - label: ใหญ่มาก
+        value: xlarge
+    - name: imageSize
+      label: ปรับแต่ง · ขนาดรูปประกอบ (% ของความกว้าง)
+      widget: number
+      value_type: int
+      min: 5
+      max: 100
+      step: 5
+      default: 50
+      required: false
+      hint: พิมพ์ 5–100 (100 = เต็มความกว้าง) รูปที่ใหญ่เกิน 60% จะไม่ให้ข้อความไหลล้อม
+    - name: imageAlign
+      label: ปรับแต่ง · ตำแหน่งรูป (ชิดซ้าย/ขวา = ข้อความไหลล้อมรูป, กึ่งกลาง = รูปอยู่เหนือข้อความ)
+      widget: select
+      default: left
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    - name: textAlign
+      label: ปรับแต่ง · การจัดข้อความ
+      widget: select
+      default: left
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+      - label: เต็มบรรทัด (สองข้าง)
+        value: justify
+    - name: textSize
+      label: ปรับแต่ง · ขนาดตัวอักษร
+      widget: select
+      default: normal
+      required: false
+      options:
+      - label: ปกติ
+        value: normal
+      - label: ใหญ่
+        value: large
+      - label: ใหญ่มาก
+        value: xlarge
+    - name: albumSize
+      label: ปรับแต่ง · จำนวนคอลัมน์ในอัลบั้ม (มาก = รูปเล็ก)
+      widget: select
+      default: '3'
+      required: false
+      options:
+      - label: 2 คอลัมน์ (รูปใหญ่)
+        value: '2'
+      - label: 3 คอลัมน์
+        value: '3'
+      - label: 4 คอลัมน์
+        value: '4'
+      - label: 5 คอลัมน์
+        value: '5'
+      - label: 6 คอลัมน์ (รูปเล็ก)
+        value: '6'
+    - name: albumWidth
+      label: ปรับแต่ง · ความกว้างของอัลบั้มทั้งชุด (%)
+      widget: number
+      value_type: int
+      min: 5
+      max: 100
+      step: 5
+      default: 100
+      required: false
+      hint: พิมพ์ 5–100 (100 = เต็มความกว้าง)
+    - name: albumAlign
+      label: ปรับแต่ง · ตำแหน่งอัลบั้ม (เมื่อกว้างไม่เต็ม)
+      widget: select
+      default: center
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    - name: albumRatio
+      label: ปรับแต่ง · สัดส่วนรูปย่อในอัลบั้ม (ตอนกดขยายจะเห็นรูปเต็มตามจริงเสมอ)
+      widget: select
+      default: '4:3'
+      required: false
+      options:
+      - label: เท่ากันทุกรูป 4:3 (แนะนำ)
+        value: '4:3'
+      - label: เท่ากันทุกรูป 16:9 (แนวนอนกว้าง)
+        value: '16:9'
+      - label: เท่ากันทุกรูป 1:1 (จัตุรัส)
+        value: '1:1'
+      - label: เท่ากันทุกรูป 3:4 (แนวตั้ง)
+        value: '3:4'
+      - label: ตามสัดส่วนรูปจริง (ขนาดไม่เท่ากัน)
+        value: auto
+    - name: videosAlign
+      label: ปรับแต่ง · การจัดแถววิดีโอ (วิดีโอที่ไม่เต็มบรรทัด)
+      widget: select
+      default: center
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    collapsed: true
+  - name: links
+    label: ปุ่มลิงก์ใหญ่ (เช่น ลิงก์แบบฟอร์ม)
+    label_singular: ลิงก์
+    widget: list
+    required: false
+    summary: '{{fields.label}}'
+    fields:
+    - name: label
+      label: ชื่อปุ่ม
+      widget: string
+    - name: url
+      label: ลิงก์
+      widget: string
+    - name: note
+      label: ข้อความเล็กใต้ชื่อ
+      widget: string
+      required: false
+    - name: width
+      label: ความกว้างของปุ่ม (%)
+      widget: number
+      value_type: int
+      min: 5
+      max: 100
+      step: 5
+      default: 100
+      required: false
+      hint: พิมพ์ 5–100 (100 = เต็มความกว้าง)
+    - name: align
+      label: ตำแหน่งปุ่ม (เมื่อกว้างไม่เต็ม)
+      widget: select
+      default: center
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    collapsed: true
+  - name: embeds
+    label: ฝังแบบฟอร์ม/เอกสารในหน้า (เช่น Google Forms กรอกได้ในหน้าเว็บเลย)
+    label_singular: กรอบฝัง
+    widget: list
+    required: false
+    summary: '{{fields.title}}'
+    fields:
+    - name: title
+      label: ชื่อที่แสดงเหนือกรอบ
+      widget: string
+      required: false
+    - name: url
+      label: ลิงก์ฟอร์ม (ต้องขึ้นต้นด้วย https://)
+      widget: string
+      hint: 'Google Forms: เปิดฟอร์ม กด ส่ง แล้วเลือกลิงก์ (ไอคอนโซ่) แล้วกด ย่อ URL ออก (ติ๊กออก) ก่อนคัดลอก ลิงก์ย่อ forms.gle ใช้ฝังไม่ได้ ระบบจะเติมตัวเลือกฝังให้เอง'
+    - name: height
+      label: ความสูงของกรอบ (พิกเซล)
+      widget: number
+      value_type: int
+      min: 300
+      max: 3000
+      default: 900
+      required: false
+    - name: width
+      label: ความกว้างของกรอบ (%)
+      widget: number
+      value_type: int
+      min: 5
+      max: 100
+      step: 5
+      default: 100
+      required: false
+      hint: พิมพ์ 5–100 (100 = เต็มความกว้าง)
+    - name: align
+      label: ตำแหน่งกรอบ (เมื่อกว้างไม่เต็ม)
+      widget: select
+      default: center
+      required: false
+      options:
+      - label: ชิดซ้าย
+        value: left
+      - label: กึ่งกลาง
+        value: center
+      - label: ชิดขวา
+        value: right
+    collapsed: true
+  - name: newsCategory
+    label: แสดงข่าวหมวดนี้ท้ายหน้า
+    widget: select
+    required: false
+    options:
+    - ข่าวการศึกษา
+    - ข่าวประชาสัมพันธ์ทั่วไป
+  - name: showContact
+    label: แสดงช่องทางติดต่อ (ดึงจากตั้งค่าเว็บไซต์) ในหน้านี้
+    widget: boolean
+    default: false
+  - name: showExecutives
+    label: แสดงรายชื่อผู้บริหารท้ายหน้านี้
+    widget: boolean
+    default: false
+  - name: description
+    label: คำอธิบายสั้น (ใช้ใน Google)
+    widget: text
+    required: false
+  - name: legacy
+    label: ระบบเก่า (ซ่อนจากเมนูหลัก แต่เปิดผ่านลิงก์ได้)
+    widget: boolean
+    default: false
+  - name: bodyAlign
+    label: ปรับแต่ง · การจัดข้อความนำ
+    widget: select
+    default: left
+    required: false
+    options:
+    - label: ชิดซ้าย
+      value: left
+    - label: กึ่งกลาง
+      value: center
+    - label: ชิดขวา
+      value: right
+    - label: เต็มบรรทัด (สองข้าง)
+      value: justify
+  - name: bodySize
+    label: ปรับแต่ง · ขนาดตัวอักษรข้อความนำ
+    widget: select
+    default: normal
+    required: false
+    options:
+    - label: ปกติ
+      value: normal
+    - label: ใหญ่
+      value: large
+    - label: ใหญ่มาก
+      value: xlarge
+  description: 'หน้าวิชาและหน้าทั่วไป: ในหน้าวิชาให้เลือกครูผู้สอนและเพิ่มคอร์ส (ครูฝากเอกสาร แนบลิงก์สมัคร และติ๊กสถานะปิดรับสมัคร/คอร์สจบแล้วได้ที่ในคอร์ส)'
+- name: events
+  label: ปฏิทินกิจกรรม
+  label_singular: กิจกรรม
+  folder: src/content/events
+  extension: json
+  format: json
+  create: true
+  slug: '{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}'
+  summary: '{{title}}'
+  fields:
+  - name: title
+    label: ชื่อกิจกรรม
+    widget: string
+  - name: start
+    label: วันเริ่ม
+    widget: datetime
+    format: YYYY-MM-DD
+    date_format: DD/MM/YYYY
+    time_format: false
+    picker_utc: false
+  - name: end
+    label: วันสิ้นสุด
+    widget: datetime
+    format: YYYY-MM-DD
+    date_format: DD/MM/YYYY
+    time_format: false
+    picker_utc: false
+    required: false
+  - name: location
+    label: สถานที่
+    widget: string
+    required: false
+  - name: details
+    label: รายละเอียด
+    widget: text
+    required: false
+  - name: link
+    label: ลิงก์
+    widget: string
+    required: false
+  description: กิจกรรมที่แสดงในปฏิทิน
+- name: milestones
+  label: ไทม์ไลน์ (เหตุการณ์สำคัญของ BFF)
+  label_singular: เหตุการณ์
+  folder: src/content/milestones
+  extension: json
+  format: json
+  create: true
+  slug: '{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}'
+  summary: '{{date}} — {{title}}'
+  sortable_fields:
+  - date
+  - title
+  fields:
+  - name: date
+    label: วันที่
+    widget: datetime
+    format: YYYY-MM-DD
+    date_format: DD/MM/YYYY
+    time_format: false
+    picker_utc: false
+  - name: yearOnly
+    label: แสดงเฉพาะปี (ไม่แสดงวันที่) ใช้เมื่อไม่ทราบวันที่แน่ชัด
+    widget: boolean
+    default: false
+  - name: title
+    label: หัวข้อเหตุการณ์ เช่น ก่อตั้ง BFF
+    widget: string
+  - name: text
+    label: รายละเอียด
+    widget: markdown
+    required: false
+  - name: image
+    label: รูปประกอบ
+    widget: object
+    required: false
+    fields:
+    - name: src
+      label: ไฟล์รูป
+      widget: image
+      required: false
+    - name: alt
+      label: คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป
+      widget: string
+      required: false
+  - name: album
+    label: รูปความทรงจำเพิ่มเติม (แสดงรวมกับรูปจากข่าวในปีนั้น)
+    label_singular: รูป
+    widget: list
+    required: false
+    summary: '{{fields.alt}}'
+    fields:
+    - name: src
+      label: ไฟล์รูป
+      widget: image
+    - name: alt
+      label: คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป
+      widget: string
+    collapsed: true
+  - name: link
+    label: ลิงก์ (ถ้าอยากให้หัวข้อกดไปหน้าอื่น เช่น /news/xxx/ หรือ https://...)
+    widget: string
+    required: false
+  - name: textAlign
+    label: ปรับแต่ง · การจัดข้อความ
+    widget: select
+    default: left
+    required: false
+    options:
+    - label: ชิดซ้าย
+      value: left
+    - label: กึ่งกลาง
+      value: center
+    - label: ชิดขวา
+      value: right
+    - label: เต็มบรรทัด (สองข้าง)
+      value: justify
+  - name: textSize
+    label: ปรับแต่ง · ขนาดตัวอักษร
+    widget: select
+    default: normal
+    required: false
+    options:
+    - label: ปกติ
+      value: normal
+    - label: ใหญ่
+      value: large
+    - label: ใหญ่มาก
+      value: xlarge
+  - name: imageSize
+    label: ปรับแต่ง · ขนาดรูปประกอบ (% ของความกว้าง)
+    widget: number
+    value_type: int
+    min: 5
+    max: 100
+    step: 5
+    default: 100
+    required: false
+    hint: พิมพ์ 5–100 (100 = เต็มความกว้าง)
+  - name: imageAlign
+    label: ปรับแต่ง · ตำแหน่งรูปประกอบ (เมื่อกว้างไม่เต็ม)
+    widget: select
+    default: left
+    required: false
+    options:
+    - label: ชิดซ้าย
+      value: left
+    - label: กึ่งกลาง
+      value: center
+    - label: ชิดขวา
+      value: right
+  description: เหตุการณ์สำคัญของ BFF แสดงเป็นการ์ดใหญ่ในไทม์ไลน์ (ข่าวที่เผยแพร่และมีวันที่จะเข้าไทม์ไลน์เองเป็นบรรทัดเล็ก)
+- name: board
+  label: ผู้บริหาร
+  label_singular: ผู้บริหาร
+  folder: src/content/board
+  extension: json
+  format: json
+  create: true
+  slug: '{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}'
+  summary: '{{order}}. {{name}} — {{position}}'
+  sortable_fields:
+  - order
+  - name
+  fields:
+  - name: name
+    label: ชื่อ
+    widget: string
+  - name: position
+    label: ตำแหน่ง
+    widget: string
+    required: false
+  - name: photo
+    label: รูป
+    widget: object
+    required: false
+    fields:
+    - name: src
+      label: ไฟล์รูป
+      widget: image
+      required: false
+    - name: alt
+      label: คำอธิบายรูป (alt) ภาษาไทย
+      widget: string
+      required: false
+      hint: ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย
+  - name: instagram
+    label: Instagram (ลิงก์เต็ม)
+    widget: string
+    required: false
+  - name: facebook
+    label: Facebook (ลิงก์เต็ม)
+    widget: string
+    required: false
+  - name: youtube
+    label: YouTube (ลิงก์เต็ม)
+    widget: string
+    required: false
+  - name: email
+    label: อีเมล (เช่น Gmail)
+    widget: string
+    required: false
+  - name: phone
+    label: เบอร์โทร
+    widget: string
+    required: false
+  - name: order
+    label: ลำดับ (เลขน้อยขึ้นก่อน)
+    widget: number
+    value_type: int
+    default: 100
+  description: ผู้บริหาร แสดงในหน้า "ติดต่อเรา" พร้อมช่องทางติดต่อ
+- name: teachers
+  label: ครูผู้สอน
+  label_singular: ครู
+  folder: src/content/teachers
+  extension: json
+  format: json
+  create: true
+  slug: '{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}'
+  summary: '{{order}}. {{name}} — {{position}}'
+  sortable_fields:
+  - order
+  - name
+  fields:
+  - name: name
+    label: ชื่อ
+    widget: string
+  - name: position
+    label: ตำแหน่ง/วิชาที่สอน
+    widget: string
+    required: false
+  - name: photo
+    label: รูป
+    widget: object
+    required: false
+    fields:
+    - name: src
+      label: ไฟล์รูป
+      widget: image
+      required: false
+    - name: alt
+      label: คำอธิบายรูป (alt) ภาษาไทย
+      widget: string
+      required: false
+      hint: ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย
+  - name: instagram
+    label: Instagram (ลิงก์เต็ม)
+    widget: string
+    required: false
+  - name: facebook
+    label: Facebook (ลิงก์เต็ม)
+    widget: string
+    required: false
+  - name: youtube
+    label: YouTube (ลิงก์เต็ม)
+    widget: string
+    required: false
+  - name: email
+    label: อีเมล
+    widget: string
+    required: false
+  - name: phone
+    label: เบอร์โทร
+    widget: string
+    required: false
+  - name: order
+    label: ลำดับ (เลขน้อยขึ้นก่อน)
+    widget: number
+    value_type: int
+    default: 100
+  description: รายชื่อครูผู้สอน (เพิ่มที่นี่ก่อน แล้วไปเลือกในหน้าวิชาและคอร์ส)
+- name: settings
+  label: ตั้งค่าเว็บไซต์
+  files:
+  - name: site
+    label: ตั้งค่าทั่วไป
+    file: src/content/settings/site.json
+    format: json
+    fields:
+    - name: siteName
+      label: ชื่อเว็บไซต์
+      widget: string
+    - name: tagline
+      label: ชื่อรอง
+      widget: string
+      required: false
+    - name: welcomeTitle
+      label: หัวข้อต้อนรับหน้าแรก
+      widget: string
+      required: false
+    - name: welcomeText
+      label: ข้อความต้อนรับหน้าแรก
+      widget: text
+      required: false
+    - name: logo
+      label: รูปโลโก้
+      widget: object
+      required: false
+      fields:
+      - name: src
+        label: ไฟล์รูป
+        widget: image
+        required: false
+      - name: alt
+        label: คำอธิบายรูป (alt) ภาษาไทย
+        widget: string
+        required: false
+        hint: ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย
+    - name: cover
+      label: รูปปก
+      widget: object
+      required: false
+      fields:
+      - name: src
+        label: ไฟล์รูป
+        widget: image
+        required: false
+      - name: alt
+        label: คำอธิบายรูป (alt) ภาษาไทย
+        widget: string
+        required: false
+        hint: ถ้าใส่รูป ต้องกรอกช่องนี้ด้วย
+    - name: colors
+      label: สีของเว็บไซต์
+      widget: object
+      fields:
+      - name: primary
+        label: สีหลัก
+        widget: color
+        default: '#1a73c4'
+      - name: accent
+        label: สีเน้น
+        widget: color
+        default: '#d32f2f'
+    - name: social
+      label: ลิงก์โซเชียล
+      widget: object
+      fields:
+      - name: instagram
+        label: Instagram (ลิงก์เต็ม)
+        widget: string
+        required: false
+      - name: facebook
+        label: Facebook (ลิงก์เต็ม)
+        widget: string
+        required: false
+      - name: youtube
+        label: YouTube (ลิงก์เต็ม)
+        widget: string
+        required: false
+      - name: line
+        label: LINE (ลิงก์เต็ม)
+        widget: string
+        required: false
+      - name: discord
+        label: Discord (ลิงก์เชิญ)
+        widget: string
+        required: false
+    - name: email
+      label: อีเมล
+      widget: string
+      required: false
+    - name: address
+      label: ที่อยู่
+      widget: text
+      required: false
+    - name: footerText
+      label: ข้อความท้ายเว็บ
+      widget: string
+      required: false
+    - name: showLogin
+      label: แสดงไอคอนกุญแจ (เข้าสู่ระบบ) บนแถบเมนู
+      widget: boolean
+      default: true
+    - name: goatcounterCode
+      label: รหัส GoatCounter นับยอดเข้าชม (เช่น bff ถ้าหน้าสถิติคือ bff.goatcounter.com) เว้นว่าง = ไม่นับ
+      widget: string
+      required: false
+    - name: cloudflareToken
+      label: โทเคน Cloudflare Web Analytics (ใช้แทน GoatCounter ได้ เว้นว่าง = ไม่ใช้)
+      widget: string
+      required: false
+  - name: intro
+    label: หน้าสไลด์ต้อนรับ (หน้าแรกสุดของลิงก์เว็บ)
+    file: src/content/intro/intro.json
+    format: json
+    fields:
+    - name: enabled
+      label: เปิดใช้หน้าสไลด์ต้อนรับ (ปิด = เข้าหน้าหลักทันที)
+      widget: boolean
+      default: true
+    - name: title
+      label: หัวข้อ
+      widget: string
+      required: false
+    - name: subtitle
+      label: ข้อความรอง
+      widget: string
+      required: false
+    - name: autoplay
+      label: เลื่อนสไลด์อัตโนมัติ
+      widget: boolean
+      default: true
+    - name: showTitle
+      label: แสดงหัวข้อและข้อความรองทับสไลด์ (ปิด = เหลือเฉพาะปุ่ม)
+      widget: boolean
+      default: false
+    - name: interval
+      label: เวลาต่อสไลด์ (วินาที)
+      widget: number
+      value_type: int
+      min: 3
+      max: 30
+      default: 6
+    - name: fit
+      label: การแสดงรูป/วิดีโอในสไลด์ (ค่าเริ่มต้นของทุกสไลด์)
+      widget: select
+      default: cover
+      required: false
+      options:
+      - label: เต็มจอ ตัดขอบเล็กน้อย (แนะนำ เหมาะกับรูป 16:9)
+        value: cover
+      - label: พอดีทั้งรูป ไม่ตัด (มีพื้นหลังเบลอเติมข้างๆ)
+        value: contain
+    - name: slides
+      label: สไลด์ (ลากเรียงลำดับได้)
+      label_singular: สไลด์
+      widget: list
+      required: false
+      summary: '{{fields.caption}} {{fields.file}} {{fields.youtube}}'
+      fields:
+      - name: file
+        label: ไฟล์ (รูป วิดีโอ MP4 หรือไฟล์อื่นๆ) แนะนำรูป 1920×1080 (16:9) — วิดีโอยาวให้ใช้ลิงก์ YouTube แทน
+        widget: file
+        required: false
+      - name: youtube
+        label: หรือวางลิงก์ YouTube (ถ้าใส่ จะใช้ YouTube แทนไฟล์)
+        widget: string
+        required: false
+      - name: alt
+        label: คำอธิบายรูป/วิดีโอ (alt) ภาษาไทย
+        widget: string
+        required: false
+      - name: caption
+        label: ข้อความใต้สไลด์
+        widget: string
+        required: false
+      - name: fit
+        label: การแสดงสไลด์นี้ (ถ้าไม่เลือก ใช้ตามค่าเริ่มต้นด้านบน)
         widget: select
-        default: "normal"
         required: false
         options:
-          - { label: "ปกติ", value: "normal" }
-          - { label: "ใหญ่", value: "large" }
-          - { label: "ใหญ่มาก", value: "xlarge" }
-      - name: image
-        label: "รูปประกอบ"
-        widget: object
-        required: false
-        fields:
-          - { name: src, label: "ไฟล์รูป", widget: image, required: false }
-          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string, required: false }
-      - { name: imageSize, label: "ขนาดรูปประกอบ (% ของความกว้าง)", widget: number, value_type: int, min: 5, max: 100, step: 5, default: 100, required: false, hint: "พิมพ์ 5–100 (100 = เต็มความกว้าง)" }
-      - name: imageAlign
-        label: "ตำแหน่งรูปประกอบ (เมื่อกว้างไม่เต็ม)"
+        - label: เต็มจอ ตัดขอบเล็กน้อย
+          value: cover
+        - label: พอดีทั้งรูป ไม่ตัด
+          value: contain
+      - name: focus
+        label: จุดสนใจของรูป (เมื่อโดนตัดขอบ เช่น บนมือถือ)
         widget: select
-        default: "left"
+        default: center
         required: false
         options:
-          - { label: "ชิดซ้าย", value: "left" }
-          - { label: "กึ่งกลาง", value: "center" }
-          - { label: "ชิดขวา", value: "right" }
-      - { name: link, label: "ลิงก์ (ถ้าอยากให้หัวข้อกดไปหน้าอื่น เช่น /news/xxx/ หรือ https://...)", widget: string, required: false }
-      - name: album
-        label: "รูปความทรงจำเพิ่มเติม (แสดงรวมกับรูปจากข่าวในปีนั้น)"
-        label_singular: "รูป"
+        - label: กลาง
+          value: center
+        - label: บน
+          value: top
+        - label: ล่าง
+          value: bottom
+        - label: ซ้าย
+          value: left
+        - label: ขวา
+          value: right
+      collapsed: true
+    - name: buttons
+      label: ปุ่มในหน้าสไลด์ (เพิ่มเองได้ ลิงก์ในเว็บขึ้นต้นด้วย / เช่น /home/ หรือลิงก์นอกเว็บขึ้นต้นด้วย https://)
+      label_singular: ปุ่ม
+      widget: list
+      required: false
+      summary: '{{fields.label}}'
+      fields:
+      - name: label
+        label: ข้อความบนปุ่ม
+        widget: string
+      - name: url
+        label: ลิงก์ปลายทาง
+        widget: string
+      - name: color
+        label: สีปุ่ม (สีตัวอักษรจะปรับให้อ่านชัดเอง)
+        widget: color
+        required: false
+      collapsed: true
+  - name: menu
+    label: เมนู
+    file: src/content/menu/menu.json
+    format: json
+    fields:
+    - name: items
+      label: รายการเมนูหลัก (ลากเพื่อเรียงลำดับ)
+      label_singular: เมนู
+      widget: list
+      summary: '{{fields.label}}'
+      fields:
+      - name: label
+        label: ชื่อเมนู
+        widget: string
+      - name: icon
+        label: ไอคอนแทนชื่อเมนู (เว้นว่าง = แสดงเป็นข้อความ)
+        widget: select
+        required: false
+        options:
+        - label: บ้าน
+          value: house
+        - label: โทรโข่ง
+          value: megaphone
+        - label: โรงเรียน
+          value: school
+        - label: ถาดสีศิลปะ
+          value: palette
+        - label: โทรศัพท์
+          value: phone
+      - name: link
+        label: ลิงก์
+        widget: string
+        required: false
+        hint: ลิงก์ในเว็บขึ้นต้นด้วย / เช่น /news/ หรือ /pages/thai/ ส่วนลิงก์นอกเว็บขึ้นต้นด้วย https:// ถ้าเมนูนี้มีเมนูย่อย เว้นว่างได้
+      - name: children
+        label: เมนูย่อย (ลากเพื่อเรียงลำดับ)
+        label_singular: เมนูย่อย
         widget: list
         required: false
-        summary: "{{fields.alt}}"
+        summary: '{{fields.label}}'
         fields:
-          - { name: src, label: "ไฟล์รูป", widget: image }
-          - { name: alt, label: "คำอธิบายรูป (alt) ภาษาไทย — แสดงตอนกดขยายรูป", widget: string }
+        - name: label
+          label: ชื่อเมนูย่อย
+          widget: string
+        - name: link
+          label: ลิงก์
+          widget: string
+  - name: labels
+    label: ข้อความในหน้าเว็บ
+    file: src/data/labels.json
+    format: json
+    fields:
+    - name: skipToContent
+      label: ลิงก์ข้ามไปเนื้อหา (สำหรับโปรแกรมอ่านจอ)
+      widget: string
+    - name: menuButton
+      label: ปุ่มเปิด/ปิดเมนู (โปรแกรมอ่านจอ)
+      widget: string
+    - name: mainNav
+      label: ชื่อกลุ่มเมนูหลัก (โปรแกรมอ่านจอ)
+      widget: string
+    - name: subMenuButton
+      label: ปุ่มเปิด/ปิดเมนูย่อย (โปรแกรมอ่านจอ)
+      widget: string
+    - name: heroCta
+      label: ปุ่มในส่วนต้อนรับ
+      widget: string
+    - name: latestNewsTitle
+      label: 'หัวข้อ: ข่าวล่าสุด'
+      widget: string
+    - name: allNews
+      label: 'ปุ่ม: ดูข่าวทั้งหมด'
+      widget: string
+    - name: calendarTitle
+      label: 'หัวข้อ: ปฏิทินกิจกรรม'
+      widget: string
+    - name: upcomingEvents
+      label: 'หัวข้อ: กิจกรรมที่กำลังจะมาถึง'
+      widget: string
+    - name: noEvents
+      label: ข้อความเมื่อไม่มีกิจกรรม
+      widget: string
+    - name: prevMonth
+      label: ปุ่มเดือนก่อนหน้า
+      widget: string
+    - name: nextMonth
+      label: ปุ่มเดือนถัดไป
+      widget: string
+    - name: eventLocation
+      label: คำว่า สถานที่
+      widget: string
+    - name: eventLink
+      label: ลิงก์ดูรายละเอียดกิจกรรม
+      widget: string
+    - name: contactTitle
+      label: 'หัวข้อ: ติดต่อเรา'
+      widget: string
+    - name: contactEmpty
+      label: ข้อความเมื่อยังไม่มีข้อมูลติดต่อ
+      widget: string
+    - name: emailLabel
+      label: คำว่า อีเมล
+      widget: string
+    - name: addressLabel
+      label: คำว่า ที่อยู่
+      widget: string
+    - name: moreContact
+      label: ปุ่มช่องทางติดต่อเพิ่มเติม
+      widget: string
+    - name: newsPageTitle
+      label: หัวข้อหน้าข่าว
+      widget: string
+    - name: searchLabel
+      label: ชื่อช่องค้นหา
+      widget: string
+    - name: searchPlaceholder
+      label: ข้อความในช่องค้นหา
+      widget: string
+    - name: categoryLabel
+      label: ชื่อตัวกรองหมวดหมู่
+      widget: string
+    - name: allCategories
+      label: 'ตัวเลือก: ทุกหมวดหมู่'
+      widget: string
+    - name: noResults
+      label: ข้อความเมื่อค้นไม่เจอ
+      widget: string
+    - name: noNews
+      label: ข้อความเมื่อยังไม่มีข่าว
+      widget: string
+    - name: prevPage
+      label: ปุ่มหน้าก่อนหน้า
+      widget: string
+    - name: nextPage
+      label: ปุ่มหน้าถัดไป
+      widget: string
+    - name: pageOf
+      label: ข้อความเลขหน้า (คง {page} และ {total} ไว้)
+      widget: string
+    - name: newBadge
+      label: ป้าย New
+      widget: string
+    - name: pinnedBadge
+      label: ป้ายปักหมุด
+      widget: string
+    - name: postedOn
+      label: คำว่า โพสต์เมื่อ
+      widget: string
+    - name: updatedOn
+      label: คำว่า อัปเดตเมื่อ
+      widget: string
+    - name: openChannel
+      label: ข้อความบนการ์ดช่องทางติดต่อ
+      widget: string
+    - name: openLink
+      label: ปุ่มบนการ์ดลิงก์ใหญ่
+      widget: string
+    - name: socialYoutube
+      label: ชื่อ YouTube
+      widget: string
+    - name: closeImage
+      label: ปุ่มปิดรูปขยาย (โปรแกรมอ่านจอ)
+      widget: string
+    - name: prevImage
+      label: ปุ่มรูปก่อนหน้า (โปรแกรมอ่านจอ)
+      widget: string
+    - name: nextImage
+      label: ปุ่มรูปถัดไป (โปรแกรมอ่านจอ)
+      widget: string
+    - name: zoomImage
+      label: ข้อความรูปที่กดขยายได้ (โปรแกรมอ่านจอ)
+      widget: string
+    - name: videoDefaultTitle
+      label: ชื่อวิดีโอเริ่มต้น (โปรแกรมอ่านจอ)
+      widget: string
+    - name: teachersTitle
+      label: 'หัวข้อ: ครูผู้สอน'
+      widget: string
+    - name: coursesTitle
+      label: 'หัวข้อ: คอร์สเรียน'
+      widget: string
+    - name: courseSchedule
+      label: คำว่า วันและเวลาเรียน
+      widget: string
+    - name: coursePeriod
+      label: คำว่า ช่วงเวลาที่เปิดสอน
+      widget: string
+    - name: courseTeachers
+      label: คำว่า ครูผู้สอน (ในการ์ดคอร์ส)
+      widget: string
+    - name: relatedNews
+      label: 'หัวข้อ: ข่าวประชาสัมพันธ์ (ท้ายหน้าวิชา)'
+      widget: string
+    - name: enterHome
+      label: ปุ่มเข้าสู่หน้าหลัก (ถ้าไม่ได้ตั้งปุ่มเอง)
+      widget: string
+    - name: introLabel
+      label: ชื่อกลุ่มสไลด์ (โปรแกรมอ่านจอ)
+      widget: string
+    - name: slidePrev
+      label: ปุ่มสไลด์ก่อนหน้า
+      widget: string
+    - name: slideNext
+      label: ปุ่มสไลด์ถัดไป
+      widget: string
+    - name: slidePause
+      label: ปุ่มหยุดเลื่อนอัตโนมัติ
+      widget: string
+    - name: slidePlay
+      label: ปุ่มเริ่มเลื่อนอัตโนมัติ
+      widget: string
+    - name: slideGoto
+      label: จุดเลือกสไลด์ (คง {n} ไว้)
+      widget: string
+    - name: openFile
+      label: ปุ่มเปิดไฟล์ในสไลด์
+      widget: string
+    - name: searchButton
+      label: ปุ่มค้นหา (โปรแกรมอ่านจอ)
+      widget: string
+    - name: searchTitle
+      label: ชื่อกล่องค้นหา
+      widget: string
+    - name: searchClose
+      label: ปุ่มปิดการค้นหา
+      widget: string
+    - name: searchHint
+      label: ข้อความแนะนำในกล่องค้นหา
+      widget: string
+    - name: searchCount
+      label: ข้อความจำนวนผลลัพธ์ (คง {n} ไว้)
+      widget: string
+    - name: searchNoResult
+      label: ข้อความเมื่อค้นไม่เจอ
+      widget: string
+    - name: searchTypeNews
+      label: 'ป้ายประเภท: ข่าว'
+      widget: string
+    - name: searchTypePage
+      label: 'ป้ายประเภท: หน้า'
+      widget: string
+    - name: searchTypeCourse
+      label: 'ป้ายประเภท: คอร์สเรียน'
+      widget: string
+    - name: searchTypeTeacher
+      label: 'ป้ายประเภท: ครู'
+      widget: string
+    - name: searchTypeEvent
+      label: 'ป้ายประเภท: กิจกรรม'
+      widget: string
+    - name: embedDefaultTitle
+      label: ชื่อกรอบฝังเริ่มต้น (โปรแกรมอ่านจอ)
+      widget: string
+    - name: embedOpen
+      label: ปุ่มเปิดแบบฟอร์มในแท็บใหม่
+      widget: string
+    - name: shareTitle
+      label: 'ข้อความ: แชร์ข่าวนี้'
+      widget: string
+    - name: shareCopy
+      label: ปุ่มคัดลอกลิงก์
+      widget: string
+    - name: shareCopied
+      label: ข้อความหลังคัดลอกลิงก์
+      widget: string
+    - name: shareLine
+      label: ปุ่มแชร์ LINE
+      widget: string
+    - name: shareFacebook
+      label: ปุ่มแชร์ Facebook
+      widget: string
+    - name: fontSizeButton
+      label: ปุ่มปรับขนาดตัวอักษร
+      widget: string
+    - name: fontSize0
+      label: 'ขนาดตัวอักษร: ปกติ'
+      widget: string
+    - name: fontSize1
+      label: 'ขนาดตัวอักษร: ใหญ่'
+      widget: string
+    - name: fontSize2
+      label: 'ขนาดตัวอักษร: ใหญ่มาก'
+      widget: string
+    - name: tabAll
+      label: 'แท็บข่าว: ทั้งหมด'
+      widget: string
+    - name: updateBadge
+      label: ป้ายข่าวที่แก้ไขภายหลัง
+      widget: string
+    - name: courseApply
+      label: ปุ่มสมัครคอร์ส
+      widget: string
+    - name: courseOpen
+      label: 'ป้าย: เปิดรับสมัคร'
+      widget: string
+    - name: courseClosed
+      label: 'ป้าย: ปิดรับสมัครแล้ว'
+      widget: string
+    - name: courseEnded
+      label: 'ป้าย: คอร์สนี้จบแล้ว'
+      widget: string
+    - name: courseTabInfo
+      label: 'แท็บคอร์ส: รายละเอียด'
+      widget: string
+    - name: courseTabDocs
+      label: 'แท็บคอร์ส: เอกสาร'
+      widget: string
+    - name: docDownload
+      label: ปุ่มดาวน์โหลดเอกสาร
+      widget: string
+    - name: downloadsTitle
+      label: หัวข้อหน้าดาวน์โหลดเอกสาร
+      widget: string
+    - name: downloadsSearch
+      label: ช่องค้นหาเอกสาร
+      widget: string
+    - name: allSubjects
+      label: 'ตัวเลือก: ทุกวิชา'
+      widget: string
+    - name: noDownloads
+      label: ข้อความเมื่อยังไม่มีเอกสาร
+      widget: string
+    - name: noDownloadsMatch
+      label: ข้อความเมื่อค้นเอกสารไม่เจอ
+      widget: string
+    - name: openSubjectPage
+      label: ลิงก์ไปหน้าวิชา
+      widget: string
+    - name: timelineTitle
+      label: หัวข้อหน้าไทม์ไลน์
+      widget: string
+    - name: timelineEmpty
+      label: ข้อความเมื่อไทม์ไลน์ว่าง
+      widget: string
+    - name: memoriesTitle
+      label: หัวข้อกลุ่มรูปแต่ละปี
+      widget: string
+    - name: yearPrefix
+      label: คำนำหน้าปี
+      widget: string
+    - name: timelineJump
+      label: ชื่อแถบเลือกปี (โปรแกรมอ่านจอ)
+      widget: string
+    - name: searchTypeTimeline
+      label: 'ป้ายประเภทค้นหา: ไทม์ไลน์'
+      widget: string
+    - name: timelineSortLabel
+      label: คำว่า เรียงลำดับ (ไทม์ไลน์)
+      widget: string
+    - name: timelineOldest
+      label: 'ปุ่ม: เรียงจากเก่าไปใหม่'
+      widget: string
+    - name: timelineNewest
+      label: 'ปุ่ม: เรียงจากใหม่ไปเก่า'
+      widget: string
+    - name: slideSound
+      label: ปุ่มเปิด/ปิดเสียงวิดีโอ (โปรแกรมอ่านจอ)
+      widget: string
+    - name: galleryTitle
+      label: หัวข้ออัลบั้มรูป
+      widget: string
+    - name: backToNews
+      label: ลิงก์กลับไปหน้าข่าว
+      widget: string
+    - name: boardTitle
+      label: หัวข้อส่วนผู้บริหาร
+      widget: string
+    - name: noBoard
+      label: ข้อความเมื่อยังไม่มีรายชื่อ
+      widget: string
+    - name: notFoundTitle
+      label: หัวข้อหน้าไม่พบ
+      widget: string
+    - name: notFoundText
+      label: ข้อความหน้าไม่พบ
+      widget: string
+    - name: backHome
+      label: ปุ่มกลับหน้าแรก
+      widget: string
+    - name: externalHint
+      label: คำอธิบายลิงก์ที่เปิดแท็บใหม่ (โปรแกรมอ่านจอ)
+      widget: string
+    - name: socialInstagram
+      label: ชื่อ Instagram
+      widget: string
+    - name: socialFacebook
+      label: ชื่อ Facebook
+      widget: string
+    - name: socialLine
+      label: ชื่อ LINE
+      widget: string
+    - name: socialDiscord
+      label: ชื่อ Discord
+      widget: string
+    - name: newsCategories
+      label: หมวดหมู่ข่าวในตัวกรอง (ควรตรงกับหมวดในฟอร์มข่าว)
+      widget: list
+      field:
+        name: category
+        label: ชื่อหมวด
+        widget: string
+    - name: loginButton
+      label: ปุ่มกุญแจบนแถบเมนู (โปรแกรมอ่านจอ)
+      widget: string
+    - name: loginTitle
+      label: หัวข้อหน้าเข้าสู่ระบบ
+      widget: string
+    - name: loginIntro
+      label: ข้อความใต้หัวข้อหน้าเข้าสู่ระบบ
+      widget: string
+    - name: loginCta
+      label: ปุ่มเข้าสู่ระบบ
+      widget: string
+    - name: loginStep1
+      label: ขั้นตอนที่ 1
+      widget: string
+    - name: loginStep2
+      label: ขั้นตอนที่ 2
+      widget: string
+    - name: loginStep3
+      label: ขั้นตอนที่ 3
+      widget: string
+    - name: loginHelp
+      label: ข้อความขอสิทธิ์
+      widget: string
+    - name: loginHelpLink
+      label: ลิงก์ขอสิทธิ์
+      widget: string
+    - name: loginNote
+      label: หมายเหตุท้ายหน้าเข้าสู่ระบบ
+      widget: string
+    - name: loginBack
+      label: ลิงก์กลับหน้าหลัก
+      widget: string
+  description: ตั้งค่าทั่วไป หน้าสไลด์ต้อนรับ เมนู และข้อความในหน้าเว็บ

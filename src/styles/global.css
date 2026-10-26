@@ -627,3 +627,33 @@ html[data-fs="2"] { font-size: 130%; }
   .sl-btn { width: 40px; height: 40px; font-size: 1.5rem; }
   .intro-buttons, .intro-btn { width: 100%; text-align: center; }
 }
+
+/* ───── หน้าสไลด์: เมื่อมีรูป แผงข้อความเล็กลง ไม่บังรูป เหลือปุ่มเด่นๆ ───── */
+.intro:not(.no-slides) .intro-shade { background: linear-gradient(to top, rgba(6, 14, 26, .78) 0%, rgba(6, 14, 26, .35) 18%, rgba(6, 14, 26, 0) 38%), linear-gradient(to bottom, rgba(6, 14, 26, .45), rgba(6, 14, 26, 0) 18%); }
+.intro:not(.no-slides) .intro-body { padding-bottom: clamp(1.2rem, 4vh, 2.4rem); }
+.intro-panel.compact { padding: 0; background: none; backdrop-filter: none; border: 0; box-shadow: none; }
+.intro-panel.compact h1 { font-size: clamp(1.2rem, .9rem + 1.6vw, 1.9rem); }
+.intro-panel.compact .intro-sub { font-size: 1rem; }
+.intro-panel.compact .intro-sub::after { display: none; }
+.intro-panel.compact .intro-btn { padding: .9rem 2.4rem; font-size: 1.15rem; }
+.intro-panel.no-text h1, .intro-panel.no-text .intro-sub { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ───── ปุ่มกุญแจบนแถบเมนู ───── */
+a.icon-btn { display: inline-grid; place-items: center; text-decoration: none; color: var(--text); }
+
+/* ───── หน้าเข้าสู่ระบบ ───── */
+.login { position: relative; display: grid; place-items: center; min-height: 100vh; min-height: 100svh; padding: 4rem 1rem 2rem; overflow: hidden; isolation: isolate; background: #0a1424; }
+.login-bg { position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--c-yellow) 55%, transparent), transparent 45%), radial-gradient(circle at 85% 25%, color-mix(in srgb, var(--c-blue) 55%, transparent), transparent 45%), radial-gradient(circle at 80% 90%, color-mix(in srgb, var(--c-pink) 50%, transparent), transparent 45%), radial-gradient(circle at 10% 90%, color-mix(in srgb, var(--c-green) 55%, transparent), transparent 45%), #0a1424; background-size: 130% 130%; animation: aurora 16s ease-in-out infinite alternate; }
+.login-back { position: absolute; top: 1rem; left: 1rem; padding: .45rem 1.1rem; border-radius: 999px; background: rgba(10, 22, 38, .5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, .25); color: #fff; font-weight: 600; text-decoration: none; }
+.login-back:hover { background: rgba(255, 255, 255, .22); }
+.login-card { position: relative; width: min(100%, 460px); margin-top: 2.6rem; padding: 3.2rem 2rem 1.8rem; border-radius: 28px; background: rgba(255, 255, 255, .94); color: var(--text); box-shadow: 0 30px 80px rgba(0, 0, 0, .45); text-align: center; animation: rise .7s ease both; }
+.login-key { position: absolute; top: -2.6rem; left: calc(50% - 2.6rem); display: grid; place-items: center; width: 5.2rem; height: 5.2rem; border-radius: 50%; background: linear-gradient(135deg, var(--c-yellow), var(--c-orange)); color: #3a2a00; border: 5px solid #fff; box-shadow: 0 10px 28px rgba(0, 0, 0, .3); }
+.login-site { margin: 0; color: var(--muted); font-weight: 600; }
+.login-card h1 { margin: .2rem 0 .4rem; font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2rem); }
+.login-intro { margin: 0 0 1.4rem; color: var(--muted); }
+.login-cta { display: block; padding: .95rem 1.2rem; font-size: 1.15rem; }
+.login-steps { counter-reset: s; list-style: none; display: grid; gap: .7rem; margin: 1.6rem 0 0; padding: 0; text-align: left; }
+.login-steps li { counter-increment: s; display: flex; align-items: flex-start; gap: .8rem; }
+.login-steps li::before { content: counter(s); flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--tint); color: var(--link); font-weight: 700; }
+.login-help { margin: 1.4rem 0 0; }
+.login-note { margin: .8rem 0 0; padding: .6rem .9rem; border-radius: 12px; background: color-mix(in srgb, var(--c-yellow) 22%, #fff); color: #4a3800; font-size: .92rem; }
