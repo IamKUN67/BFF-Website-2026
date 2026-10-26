@@ -5,14 +5,14 @@
   "autoplay": true,
   "showTitle": false,
   "interval": 6,
-  "fit": "contain",
+  "fit": "cover",
   "slides": [
     {
       "file": "/uploads/pasted-image-1792996017707.webp",
       "youtube": "",
       "alt": "ยินดีต้อนรับเข้าสู่เว็ปไซต์ Best Friend Forever 2026 : เพื่อนกันตลอดไป",
       "caption": "",
-      "fit": "contain",
+      "fit": "cover",
       "focus": "center"
     }
   ],
