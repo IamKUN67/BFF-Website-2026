@@ -7,10 +7,7 @@
     "src": "/uploads/logo.webp",
     "alt": "โลโก้ BFF รูปมือสามสี เขียว น้ำเงิน แดง บนพื้นหลังสีรุ้ง"
   },
-  "cover": {
-    "src": "/uploads/pasted-image-1792996017707.webp",
-    "alt": ""
-  },
+  "cover": null,
   "colors": {
     "primary": "#1a73c4",
     "accent": "#d32f2f"
