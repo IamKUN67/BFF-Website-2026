@@ -115,5 +115,6 @@
   "searchTypeTimeline": "ไทม์ไลน์",
   "timelineSortLabel": "เรียงลำดับ",
   "timelineOldest": "เก่า → ใหม่",
-  "timelineNewest": "ใหม่ → เก่า"
+  "timelineNewest": "ใหม่ → เก่า",
+  "slideSound": "เปิดหรือปิดเสียงวิดีโอ"
 }

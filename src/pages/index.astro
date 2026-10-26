@@ -1,5 +1,5 @@
 ---
-// หน้าแรกสุดของลิงก์เว็บ: สไลด์ต้อนรับ (รูป วิดีโอ YouTube หรือไฟล์อื่น) + ปุ่มเข้าสู่หน้าหลัก/ปุ่มที่เพิ่มเอง
+// หน้าแรกสุดของลิงก์เว็บ: สไลด์ต้อนรับเต็มจอ (รูป วิดีโอ YouTube หรือไฟล์อื่น) + แผงกระจกมีหัวข้อและปุ่ม
 // ตั้งค่าได้ที่หน้าแอดมิน > ตั้งค่าเว็บไซต์ > หน้าสไลด์ต้อนรับ (หน้าหลักจริงอยู่ที่ /home/)
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
@@ -14,15 +14,19 @@ const logo = img(site.logo, '(โลโก้)');
 const IMG = /\.(jpe?g|png|webp|gif|avif|svg)$/i;
 const VID = /\.(mp4|webm|ogv|m4v|mov)$/i;
 const AUD = /\.(mp3|wav|ogg|m4a|aac)$/i;
+const FOCUS: Record<string, string> = { center: 'center', top: 'center top', bottom: 'center bottom', left: 'left center', right: 'right center' };
+const globalFit = intro?.fit === 'contain' ? 'contain' : 'cover';
 
 const slides = (intro?.slides ?? [])
   .map((s) => {
     const yt = s.youtube ? youtubeId(s.youtube) : null;
     const f = s.file ? url(s.file) : '';
     const kind = yt ? 'youtube' : !s.file ? null : IMG.test(s.file) ? 'image' : VID.test(s.file) ? 'video' : AUD.test(s.file) ? 'audio' : 'file';
-    return { ...s, yt, f, kind, name: decodeURIComponent((s.file ?? '').split('/').pop() ?? '') };
+    const fit = s.fit === 'contain' || s.fit === 'cover' ? s.fit : globalFit;
+    return { ...s, yt, f, kind, fit, pos: FOCUS[s.focus ?? ''] ?? 'center', name: decodeURIComponent((s.file ?? '').split('/').pop() ?? '') };
   })
   .filter((s) => s.kind);
+const hasVideo = slides.some((s) => s.kind === 'video');
 
 const buttons = (intro?.buttons?.length ? intro.buttons : [{ label: labels.enterHome, url: '/home/', color: null }]).map((b) => ({
   label: b.label,
@@ -37,75 +41,87 @@ const subtitle = intro?.subtitle ?? site.tagline;
   <Fragment slot="head">{!enabled && <meta http-equiv="refresh" content={`0;url=${home}`} />}</Fragment>
   {enabled ? (
     <section
-      class="intro"
+      class:list={['intro', slides.length === 0 && 'no-slides']}
       aria-roledescription="carousel"
       aria-label={labels.introLabel}
       data-intro
       data-autoplay={String(intro?.autoplay !== false)}
       data-interval={intro?.interval ?? 6}
     >
-      {slides.length > 0 ? (
-        <div class="intro-stage">
-          {slides.map((s, i) => (
-            <div
-              class:list={['slide', i === 0 && 'is-active']}
-              data-kind={s.kind}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`${i + 1} / ${slides.length}`}
-              style={s.kind === 'image' ? `--bg:url("${encodeURI(s.f)}")` : undefined}
-            >
-              {s.kind === 'image' && <img src={s.f} alt={s.alt ?? ''} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />}
-              {s.kind === 'video' && <video src={s.f} muted playsinline controls preload={i === 0 ? 'auto' : 'metadata'} aria-label={s.alt ?? s.caption ?? undefined}></video>}
-              {s.kind === 'audio' && <audio src={s.f} controls preload="none" aria-label={s.alt ?? s.caption ?? undefined}></audio>}
-              {s.kind === 'youtube' && (
-                <div class="slide-yt">
-                  <iframe
-                    data-src={`https://www.youtube-nocookie.com/embed/${s.yt}`}
-                    src={i === 0 ? `https://www.youtube-nocookie.com/embed/${s.yt}` : undefined}
-                    title={s.alt ?? s.caption ?? labels.videoDefaultTitle}
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                  ></iframe>
-                </div>
-              )}
-              {s.kind === 'file' && (
-                <div class="slide-file">
-                  <Icon name="external" size={40} />
-                  <strong>{s.alt || s.name}</strong>
-                  <a class="btn" href={s.f} target="_blank" rel="noopener">{labels.openFile}<span class="sr-only"> ({labels.externalHint})</span></a>
-                </div>
-              )}
-              {s.caption && <p class="slide-caption">{s.caption}</p>}
-            </div>
-          ))}
-          {logo && <img class="intro-logo" src={logo.src} alt={logo.alt} />}
-          {slides.length > 1 && (
-            <>
-              <div class="sl-top">
-                {slides.map((_, i) => (
-                  <button type="button" class="dot" data-dot aria-label={labels.slideGoto.replace('{n}', String(i + 1))} aria-current={String(i === 0)}></button>
-                ))}
-                <button type="button" class="sl-pause" data-toggle data-label-pause={labels.slidePause} data-label-play={labels.slidePlay} aria-label={labels.slidePause}><span aria-hidden="true">❚❚</span></button>
+      <div class:list={['intro-stage', slides.length === 0 && 'empty']}>
+        {slides.map((s, i) => (
+          <div
+            class:list={['slide', i === 0 && 'is-active', s.fit === 'contain' && 'contain']}
+            data-kind={s.kind}
+            data-caption={s.caption ?? ''}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} / ${slides.length}`}
+            style={s.kind === 'image' ? `--bg:url("${encodeURI(s.f)}")` : undefined}
+          >
+            {s.kind === 'image' && <img src={s.f} alt={s.alt ?? ''} style={`object-position:${s.pos}`} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />}
+            {s.kind === 'video' && <video src={s.f} muted playsinline autoplay={i === 0} loop={slides.length === 1} style={`object-position:${s.pos}`} preload={i === 0 ? 'auto' : 'metadata'} aria-label={s.alt ?? s.caption ?? undefined}></video>}
+            {s.kind === 'audio' && <audio src={s.f} controls preload="none" aria-label={s.alt ?? s.caption ?? undefined}></audio>}
+            {s.kind === 'youtube' && (
+              <div class="slide-yt">
+                <iframe
+                  data-src={`https://www.youtube-nocookie.com/embed/${s.yt}`}
+                  src={i === 0 ? `https://www.youtube-nocookie.com/embed/${s.yt}` : undefined}
+                  title={s.alt ?? s.caption ?? labels.videoDefaultTitle}
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
               </div>
-              <button type="button" class="sl-btn sl-prev" data-prev aria-label={labels.slidePrev}><span aria-hidden="true">‹</span></button>
-              <button type="button" class="sl-btn sl-next" data-next aria-label={labels.slideNext}><span aria-hidden="true">›</span></button>
-            </>
-          )}
-        </div>
-      ) : (
-        <div class="intro-stage empty">
-          {logo && <img class="intro-hero-logo" src={logo.src} alt={logo.alt} />}
-        </div>
+            )}
+            {s.kind === 'file' && (
+              <div class="slide-file">
+                <Icon name="external" size={40} />
+                <strong>{s.alt || s.name}</strong>
+                <a class="btn" href={s.f} target="_blank" rel="noopener">{labels.openFile}<span class="sr-only"> ({labels.externalHint})</span></a>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      {slides.length > 0 && <div class="intro-shade"></div>}
+
+      {slides.length > 0 && logo && (
+        <div class="intro-brand"><img src={logo.src} alt={logo.alt} /><span>{site.siteName}</span></div>
       )}
-      <div class="intro-bar">
-        <h1>{title}</h1>
-        {subtitle && <p class="intro-sub">{subtitle}</p>}
-        <div class="intro-buttons">
-          {buttons.map((b) => (
-            <a class="intro-btn" href={b.href} style={`--bg:${b.bg};--fg:${onColor(b.bg)}`} target={b.external ? '_blank' : undefined} rel={b.external ? 'noopener' : undefined}>{b.label}</a>
-          ))}
+      {hasVideo && (
+        <button type="button" class="sl-sound" data-sound aria-pressed="false" aria-label={labels.slideSound}>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
+            <path class="on" d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path class="off" d="M16 9l5 6M21 9l-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      )}
+      {slides.length > 1 && (
+        <>
+          <div class="sl-top">
+            {slides.map((_, i) => (
+              <button type="button" class="dot" data-dot aria-label={labels.slideGoto.replace('{n}', String(i + 1))} aria-current={String(i === 0)}></button>
+            ))}
+            <button type="button" class="sl-pause" data-toggle data-label-pause={labels.slidePause} data-label-play={labels.slidePlay} aria-label={labels.slidePause}><span aria-hidden="true">❚❚</span></button>
+          </div>
+          <button type="button" class="sl-btn sl-prev" data-prev aria-label={labels.slidePrev}><span aria-hidden="true">‹</span></button>
+          <button type="button" class="sl-btn sl-next" data-next aria-label={labels.slideNext}><span aria-hidden="true">›</span></button>
+        </>
+      )}
+
+      <div class="intro-body">
+        {slides.length === 0 && logo && <img class="intro-logo-big" src={logo.src} alt={logo.alt} />}
+        <div class="intro-panel">
+          <p class="intro-cap" data-cap hidden={!slides[0]?.caption}>{slides[0]?.caption}</p>
+          <h1>{title}</h1>
+          {subtitle && <p class="intro-sub">{subtitle}</p>}
+          <div class="intro-buttons">
+            {buttons.map((b) => (
+              <a class="intro-btn" href={b.href} style={`--bg:${b.bg};--fg:${onColor(b.bg)}`} target={b.external ? '_blank' : undefined} rel={b.external ? 'noopener' : undefined}>{b.label}</a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -118,8 +134,21 @@ const subtitle = intro?.subtitle ?? site.tagline;
   const root = document.querySelector<HTMLElement>('[data-intro]');
   if (root) {
     const slides = Array.from(root.querySelectorAll<HTMLElement>('.slide'));
-    const first = slides[0]?.querySelector('video');
-    first?.play().catch(() => {});
+    const cap = root.querySelector<HTMLElement>('[data-cap]');
+    const soundBtn = root.querySelector<HTMLElement>('[data-sound]');
+    let sound = false;
+    const setCap = (n: number) => {
+      const c = slides[n]?.dataset.caption || '';
+      if (cap) { cap.textContent = c; cap.hidden = !c; }
+    };
+    slides[0]?.querySelector('video')?.play().catch(() => {});
+    soundBtn?.addEventListener('click', () => {
+      sound = !sound;
+      soundBtn.setAttribute('aria-pressed', String(sound));
+      root.querySelectorAll('video').forEach((v) => (v.muted = !sound));
+      root.querySelector<HTMLVideoElement>('.slide.is-active video')?.play().catch(() => {});
+    });
+
     if (slides.length > 1) {
       const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-dot]'));
       const toggle = root.querySelector<HTMLElement>('[data-toggle]')!;
@@ -137,8 +166,8 @@ const subtitle = intro?.subtitle ?? site.tagline;
       const schedule = () => {
         clearTimeout(timer);
         if (!playing) return;
-        const kind = slides[i].dataset.kind;
-        if (kind === 'image') timer = window.setTimeout(() => go(i + 1), interval); // วิดีโอเลื่อนเมื่อเล่นจบ ส่วน YouTube/ไฟล์/เสียงให้ผู้ชมเลื่อนเอง
+        // รูปเลื่อนตามเวลา วิดีโอเลื่อนเมื่อเล่นจบ ส่วน YouTube/ไฟล์/เสียงให้ผู้ชมเลื่อนเอง
+        if (slides[i].dataset.kind === 'image') timer = window.setTimeout(() => go(i + 1), interval);
       };
       const go = (n: number) => {
         const old = slides[i];
@@ -150,7 +179,8 @@ const subtitle = intro?.subtitle ?? site.tagline;
         cur.classList.add('is-active');
         dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
         cur.querySelectorAll<HTMLIFrameElement>('iframe[data-src]').forEach((f) => (f.src = f.dataset.src!));
-        cur.querySelectorAll('video').forEach((v) => { v.currentTime = 0; v.play().catch(() => {}); });
+        cur.querySelectorAll('video').forEach((v) => { v.muted = !sound; v.currentTime = 0; v.play().catch(() => {}); });
+        setCap(i);
         schedule();
       };
       slides.forEach((s) => s.querySelectorAll('video').forEach((v) => v.addEventListener('ended', () => { if (playing && slides[i] === s) go(i + 1); })));
@@ -162,7 +192,7 @@ const subtitle = intro?.subtitle ?? site.tagline;
         if (e.key === 'ArrowLeft') go(i - 1);
         if (e.key === 'ArrowRight') go(i + 1);
       });
-      // ปัดซ้าย-ขวาบนมือถือ (ไม่ทำงานเมื่อเริ่มปัดบนตัวเล่นวิดีโอ)
+      // ปัดซ้าย-ขวาบนมือถือ (ไม่ทำงานเมื่อเริ่มปัดบนตัวเล่นวิดีโอ/ปุ่ม)
       let x0: number | null = null;
       root.addEventListener('touchstart', (e) => { x0 = (e.target as Element).closest('video, iframe, audio, button, a') ? null : e.touches[0].clientX; }, { passive: true });
       root.addEventListener('touchend', (e) => {

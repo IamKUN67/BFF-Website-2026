@@ -189,7 +189,8 @@ const intro = defineCollection({
     subtitle: str,
     autoplay: z.boolean().nullish().transform((v) => v ?? true),
     interval: z.number().nullish().transform((v) => v ?? 6),
-    slides: list(z.object({ file: str, youtube: str, alt: str, caption: str })),
+    fit: str, // cover | contain (ค่าเริ่มต้นของทุกสไลด์)
+    slides: list(z.object({ file: str, youtube: str, alt: str, caption: str, fit: str, focus: str })),
     buttons: list(z.object({ label: z.string(), url: z.string(), color: str })),
   }),
 });

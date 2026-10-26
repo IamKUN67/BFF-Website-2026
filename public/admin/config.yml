@@ -181,6 +181,7 @@ collections:
           - { name: timelineSortLabel, label: "คำว่า เรียงลำดับ (ไทม์ไลน์)", widget: string }
           - { name: timelineOldest, label: "ปุ่ม: เรียงจากเก่าไปใหม่", widget: string }
           - { name: timelineNewest, label: "ปุ่ม: เรียงจากใหม่ไปเก่า", widget: string }
+          - { name: slideSound, label: "ปุ่มเปิด/ปิดเสียงวิดีโอ (โปรแกรมอ่านจอ)", widget: string }
           - { name: galleryTitle, label: "หัวข้ออัลบั้มรูป", widget: string }
           - { name: backToNews, label: "ลิงก์กลับไปหน้าข่าว", widget: string }
           - { name: boardTitle, label: "หัวข้อส่วนผู้บริหาร", widget: string }
@@ -205,6 +206,14 @@ collections:
           - { name: subtitle, label: "ข้อความรอง", widget: string, required: false }
           - { name: autoplay, label: "เลื่อนสไลด์อัตโนมัติ", widget: boolean, default: true }
           - { name: interval, label: "เวลาต่อสไลด์ (วินาที)", widget: number, value_type: int, min: 3, max: 30, default: 6 }
+          - name: fit
+            label: "การแสดงรูป/วิดีโอในสไลด์ (ค่าเริ่มต้นของทุกสไลด์)"
+            widget: select
+            default: "cover"
+            required: false
+            options:
+              - { label: "เต็มจอ ตัดขอบเล็กน้อย (แนะนำ เหมาะกับรูป 16:9)", value: "cover" }
+              - { label: "พอดีทั้งรูป ไม่ตัด (มีพื้นหลังเบลอเติมข้างๆ)", value: "contain" }
           - name: slides
             label: "สไลด์ (ลากเรียงลำดับได้)"
             label_singular: "สไลด์"
@@ -212,10 +221,28 @@ collections:
             required: false
             summary: "{{fields.caption}} {{fields.file}} {{fields.youtube}}"
             fields:
-              - { name: file, label: "ไฟล์ (รูป วิดีโอ MP4 หรือไฟล์อื่นๆ) — วิดีโอยาวให้ใช้ลิงก์ YouTube แทน", widget: file, required: false }
+              - { name: file, label: "ไฟล์ (รูป วิดีโอ MP4 หรือไฟล์อื่นๆ) แนะนำรูป 1920×1080 (16:9) — วิดีโอยาวให้ใช้ลิงก์ YouTube แทน", widget: file, required: false }
               - { name: youtube, label: "หรือวางลิงก์ YouTube (ถ้าใส่ จะใช้ YouTube แทนไฟล์)", widget: string, required: false }
               - { name: alt, label: "คำอธิบายรูป/วิดีโอ (alt) ภาษาไทย", widget: string, required: false }
               - { name: caption, label: "ข้อความใต้สไลด์", widget: string, required: false }
+              - name: fit
+                label: "การแสดงสไลด์นี้ (ถ้าไม่เลือก ใช้ตามค่าเริ่มต้นด้านบน)"
+                widget: select
+                required: false
+                options:
+                  - { label: "เต็มจอ ตัดขอบเล็กน้อย", value: "cover" }
+                  - { label: "พอดีทั้งรูป ไม่ตัด", value: "contain" }
+              - name: focus
+                label: "จุดสนใจของรูป (เมื่อโดนตัดขอบ เช่น บนมือถือ)"
+                widget: select
+                default: "center"
+                required: false
+                options:
+                  - { label: "กลาง", value: "center" }
+                  - { label: "บน", value: "top" }
+                  - { label: "ล่าง", value: "bottom" }
+                  - { label: "ซ้าย", value: "left" }
+                  - { label: "ขวา", value: "right" }
           - name: buttons
             label: "ปุ่มในหน้าสไลด์ (เพิ่มเองได้ ลิงก์ในเว็บขึ้นต้นด้วย / เช่น /home/ หรือลิงก์นอกเว็บขึ้นต้นด้วย https://)"
             label_singular: "ปุ่ม"
