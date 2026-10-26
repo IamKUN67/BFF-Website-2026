@@ -4,11 +4,11 @@
   "subtitle": "เพื่อนกันตลอดไป",
   "autoplay": true,
   "interval": 6,
-  "fit": "cover",
+  "fit": "contain",
   "slides": [
     {
       "file": "/uploads/pasted-image-1792996017707.webp",
-      "youtube": "https://youtu.be/nP5oiJrqKpg",
+      "youtube": "",
       "alt": "ยินดีต้อนรับเข้าสู่เว็ปไซต์ทางการ Best Friend Forever",
       "caption": "ยินดีต้อนรับเข้าสู่เว็ปไซต์ทางการ Best Friend Forever",
       "fit": "contain",
