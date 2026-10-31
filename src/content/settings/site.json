@@ -23,6 +23,7 @@
   "address": "",
   "footerText": "\" เพื่อนกันตลอดไป \"",
   "showLogin": true,
+  "teacherApiUrl": "https://bff-website-2026.kkhyanwngs.workers.dev/",
   "goatcounterCode": "iamkun",
   "cloudflareToken": ""
 }
