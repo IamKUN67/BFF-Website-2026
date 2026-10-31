@@ -657,3 +657,23 @@ a.icon-btn { display: inline-grid; place-items: center; text-decoration: none; c
 .login-steps li::before { content: counter(s); flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--tint); color: var(--link); font-weight: 700; }
 .login-help { margin: 1.4rem 0 0; }
 .login-note { margin: .8rem 0 0; padding: .6rem .9rem; border-radius: 12px; background: color-mix(in srgb, var(--c-yellow) 22%, #fff); color: #4a3800; font-size: .92rem; }
+
+/* ───── ฟอร์มเข้าสู่ระบบ + หน้าจัดการคอร์สของครู ───── */
+.login-form { display: grid; gap: .9rem; text-align: left; }
+.login-form label span { display: block; margin-bottom: .25rem; font-weight: 600; }
+.login-form input, .tc-course input[type="url"], .tc-course input[type="text"] { width: 100%; padding: .7rem 1rem; border: 2px solid var(--border); border-radius: 12px; background: #fff; color: var(--text); font: inherit; }
+.login-form input:focus, .tc-course input:focus { border-color: var(--primary); outline: none; }
+.login-error { margin: 0; padding: .6rem .9rem; border-radius: 10px; background: #fde8e8; color: #9b1c1c; }
+.login-owner { margin: .8rem 0 0; font-size: .9rem; }
+.tc-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; margin: 0 0 1.5rem; font-weight: 600; }
+.tc-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1.5rem; align-items: start; }
+.tc-course { display: grid; gap: .9rem; padding: 1.4rem 1.6rem; background: var(--surface); border: 1px solid var(--border); border-top: 6px solid var(--c-green); border-radius: var(--radius); box-shadow: var(--shadow); }
+.tc-course h3 { margin: 0; font-size: 1.25rem; }
+.tc-course h4 { margin: .3rem 0 0; font-size: 1rem; }
+.tc-course label > span { display: block; margin-bottom: .25rem; font-weight: 600; }
+.tc-check { display: flex; align-items: center; gap: .6rem; }
+.tc-check input { width: 1.2rem; height: 1.2rem; }
+.tc-docs { display: grid; gap: .7rem; margin: 0; padding: 0; list-style: none; }
+.tc-docs li { display: grid; gap: .4rem; padding: .8rem; border: 1px solid var(--border); border-radius: 12px; }
+.tc-docs small { color: var(--muted); overflow-wrap: anywhere; }
+.tc-msg { min-height: 1.5rem; margin: 0; color: var(--link); font-weight: 600; }

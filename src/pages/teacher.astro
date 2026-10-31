@@ -1,0 +1,111 @@
+---
+// หน้าจัดการคอร์สของครู (ต้องเข้าสู่ระบบ): แก้ลิงก์สมัคร ติ๊กปิดรับสมัคร/คอร์สจบแล้ว และฝากเอกสาร เฉพาะคอร์สที่ตนเองเป็นครูผู้สอน
+import Base from '../layouts/Base.astro';
+import { labels, url } from '../lib/site';
+const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith('tc')));
+---
+<Base title={labels.tcTitle}>
+  <Fragment slot="head"><meta name="robots" content="noindex" /></Fragment>
+  <header class="page-band"><div class="container narrow"><h1>{labels.tcTitle}</h1></div></header>
+  <section class="section first">
+    <div class="container" data-teacher data-login={url('/login/')} data-data={url('/data/teacher-api.json')} data-base={url('/')}>
+      <script type="application/json" set:html={JSON.stringify(L)} />
+      <p class="tc-bar"><span data-hello></span><button type="button" class="btn btn-outline" data-logout>{labels.tcLogout}</button></p>
+      <p class="empty" data-status role="status">{labels.tcLoading}</p>
+      <div class="tc-list" data-list></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-teacher]');
+  if (root) {
+    const L = JSON.parse(root.querySelector('script[type="application/json"]')!.textContent || '{}');
+    const statusEl = root.querySelector<HTMLElement>('[data-status]')!;
+    const list = root.querySelector<HTMLElement>('[data-list]')!;
+    const sess = JSON.parse(sessionStorage.getItem('bffTeacher') || 'null');
+    const leave = () => { sessionStorage.removeItem('bffTeacher'); location.replace(root.dataset.login!); };
+    root.querySelector('[data-logout]')!.addEventListener('click', leave);
+    const ALLOWED = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'rar', '7z', 'txt', 'csv', 'png', 'jpg', 'jpeg', 'webp', 'gif'];
+    const h = (tag: string, props: Record<string, any> = {}, ...kids: (Node | string)[]) => {
+      const el = document.createElement(tag);
+      Object.assign(el, props);
+      el.append(...kids);
+      return el;
+    };
+
+    (async () => {
+      if (!sess || sess.exp < Date.now()) return leave();
+      const api = async (path: string, init: RequestInit = {}) => {
+        const r = await fetch(sess.api.replace(/\/$/, '') + path, { ...init, headers: { ...(init.headers || {}), Authorization: 'Bearer ' + sess.token } });
+        if (r.status === 401) { statusEl.textContent = L.tcSessionExpired; setTimeout(leave, 1500); throw new Error('auth'); }
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j.error || 'error');
+        return j;
+      };
+      try {
+        const [site, st] = await Promise.all([fetch(root.dataset.data!).then((r) => r.json()), api('/state')]);
+        root.querySelector('[data-hello]')!.textContent = `${L.tcHello} ${st.user.name}`;
+        const mine = site.courses.filter((c: any) => st.owned.includes(c.key));
+        statusEl.textContent = mine.length ? '' : L.tcNoCourses;
+
+        mine.forEach((c: any) => {
+          const u = st.updates[c.key] || {};
+          const state = { applyUrl: u.applyUrl ?? c.base.applyUrl ?? '', closed: u.closed ?? c.base.closed, ended: u.ended ?? c.base.ended, documents: [...(u.documents || [])] as any[] };
+          const msg = h('p', { className: 'tc-msg', role: 'status' });
+          const docsUl = h('ul', { className: 'tc-docs' });
+          const renderDocs = () => {
+            docsUl.replaceChildren(...state.documents.map((d, i) => h('li', {},
+              h('input', { type: 'text', value: d.title, ariaLabel: L.tcDocTitle, oninput: (e: Event) => (d.title = (e.target as HTMLInputElement).value) }),
+              h('input', { type: 'text', value: d.note || '', placeholder: L.tcDocNote, ariaLabel: L.tcDocNote, oninput: (e: Event) => (d.note = (e.target as HTMLInputElement).value) }),
+              h('small', {}, d.file.split('/').pop() || ''),
+              h('button', { type: 'button', className: 'btn btn-outline', textContent: L.tcRemove, onclick: () => { state.documents.splice(i, 1); renderDocs(); } }),
+            )));
+          };
+          renderDocs();
+
+          const file = h('input', { type: 'file', accept: ALLOWED.map((x) => '.' + x).join(',') }) as HTMLInputElement;
+          file.addEventListener('change', async () => {
+            const f = file.files?.[0];
+            if (!f) return;
+            const ext = (f.name.split('.').pop() || '').toLowerCase();
+            if (!ALLOWED.includes(ext)) { msg.textContent = L.tcFileType; file.value = ''; return; }
+            if (f.size > 6 * 1024 * 1024) { msg.textContent = L.tcFileTooBig; file.value = ''; return; }
+            msg.textContent = L.tcUploading;
+            const b64 = await new Promise<string>((res) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1]); fr.readAsDataURL(f); });
+            try {
+              const j = await api('/upload?name=' + encodeURIComponent(f.name), { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: b64 });
+              state.documents.push({ title: f.name.replace(/\.[^.]+$/, ''), file: j.file, note: '' });
+              renderDocs();
+              msg.textContent = '';
+            } catch { msg.textContent = L.tcError; }
+            file.value = '';
+          });
+
+          const check = (key: 'closed' | 'ended', text: string) => h('label', { className: 'tc-check' },
+            h('input', { type: 'checkbox', checked: !!state[key], onchange: (e: Event) => (state[key] = (e.target as HTMLInputElement).checked) }), text);
+          const save = h('button', { type: 'button', className: 'btn', textContent: L.tcSave, onclick: async () => {
+            msg.textContent = L.tcSaving;
+            try {
+              await api('/save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ updates: { [c.key]: state } }) });
+              msg.textContent = L.tcSaved;
+            } catch { msg.textContent = L.tcError; }
+          } });
+          const baseDocs = c.base.documents.length
+            ? [h('h4', {}, L.tcDocsBase), h('ul', { className: 'tc-docs' }, ...c.base.documents.map((d: any) => h('li', {}, d.title)))]
+            : [];
+
+          list.append(h('article', { className: 'tc-course' },
+            h('h3', {}, c.title),
+            h('a', { href: `${root.dataset.base}pages/${c.page}/`, textContent: `${L.tcView}: ${c.pageTitle}` }),
+            h('label', {}, h('span', {}, L.tcApplyUrl), h('input', { type: 'url', value: state.applyUrl, placeholder: 'https://', oninput: (e: Event) => (state.applyUrl = (e.target as HTMLInputElement).value) })),
+            check('closed', L.tcClosed), check('ended', L.tcEnded),
+            ...baseDocs,
+            h('h4', {}, L.tcDocs), docsUl,
+            h('label', {}, h('span', {}, L.tcAddFile), file),
+            save, msg));
+        });
+      } catch { if (!statusEl.textContent) statusEl.textContent = L.tcError; }
+    })();
+  }
+</script>

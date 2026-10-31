@@ -4,8 +4,11 @@ import { getCollection } from 'astro:content';
 import DocList from './DocList.astro';
 import { labels, img, md, fmtDate, url } from '../lib/site';
 import { fileInfo } from '../lib/files';
+import { overlay, courseKeys, mergeCourse } from '../lib/overlay';
 
-const { courses = [] } = Astro.props;
+const { courses: raw = [], pageSlug = '' } = Astro.props;
+const keys = courseKeys(pageSlug, raw);
+const courses = raw.map((c: any, i: number) => mergeCourse(c, overlay[keys[i]])); // รวมข้อมูลที่ครูแก้ผ่านหน้าจัดการคอร์ส
 const teachers = new Map((await getCollection('teachers')).map((t) => [t.id, t]));
 const groups: { name: string; items: any[] }[] = [];
 for (const c of courses) {

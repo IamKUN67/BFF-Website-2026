@@ -94,6 +94,7 @@ const settings = defineCollection({
     email: str,
     address: str,
     footerText: str,
+    teacherApiUrl: str, // ที่อยู่ Cloudflare Worker ของระบบล็อกอินครู
     showLogin: z.boolean().nullish().transform((v) => v ?? true), // แสดงไอคอนกุญแจเข้าสู่ระบบบนแถบเมนู
     goatcounterCode: str, // GoatCounter (นับยอดเข้าชม ไม่ใช้คุกกี้)
     cloudflareToken: str, // หรือ Cloudflare Web Analytics

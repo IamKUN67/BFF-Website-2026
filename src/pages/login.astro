@@ -1,10 +1,11 @@
 ---
-// หน้าเข้าสู่ระบบสำหรับครูและผู้ดูแล: ตอนนี้เป็นประตูไปหน้าจัดการเนื้อหา (/admin/) เตรียมไว้ให้ต่อระบบบัญชีรายบุคคลได้ในอนาคต
+// หน้าเข้าสู่ระบบของครู: ส่งชื่อผู้ใช้/รหัสผ่านไปตรวจที่ Cloudflare Worker (ตั้งที่อยู่ในหน้าแอดมิน > ตั้งค่าเว็บไซต์)
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import { getSite, labels, url } from '../lib/site';
 
 const site = await getSite();
+const api = /^https:\/\//.test(site.teacherApiUrl ?? '') ? site.teacherApiUrl! : '';
 ---
 <Base bare title={labels.loginTitle}>
   <Fragment slot="head"><meta name="robots" content="noindex" /></Fragment>
@@ -16,14 +17,49 @@ const site = await getSite();
       <p class="login-site">{site.siteName}</p>
       <h1>{labels.loginTitle}</h1>
       <p class="login-intro">{labels.loginIntro}</p>
-      <a class="btn login-cta" href={url('/admin/')}>{labels.loginCta}</a>
-      <ol class="login-steps">
-        <li>{labels.loginStep1}</li>
-        <li>{labels.loginStep2}</li>
-        <li>{labels.loginStep3}</li>
-      </ol>
+      {api ? (
+        <form class="login-form" data-login-form data-api={api} data-next={url('/teacher/')}>
+          <label><span>{labels.loginUser}</span><input name="u" autocomplete="username" autocapitalize="none" required /></label>
+          <label><span>{labels.loginPass}</span><input name="p" type="password" autocomplete="current-password" required /></label>
+          <p class="login-error" data-error role="alert" hidden></p>
+          <button class="btn login-cta" type="submit" data-fail={labels.loginFailed} data-net={labels.loginNetwork}>{labels.loginSubmit}</button>
+        </form>
+      ) : (
+        <p class="login-note">{labels.loginNotReady}</p>
+      )}
       <p class="login-help">{labels.loginHelp} <a href={url('/pages/contact/')}>{labels.loginHelpLink}</a></p>
       <p class="login-note">{labels.loginNote}</p>
+      <p class="login-owner"><a href={url('/admin/')}>{labels.loginOwner}</a></p>
     </div>
   </section>
 </Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-login-form]');
+  if (form) {
+    const err = form.querySelector<HTMLElement>('[data-error]')!;
+    const btn = form.querySelector<HTMLButtonElement>('button')!;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.hidden = true;
+      btn.disabled = true;
+      try {
+        const api = form.dataset.api!.replace(/\/$/, '');
+        const r = await fetch(api + '/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: (form.elements.namedItem('u') as HTMLInputElement).value, password: (form.elements.namedItem('p') as HTMLInputElement).value }),
+        });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) { err.textContent = r.status === 401 ? btn.dataset.fail! : btn.dataset.net!; err.hidden = false; return; }
+        sessionStorage.setItem('bffTeacher', JSON.stringify({ ...j, api }));
+        location.href = form.dataset.next!;
+      } catch {
+        err.textContent = btn.dataset.net!;
+        err.hidden = false;
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+</script>

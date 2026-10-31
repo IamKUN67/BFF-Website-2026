@@ -1246,6 +1246,10 @@ collections:
       label: แสดงไอคอนกุญแจ (เข้าสู่ระบบ) บนแถบเมนู
       widget: boolean
       default: true
+    - name: teacherApiUrl
+      label: ที่อยู่ระบบล็อกอินครู (ที่อยู่ Cloudflare Worker เช่น https://bff-teacher.ชื่อคุณ.workers.dev) เว้นว่าง = ยังไม่เปิดใช้
+      widget: string
+      required: false
     - name: goatcounterCode
       label: รหัส GoatCounter นับยอดเข้าชม (เช่น bff ถ้าหน้าสถิติคือ bff.goatcounter.com) เว้นว่าง = ไม่นับ
       widget: string
@@ -1773,18 +1777,6 @@ collections:
     - name: loginIntro
       label: ข้อความใต้หัวข้อหน้าเข้าสู่ระบบ
       widget: string
-    - name: loginCta
-      label: ปุ่มเข้าสู่ระบบ
-      widget: string
-    - name: loginStep1
-      label: ขั้นตอนที่ 1
-      widget: string
-    - name: loginStep2
-      label: ขั้นตอนที่ 2
-      widget: string
-    - name: loginStep3
-      label: ขั้นตอนที่ 3
-      widget: string
     - name: loginHelp
       label: ข้อความขอสิทธิ์
       widget: string
@@ -1796,5 +1788,95 @@ collections:
       widget: string
     - name: loginBack
       label: ลิงก์กลับหน้าหลัก
+      widget: string
+    - name: loginUser
+      label: ช่องชื่อผู้ใช้
+      widget: string
+    - name: loginPass
+      label: ช่องรหัสผ่าน
+      widget: string
+    - name: loginSubmit
+      label: ปุ่มเข้าสู่ระบบ
+      widget: string
+    - name: loginFailed
+      label: ข้อความเมื่อล็อกอินไม่สำเร็จ
+      widget: string
+    - name: loginNetwork
+      label: ข้อความเมื่อเชื่อมต่อไม่ได้
+      widget: string
+    - name: loginNotReady
+      label: ข้อความเมื่อยังไม่ตั้งค่าระบบ
+      widget: string
+    - name: loginOwner
+      label: ลิงก์ไปหน้าจัดการเนื้อหา (CMS)
+      widget: string
+    - name: tcTitle
+      label: หัวข้อหน้าจัดการคอร์สของครู
+      widget: string
+    - name: tcHello
+      label: คำทักทาย
+      widget: string
+    - name: tcLogout
+      label: ปุ่มออกจากระบบ
+      widget: string
+    - name: tcLoading
+      label: ข้อความกำลังโหลด
+      widget: string
+    - name: tcNoCourses
+      label: ข้อความเมื่อไม่มีคอร์ส
+      widget: string
+    - name: tcApplyUrl
+      label: ช่องลิงก์สมัคร
+      widget: string
+    - name: tcClosed
+      label: ตัวเลือกปิดรับสมัคร
+      widget: string
+    - name: tcEnded
+      label: ตัวเลือกคอร์สจบแล้ว
+      widget: string
+    - name: tcDocs
+      label: หัวข้อเอกสารของครู
+      widget: string
+    - name: tcDocsBase
+      label: หัวข้อเอกสารจากผู้ดูแล
+      widget: string
+    - name: tcDocTitle
+      label: ช่องชื่อเอกสาร
+      widget: string
+    - name: tcDocNote
+      label: ช่องหมายเหตุเอกสาร
+      widget: string
+    - name: tcRemove
+      label: ปุ่มลบเอกสาร
+      widget: string
+    - name: tcAddFile
+      label: ช่องเลือกไฟล์
+      widget: string
+    - name: tcUploading
+      label: ข้อความอัปโหลด
+      widget: string
+    - name: tcSave
+      label: ปุ่มบันทึก
+      widget: string
+    - name: tcSaving
+      label: ข้อความกำลังบันทึก
+      widget: string
+    - name: tcSaved
+      label: ข้อความบันทึกสำเร็จ
+      widget: string
+    - name: tcError
+      label: ข้อความผิดพลาด
+      widget: string
+    - name: tcSessionExpired
+      label: ข้อความหมดเวลา
+      widget: string
+    - name: tcFileTooBig
+      label: ข้อความไฟล์ใหญ่
+      widget: string
+    - name: tcFileType
+      label: ข้อความชนิดไฟล์
+      widget: string
+    - name: tcView
+      label: ลิงก์ดูหน้าวิชา
       widget: string
   description: ตั้งค่าทั่วไป หน้าสไลด์ต้อนรับ เมนู และข้อความในหน้าเว็บ

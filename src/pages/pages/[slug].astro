@@ -54,7 +54,7 @@ const hasMain = d.showContact || d.links.length > 0 || d.embeds.length > 0 || ha
     </div>
   </article>
   {d.teachers.length > 0 && <section class="section alt"><div class="container"><Teachers ids={d.teachers} /></div></section>}
-  {d.courses.length > 0 && <section class="section"><div class="container"><Courses courses={d.courses} /></div></section>}
+  {d.courses.length > 0 && <section class="section"><div class="container"><Courses courses={d.courses} pageSlug={d.slug ?? page.id} /></div></section>}
   {news.length > 0 && (
     <section class="section">
       <div class="container">
