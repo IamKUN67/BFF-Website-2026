@@ -1,15 +1,8 @@
 ---
 title: กลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี
 slug: science
-description: ''
-legacy: false
-showContact: false
-showExecutives: false
-newsCategory: ข่าวการศึกษา
 teachers:
   - 20261023-155802
-links: []
-embeds: []
 courses:
   - title: วิทยาศาสตร์พื้นฐานเตรียมความพร้อมการสอบเข้า ม.1
     group: ''
@@ -18,7 +11,9 @@ courses:
     schedule: ''
     teachers:
       - 20261023-155802
-    description: ปรับพื้นฐานวิทยาศาสตร์พื้นฐานเพื่อเตรียมความพร้อมนักเรียนเข้าสู่ชั้นมัธยมศึกษาปีที่ 1
+    applyUrl: ''
+    closed: false
+    ended: true
     documents:
       - title: เอกสารประกอบการเรียน หน่วย 1 สิ่งมีชีวิตและสิ่งแวดล้อม
         file: /uploads/หน่วย 1 สิ่งมีชีวิตและสิ่งแวดล้อม.pdf
@@ -44,12 +39,10 @@ courses:
       - title: เอกสารประกอบการเรียน หน่วย 8 เทคโนโลยี
         file: /uploads/หน่วย 8 เทคโนโลยี.pdf
         note: ''
-    applyUrl: ''
-    closed: false
-    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1g1Y8QGWhzasRKkTbx39kWth9fcqSIdId2hwnbVziL8E/edit?usp=sharing
+    description: ปรับพื้นฐานวิทยาศาสตร์พื้นฐานเพื่อเตรียมความพร้อมนักเรียนเข้าสู่ชั้นมัธยมศึกษาปีที่ 1
   - title: วิทยาศาสตร์พื้นฐานชั้นมัธยมศึกษาตอนต้น
     group: ''
     startDate: 2024-03-04
@@ -57,7 +50,9 @@ courses:
     schedule: ''
     teachers:
       - 20261023-155802
-    description: เนื้อหาวิทยาศาสตร์พื้นฐาน สาขา ชีววิทยา ฟิสิกส์ เคมี และดาราศาสตร์ ขอบเขตเนื้อหาชั้นมัธยมศึกษาตอนต้น
+    applyUrl: ''
+    closed: false
+    ended: true
     documents:
       - title: เอกสารประกอบการเรียน หน่วย 1 สารรอบตัว
         file: /uploads/หน่วย 1 สารรอบตัว.pdf
@@ -77,12 +72,10 @@ courses:
       - title: เอกสารประกอบการเรียน หน่วย 6 แสงและแรง
         file: /uploads/หน่วย 6 แสงและแรง.pdf
         note: ''
-    applyUrl: ''
-    closed: false
-    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1Q7Ww2HGuyWtEoQk1pYyS-UzSnnhKDYqtUkGFe7nax5c/edit?usp=sharing
+    description: เนื้อหาวิทยาศาสตร์พื้นฐาน สาขา ชีววิทยา ฟิสิกส์ เคมี และดาราศาสตร์ ขอบเขตเนื้อหาชั้นมัธยมศึกษาตอนต้น
   - title: โครงงานวิทยาศาสตร์เบื้องต้น
     group: ''
     startDate: 2024-09-30
@@ -90,7 +83,9 @@ courses:
     schedule: ''
     teachers:
       - 20261023-155802
-    description: รายวิชาโครงงานวิทยาศาสตร์เบื้องต้น เน้นการจัดการเรียนรู้แบบ Project base learning เน้นการลงมือทำอย่างจริง พร้อมกับการนำเสนอหน้าชั้นเรียน
+    applyUrl: ''
+    closed: false
+    ended: true
     documents:
       - title: เอกสารประกอบการเรียน หน่วย 1 ทำงานแบบนักวิทยาศาสตร์
         file: /uploads/หน่วย 1 ทำงานแบบนักวิทยาศาสตร์.pdf
@@ -101,13 +96,21 @@ courses:
       - title: เอกสารประกอบการเรียน หน่วย 3 โครงงานกับความแตกต่าง
         file: /uploads/หน่วย 3 โครงงานกับความแตกต่าง.pdf
         note: ''
-    applyUrl: ''
-    closed: false
-    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/18i2ikFwoZcNYIYTWhJzRLSPHqXOOH2AaJx9wR8nEwnQ/edit?usp=sharing
+    description: รายวิชาโครงงานวิทยาศาสตร์เบื้องต้น เน้นการจัดการเรียนรู้แบบ Project base learning เน้นการลงมือทำอย่างจริง พร้อมกับการนำเสนอหน้าชั้นเรียน
+teacherCourses: true
 sections: []
+links: []
+embeds: []
+newsCategory: ข่าวการศึกษา
+showContact: false
+showExecutives: false
+description: ''
+legacy: false
+bodyAlign: left
+bodySize: normal
 ---
 
 กลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี ตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พุทธศักราช 2551 (ฉบับปรับปรุง พ.ศ. 2560) แบ่งออกเป็นสาระการเรียนรู้พื้นฐาน 4 สาระ และสาระการเรียนรู้เพิ่มเติม 4 สาขา ดังนี้
