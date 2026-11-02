@@ -1,15 +1,19 @@
 ---
 title: กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ
 slug: foreign
-description: ''
-legacy: false
+teachers: []
+courses: []
+teacherCourses: true
+sections: []
+links: []
+embeds: []
+newsCategory: ข่าวการศึกษา
 showContact: false
 showExecutives: false
-newsCategory: ข่าวการศึกษา
-teachers: []
-links: []
-courses: []
-sections: []
+description: ''
+legacy: false
+bodyAlign: left
+bodySize: normal
 ---
 
 กลุ่มสาระการเรียนรู้ภาษาต่างประเทศ ตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พุทธศักราช 2551 มุ่งพัฒนาทักษะการใช้ภาษาต่างประเทศเพื่อการสื่อสาร การแสวงหาความรู้ การศึกษาต่อ และการประกอบอาชีพ รวมถึงการเรียนรู้วัฒนธรรมและสร้างความเข้าใจระหว่างประเทศ โดยแบ่งออกเป็นสาระการเรียนรู้ 4 สาระ ดังนี้
