@@ -45,6 +45,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
     const status = (c: any) => (c.ended ? 'ended' : c.closed ? 'closed' : c.applyUrl ? 'open' : null);
     const chip = (s: string | null) => (s ? h('span', { className: `badge badge-${s}`, textContent: s === 'ended' ? L.tcStatEnded : s === 'closed' ? L.tcStatClosed : L.tcStatOpen }) : null);
     const subjectTitle = (slug: string) => S.subjects.find((x: any) => x.slug === slug)?.title || slug;
+    const allowedSubjects = () => S.subjects.filter((s: any) => S.user.all || S.site.courses.some((c: any) => c.page === s.slug && c.teachers.includes(S.user.teacher)));
     const managed = () => S.site.courses.filter((c: any) => S.owned.includes(c.key));
 
     // ───── ส่วนประกอบฟอร์ม ─────
@@ -85,9 +86,10 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
 
     // ───── แก้ไขคอร์สที่ครูสร้าง (เต็มรูปแบบ) ─────
     const editCourse = (id: string | null, data: any) => {
-      const d = { subject: S.subjects[0]?.slug || '', title: '', group: '', startDate: '', endDate: '', schedule: '', teachers: [S.user.teacher].filter(Boolean), description: '', applyUrl: '', closed: false, ended: false, documents: [], links: [], ...(data || {}) };
+      const availableSubjects = allowedSubjects();
+      const d = { subject: availableSubjects[0]?.slug || '', title: '', group: '', startDate: '', endDate: '', schedule: '', teachers: [S.user.teacher].filter(Boolean), description: '', applyUrl: '', closed: false, ended: false, documents: [], links: [], ...(data || {}) };
       d.documents = [...(d.documents || [])]; d.links = (d.links || []).map((l: any) => ({ ...l })); d.teachers = [...(d.teachers || [])];
-      const subj = h('select', { onchange: (e: Event) => (d.subject = (e.target as HTMLSelectElement).value) }, ...S.subjects.map((s: any) => h('option', { value: s.slug, textContent: s.title, selected: s.slug === d.subject })));
+      const subj = h('select', { onchange: (e: Event) => (d.subject = (e.target as HTMLSelectElement).value) }, ...availableSubjects.map((s: any) => h('option', { value: s.slug, textContent: s.title, selected: s.slug === d.subject })));
       const tchecks = h('div', { className: 'checks' }, ...S.teachers.map((t: any) => check(t.name, d.teachers.includes(t.id), (b) => { d.teachers = b ? [...d.teachers, t.id] : d.teachers.filter((x: string) => x !== t.id); })));
       replace(main, h('div', { className: 'tc-form' },
         h('button', { type: 'button', className: 'btn btn-outline', textContent: L.tcBack, onclick: () => render() }),
@@ -147,7 +149,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
       const mine = S.myCourses, man = managed();
       const colors = ['--c-green', '--c-blue', '--c-red'];
       replace(main, 
-        h('p', {}, h('button', { type: 'button', className: 'btn', textContent: L.tcAddCourse, onclick: () => (S.subjects.length ? editCourse(null, null) : say(L.tcNoSubjects)) })),
+        h('p', {}, h('button', { type: 'button', className: 'btn', textContent: L.tcAddCourse, onclick: () => (allowedSubjects().length ? editCourse(null, null) : say(L.tcNoSubjects)) })),
         mine.length ? [h('h3', { className: 'tc-section-title' }, L.tcMyCourses), h('div', { className: 'tc-grid' }, ...mine.map((m: any, i: number) => card(m.data.title, subjectTitle(m.data.subject), m.data, () => editCourse(m.id, m.data), colors[i % 3])))] : null,
         man.length ? [h('h3', { className: 'tc-section-title' }, L.tcManaged), h('div', { className: 'tc-grid' }, ...man.map((c: any, i: number) => card(c.title, c.pageTitle, { ...c, ...(S.updates[c.key] || {}), base: { ...c.base, ...(S.updates[c.key] || {}) } }, () => editManaged(c), colors[i % 3])))] : null,
         !mine.length && !man.length ? h('p', { className: 'empty' }, L.tcNoCourses) : null);

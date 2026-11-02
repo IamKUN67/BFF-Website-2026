@@ -97,6 +97,7 @@ function clean(u, user) { // คอร์สที่ผู้ดูแลสร
 function cleanCourse(c, user, owner, site) {
   const subject = site.subjects.find((s) => s.slug === c.subject);
   if (!subject) throw fail(400, 'subject');
+  if (!user.all && !site.courses.some((course) => course.page === subject.slug && course.teachers.includes(user.teacher))) throw fail(403, 'subject');
   const title = str(c.title, 150);
   if (!title) throw fail(400, 'title');
   const ids = new Set(site.teachers.map((t) => t.id));
