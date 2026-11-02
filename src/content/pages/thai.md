@@ -1,15 +1,19 @@
 ---
 title: กลุ่มสาระการเรียนรู้ภาษาไทย
 slug: thai
-description: ''
-legacy: false
+teachers: []
+courses: []
+teacherCourses: true
+sections: []
+links: []
+embeds: []
+newsCategory: ข่าวการศึกษา
 showContact: false
 showExecutives: false
-newsCategory: ข่าวการศึกษา
-teachers: []
-links: []
-courses: []
-sections: []
+description: ''
+legacy: false
+bodyAlign: left
+bodySize: normal
 ---
 
 กลุ่มสาระการเรียนรู้ภาษาไทย ตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พุทธศักราช 2551 มุ่งพัฒนาทักษะการใช้ภาษาไทยในการสื่อสาร การคิดวิเคราะห์ การแสวงหาความรู้ และการใช้ภาษาอย่างถูกต้องเหมาะสม โดยแบ่งออกเป็นสาระการเรียนรู้ 5 สาระ ดังนี้
