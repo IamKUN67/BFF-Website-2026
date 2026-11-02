@@ -29,6 +29,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
     const leave = () => { sessionStorage.removeItem('bffTeacher'); location.replace(root.dataset.login!); };
     const ALLOWED = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'rar', '7z', 'txt', 'csv', 'png', 'jpg', 'jpeg', 'webp', 'gif'];
     const h = (tag: string, props: Record<string, any> = {}, ...kids: any[]) => { const el = document.createElement(tag); Object.assign(el, props); el.append(...kids.flat().filter((k) => k != null && k !== false)); return el; };
+    const replace = (el: HTMLElement, ...kids: any[]) => el.replaceChildren(...kids.flat(Infinity).filter((k) => k != null && k !== false));
     const say = (t: string) => (flash.textContent = t);
     let S: any = null;
     let tab = 'courses';
@@ -59,7 +60,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
     };
     const docsEditor = (d: any) => {
       const ul = h('ul', { className: 'tc-docs' });
-      const draw = () => ul.replaceChildren(...d.documents.map((x: any, i: number) => h('li', {},
+      const draw = () => replace(ul, ...d.documents.map((x: any, i: number) => h('li', {},
         input(x.title, (s) => (x.title = s), 'text', { ariaLabel: L.tcDocTitle }), input(x.note || '', (s) => (x.note = s), 'text', { placeholder: L.tcDocNote, ariaLabel: L.tcDocNote }),
         h('small', {}, (x.file || '').split('/').pop()), h('button', { type: 'button', className: 'btn btn-outline', textContent: L.tcRemove, onclick: () => { d.documents.splice(i, 1); draw(); } }))));
       draw();
@@ -74,7 +75,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
     };
     const linksEditor = (d: any) => {
       const box = h('div', {});
-      const draw = () => box.replaceChildren(...d.links.map((l: any, i: number) => h('div', { className: 'tc-link-row' },
+      const draw = () => replace(box, ...d.links.map((l: any, i: number) => h('div', { className: 'tc-link-row' },
         input(l.label, (s) => (l.label = s), 'text', { placeholder: L.tcLinkLabel, ariaLabel: L.tcLinkLabel }), input(l.url, (s) => (l.url = s), 'url', { placeholder: L.tcLinkUrl, ariaLabel: L.tcLinkUrl }),
         h('button', { type: 'button', className: 'btn btn-outline', textContent: L.tcRemove, onclick: () => { d.links.splice(i, 1); draw(); } }))));
       draw();
@@ -88,7 +89,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
       d.documents = [...(d.documents || [])]; d.links = (d.links || []).map((l: any) => ({ ...l })); d.teachers = [...(d.teachers || [])];
       const subj = h('select', { onchange: (e: Event) => (d.subject = (e.target as HTMLSelectElement).value) }, ...S.subjects.map((s: any) => h('option', { value: s.slug, textContent: s.title, selected: s.slug === d.subject })));
       const tchecks = h('div', { className: 'checks' }, ...S.teachers.map((t: any) => check(t.name, d.teachers.includes(t.id), (b) => { d.teachers = b ? [...d.teachers, t.id] : d.teachers.filter((x: string) => x !== t.id); })));
-      main.replaceChildren(h('div', { className: 'tc-form' },
+      replace(main, h('div', { className: 'tc-form' },
         h('button', { type: 'button', className: 'btn btn-outline', textContent: L.tcBack, onclick: () => render() }),
         field(L.tcSubject, subj), field(L.tcCourseTitle, input(d.title, (s) => (d.title = s))), field(L.tcGroup, input(d.group, (s) => (d.group = s))),
         h('div', { className: 'two' }, field(L.tcStart, input(d.startDate, (s) => (d.startDate = s), 'date')), field(L.tcEnd, input(d.endDate, (s) => (d.endDate = s), 'date'))),
@@ -108,7 +109,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
     const editManaged = (c: any) => {
       const u = S.updates[c.key] || {};
       const d: any = { applyUrl: u.applyUrl ?? c.base.applyUrl ?? '', closed: u.closed ?? c.base.closed, ended: u.ended ?? c.base.ended, documents: [...(u.documents || [])] };
-      main.replaceChildren(h('div', { className: 'tc-form' },
+      replace(main, h('div', { className: 'tc-form' },
         h('button', { type: 'button', className: 'btn btn-outline', textContent: L.tcBack, onclick: () => render() }),
         h('h3', {}, c.title), h('p', { className: 'muted' }, c.pageTitle),
         field(L.tcApplyUrl, input(d.applyUrl, (s) => (d.applyUrl = s), 'url', { placeholder: 'https://' })),
@@ -122,7 +123,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
 
     // ───── โปรไฟล์ ─────
     const renderProfile = () => {
-      if (!S.profile) return main.replaceChildren(h('p', { className: 'empty' }, L.tcNoProfile));
+      if (!S.profile) return replace(main, h('p', { className: 'empty' }, L.tcNoProfile));
       const d: any = { name: '', position: '', email: '', phone: '', instagram: '', facebook: '', youtube: '', ...S.profile, photo: { ...(S.profile.photo || {}) } };
       const file = h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp,image/gif' }) as HTMLInputElement;
       file.addEventListener('change', async () => {
@@ -130,7 +131,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
         say(L.tcUploading);
         try { d.photo = { src: await upload(f, true), alt: d.name }; say(f.name); } catch (e: any) { say(e.message === 'error' ? L.tcError : e.message); }
       });
-      main.replaceChildren(h('div', { className: 'tc-form' },
+      replace(main, h('div', { className: 'tc-form' },
         field(L.tcName, input(d.name, (s) => (d.name = s))), field(L.tcPosition, input(d.position, (s) => (d.position = s))), field(L.tcPhoto, file),
         h('div', { className: 'two' }, field(L.tcEmail, input(d.email, (s) => (d.email = s), 'email')), field(L.tcPhone, input(d.phone, (s) => (d.phone = s), 'tel'))),
         field(L.tcInstagram, input(d.instagram, (s) => (d.instagram = s), 'url')), field(L.tcFacebook, input(d.facebook, (s) => (d.facebook = s), 'url')), field(L.tcYoutube, input(d.youtube, (s) => (d.youtube = s), 'url')),
@@ -145,7 +146,7 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
     const renderCourses = () => {
       const mine = S.myCourses, man = managed();
       const colors = ['--c-green', '--c-blue', '--c-red'];
-      main.replaceChildren(
+      replace(main, 
         h('p', {}, h('button', { type: 'button', className: 'btn', textContent: L.tcAddCourse, onclick: () => (S.subjects.length ? editCourse(null, null) : say(L.tcNoSubjects)) })),
         mine.length ? [h('h3', { className: 'tc-section-title' }, L.tcMyCourses), h('div', { className: 'tc-grid' }, ...mine.map((m: any, i: number) => card(m.data.title, subjectTitle(m.data.subject), m.data, () => editCourse(m.id, m.data), colors[i % 3])))] : null,
         man.length ? [h('h3', { className: 'tc-section-title' }, L.tcManaged), h('div', { className: 'tc-grid' }, ...man.map((c: any, i: number) => card(c.title, c.pageTitle, { ...c, ...(S.updates[c.key] || {}), base: { ...c.base, ...(S.updates[c.key] || {}) } }, () => editManaged(c), colors[i % 3])))] : null,
@@ -155,16 +156,16 @@ const L = Object.fromEntries(Object.entries(labels).filter(([k]) => k.startsWith
     const render = () => {
       const photo = S.profile?.photo?.src;
       const role = S.user.owner ? L.tcRoleOwner : S.user.all ? L.tcRoleAdmin : L.tcRoleTeacher;
-      hero.replaceChildren(
+      replace(hero, 
         h('span', { className: 'tc-avatar' }, photo ? h('img', { src: base + photo.replace(/^\//, ''), alt: '' }) : (S.user.name || '?').charAt(0)),
         h('div', { className: 'tc-who' }, h('strong', {}, `${L.tcHello} ${S.user.name}`), h('span', { className: 'tc-role' }, role)),
         S.user.owner ? h('a', { className: 'btn btn-outline', href: root.dataset.accounts!, textContent: L.tcManageAccounts }) : null,
         h('button', { type: 'button', className: 'btn btn-outline', textContent: L.tcLogout, onclick: leave }));
-      if (S.user.owner) { stats.replaceChildren(); tabs.replaceChildren(); return main.replaceChildren(h('p', { className: 'empty' }, L.tcOwnerNote)); }
+      if (S.user.owner) { replace(stats, ); replace(tabs, ); return replace(main, h('p', { className: 'empty' }, L.tcOwnerNote)); }
       const all = [...S.myCourses.map((m: any) => m.data), ...managed().map((c: any) => ({ ...c.base, ...(S.updates[c.key] || {}) }))];
       const num = (n: number, t: string) => h('div', { className: 'tc-stat' }, h('b', {}, String(n)), t);
-      stats.replaceChildren(num(all.length, L.tcStatCourses), num(all.filter((c) => status(c) === 'open').length, L.tcStatOpenCount), num(all.reduce((n, c) => n + (c.documents || []).length, 0), L.tcStatDocs));
-      tabs.replaceChildren(...[['courses', L.tcTabCourses], ['profile', L.tcTabProfile]].map(([k, t]) => h('button', { type: 'button', className: 'tab', textContent: t, ariaPressed: String(tab === k), onclick: () => { tab = k; render(); } })));
+      replace(stats, num(all.length, L.tcStatCourses), num(all.filter((c) => status(c) === 'open').length, L.tcStatOpenCount), num(all.reduce((n, c) => n + (c.documents || []).length, 0), L.tcStatDocs));
+      replace(tabs, ...[['courses', L.tcTabCourses], ['profile', L.tcTabProfile]].map(([k, t]) => h('button', { type: 'button', className: 'tab', textContent: t, ariaPressed: String(tab === k), onclick: () => { tab = k; render(); } })));
       tab === 'profile' ? renderProfile() : renderCourses();
     };
 
