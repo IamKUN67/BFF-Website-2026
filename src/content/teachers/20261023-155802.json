@@ -1,7 +1,10 @@
 {
   "name": "นายกมนดนัย ขยันวงษ์",
   "position": "หัวหน้ากลุ่มสาระการเรียนรู้วิทยาศาสตร์และเทคโนโลยี",
-  "photo": null,
+  "photo": {
+    "src": "/uploads/logo.webp",
+    "alt": ""
+  },
   "instagram": "",
   "facebook": "",
   "youtube": "",
