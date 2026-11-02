@@ -1,6 +1,7 @@
 // ดัชนีค้นหาทั้งเว็บ (สร้างตอน build) — ค้นด้วยการหาข้อความในตัวอักษร จึงใช้ได้ดีกับภาษาไทยที่ไม่มีช่องว่างคั่นคำ
 import { getCollection } from 'astro:content';
 import { getPublishedPosts, labels, url, plain } from '../lib/site';
+import { teacherCoursesFor } from '../lib/overlay';
 
 const j = (...parts: unknown[]) => plain(parts.filter(Boolean).join(' '), 6000).replace(/[\u200b\u00ad]/g, '');
 const secText = (sections: any[]) =>
@@ -22,7 +23,7 @@ export async function GET() {
     const d = p.data;
     const u = pageUrl(p);
     items.push({ t: d.title, type: labels.searchTypePage, u, x: j(d.description, p.body, secText(d.sections)) });
-    for (const c of d.courses) {
+    for (const c of [...d.courses, ...teacherCoursesFor(p.data.slug ?? p.id)] as any[]) {
       items.push({ t: c.title, type: labels.searchTypeCourse, u, x: j(d.title, c.group, c.schedule, c.description, ...c.teachers.map((id) => teachers.get(id)?.data.name), ...c.documents.map((x) => x.title)) });
     }
     for (const id of d.teachers) {

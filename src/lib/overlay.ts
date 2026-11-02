@@ -23,3 +23,18 @@ export function mergeCourse(c: any, o: any) {
     documents: [...(c.documents ?? []), ...(o.documents ?? [])],
   };
 }
+
+// คอร์สที่ครูสร้างเองผ่านหน้าพื้นที่ครู (ไฟล์ใน src/content/teacher-courses/*.json) — นำไปต่อท้ายคอร์สของหน้าวิชานั้น
+const tc = import.meta.glob('../content/teacher-courses/*.json', { eager: true, import: 'default' }) as Record<string, any>;
+const toDate = (s: any) => { const x = s ? new Date(s) : null; return x && !Number.isNaN(x.getTime()) ? x : null; };
+export function teacherCoursesFor(slug: string) {
+  return Object.entries(tc)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, c]) => c)
+    .filter((c) => c?.subject === slug && c.title)
+    .map((c) => ({
+      title: String(c.title), group: c.group || null, startDate: toDate(c.startDate), endDate: toDate(c.endDate), schedule: c.schedule || null,
+      teachers: Array.isArray(c.teachers) ? c.teachers : [], description: c.description || null, applyUrl: c.applyUrl || null, closed: !!c.closed, ended: !!c.ended,
+      documents: Array.isArray(c.documents) ? c.documents : [], links: Array.isArray(c.links) ? c.links : [],
+    }));
+}

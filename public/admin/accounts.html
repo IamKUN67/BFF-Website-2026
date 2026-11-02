@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>จัดการบัญชีครู | BFF</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:'Prompt',system-ui,sans-serif;line-height:1.7;background:#f3f7fb;color:#1f2933}
+header{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;justify-content:space-between;padding:1rem 1.4rem;background:#1a73c4;color:#fff}header a,header button{color:#fff}
+main{max-width:920px;margin:1.5rem auto;padding:0 1rem}.card{background:#fff;border-radius:16px;padding:1.4rem;margin-bottom:1.2rem;box-shadow:0 6px 24px rgba(26,60,100,.1)}
+label{display:block;margin:.7rem 0 .2rem;font-weight:600}input,select{width:100%;padding:.65rem .9rem;font:inherit;border:2px solid #d5dde6;border-radius:10px}input:focus,select:focus{border-color:#1a73c4;outline:none}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}.pw{display:flex;gap:.5rem}.pw button{white-space:nowrap}
+button{padding:.6rem 1.2rem;font:inherit;font-weight:600;border:0;border-radius:999px;background:#1a73c4;color:#fff;cursor:pointer}button.o{background:transparent;border:2px solid #1a73c4;color:#1a73c4}header button{background:transparent;border:2px solid #fff}button.d{background:transparent;border:2px solid #c0392b;color:#c0392b}
+table{width:100%;border-collapse:collapse}th,td{padding:.6rem .5rem;text-align:left;border-bottom:1px solid #e5ebf1}td:last-child{white-space:nowrap}.msg{min-height:1.6rem;font-weight:600;color:#1a73c4}.err{color:#c0392b}small{color:#667}
+</style></head>
+<body>
+<header><strong>จัดการบัญชีครู</strong><span><a href="./">← กลับหน้า CMS</a> &nbsp; <button id="out" hidden>ออกจากระบบ</button></span></header>
+<main>
+<p class="msg" id="msg"></p>
+<section class="card" id="login" hidden><h2>เข้าสู่ระบบเจ้าของเว็บไซต์</h2>
+<label>ชื่อผู้ใช้เจ้าของ<input id="lu" autocomplete="username"></label><label>รหัสผ่านเจ้าของ<input id="lp" type="password" autocomplete="current-password"></label>
+<p><button id="lgo">เข้าสู่ระบบ</button></p><small>ชื่อผู้ใช้และรหัสผ่านนี้คือค่า OWNER_USERNAME / OWNER_PASSWORD ที่ตั้งไว้ใน Cloudflare</small></section>
+<div id="app" hidden>
+<section class="card"><h2>บัญชีทั้งหมด</h2><table><thead><tr><th>ชื่อผู้ใช้</th><th>ชื่อที่แสดง</th><th>ครูในระบบเว็บ</th><th>บทบาท</th><th></th></tr></thead><tbody id="rows"></tbody></table></section>
+<section class="card"><h2 id="ft">เพิ่มบัญชีใหม่</h2>
+<div class="row"><div><label>ชื่อผู้ใช้ (a-z 0-9 _ - ยาว 2–32)<input id="u" autocomplete="off"></label></div><div><label>ชื่อที่แสดง (เช่น ครูสมชาย)<input id="n"></label></div></div>
+<div class="row"><div><label>ผูกกับรายชื่อครู<select id="t"><option value="">— ไม่ผูก —</option></select></label></div>
+<div><label>บทบาท<select id="r"><option value="teacher">ครู (แก้ได้เฉพาะคอร์สของตัวเอง)</option><option value="admin">ผู้ดูแลคอร์ส (แก้ได้ทุกคอร์ส)</option></select></label></div></div>
+<label>รหัสผ่าน <small id="ph">(อย่างน้อย 8 ตัว)</small></label><div class="pw"><input id="p" autocomplete="off"><button class="o" id="rnd" type="button">สุ่มรหัส</button></div>
+<p><button id="save">บันทึกบัญชี</button> <button class="o" id="clear" type="button">ล้างฟอร์ม</button></p>
+<small>ครูลืมรหัส: กด “แก้ไข” ที่บัญชีนั้น ใส่รหัสใหม่ แล้วบันทึก (รหัสเดิมดูไม่ได้ เพราะระบบเก็บแบบเข้ารหัส) ถ้าไม่ใส่รหัส = เปลี่ยนเฉพาะข้อมูลอื่น</small></section>
+</div></main>
+<script>
+const $=id=>document.getElementById(id),KEY='bffTeacher';let api='',teachers=[],accts=[],sess=JSON.parse(sessionStorage.getItem(KEY)||'null');
+const say=(t,e)=>{$('msg').textContent=t||'';$('msg').className='msg'+(e?' err':'')};
+async function call(p,body){const r=await fetch(api+p,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+sess.token,...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined});
+ if(r.status===401){sessionStorage.removeItem(KEY);sess=null;show();throw new Error('auth')}const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'error');return j}
+function show(){const on=sess&&sess.owner&&sess.exp>Date.now();$('login').hidden=on;$('app').hidden=!on;$('out').hidden=!on;if(on)load()}
+async function load(){try{accts=(await call('/owner/accounts')).accounts;draw()}catch(e){if(e.message!=='auth')say('โหลดข้อมูลไม่สำเร็จ',1)}}
+function draw(){const tn=id=>(teachers.find(t=>t.id===id)||{}).name||'—';$('rows').replaceChildren(...accts.sort((a,b)=>a.username.localeCompare(b.username)).map(a=>{const tr=document.createElement('tr');
+ tr.innerHTML='<td></td><td></td><td></td><td></td><td></td>';const c=tr.children;c[0].textContent=a.username;c[1].textContent=a.name;c[2].textContent=tn(a.teacher);c[3].textContent=a.role==='admin'?'ผู้ดูแลคอร์ส':'ครู';
+ const e=document.createElement('button');e.className='o';e.textContent='แก้ไข';e.onclick=()=>edit(a);const d=document.createElement('button');d.className='d';d.textContent='ลบ';d.onclick=()=>del(a);c[4].append(e,' ',d);return tr}))}
+function edit(a){$('u').value=a.username;$('u').readOnly=true;$('n').value=a.name;$('t').value=a.teacher||'';$('r').value=a.role||'teacher';$('p').value='';$('ft').textContent='แก้ไขบัญชี: '+a.username;$('ph').textContent='(เว้นว่าง = ไม่เปลี่ยนรหัสผ่าน)';scrollTo(0,document.body.scrollHeight)}
+function clear(){['u','n','p'].forEach(i=>$(i).value='');$('u').readOnly=false;$('t').value='';$('r').value='teacher';$('ft').textContent='เพิ่มบัญชีใหม่';$('ph').textContent='(อย่างน้อย 8 ตัว)'}
+async function del(a){if(!confirm('ลบบัญชี '+a.username+' ? ครูคนนี้จะเข้าสู่ระบบไม่ได้ทันที'))return;try{await call('/owner/accounts/delete',{username:a.username});say('ลบแล้ว');load()}catch(e){say('ลบไม่สำเร็จ',1)}}
+$('rnd').onclick=()=>{const c='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';$('p').value=[...crypto.getRandomValues(new Uint8Array(12))].map(x=>c[x%c.length]).join('')};
+$('clear').onclick=clear;
+$('save').onclick=async()=>{try{await call('/owner/accounts/save',{username:$('u').value,name:$('n').value,teacher:$('t').value,role:$('r').value,password:$('p').value});say('บันทึกแล้ว'+($('p').value?' — จดรหัสผ่านนี้ส่งให้ครู: '+$('p').value:''));clear();load()}catch(e){say({username:'ชื่อผู้ใช้ไม่ถูกต้องหรือซ้ำกับเจ้าของ',password:'ต้องใส่รหัสผ่านอย่างน้อย 8 ตัว'}[e.message]||'บันทึกไม่สำเร็จ',1)}};
+$('lgo').onclick=async()=>{try{const r=await fetch(api+'/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:$('lu').value,password:$('lp').value})});const j=await r.json();if(!r.ok||!j.owner)throw 0;sess={...j,api};sessionStorage.setItem(KEY,JSON.stringify(sess));say('');show()}catch{say('ชื่อผู้ใช้หรือรหัสผ่านเจ้าของไม่ถูกต้อง',1)}};
+$('out').onclick=()=>{sessionStorage.removeItem(KEY);sess=null;show()};
+fetch('../data/teacher-api.json').then(r=>r.json()).then(j=>{api=(j.api||'').replace(/\/$/,'');teachers=j.teachers;teachers.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.name;$('t').append(o)});
+ if(!api)return say('ยังไม่ได้ตั้งที่อยู่ระบบครู: ไปที่ CMS > ตั้งค่าเว็บไซต์ > ตั้งค่าทั่วไป แล้วใส่ที่อยู่ Worker',1);if(sess)sess.api=api;show()}).catch(()=>say('โหลดข้อมูลเว็บไม่สำเร็จ',1));
+</script></body></html>

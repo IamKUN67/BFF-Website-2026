@@ -11,6 +11,7 @@ import Sections from '../../components/Sections.astro';
 import Embeds from '../../components/Embeds.astro';
 import Icon from '../../components/Icon.astro';
 import { getSite, getPublishedPosts, labels, url } from '../../lib/site';
+import { teacherCoursesFor } from '../../lib/overlay';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
@@ -21,6 +22,7 @@ const d = page.data;
 const { Content } = await render(page);
 const site = await getSite();
 const hasBody = !!page.body?.trim();
+const allCourses = [...d.courses, ...teacherCoursesFor(d.slug ?? page.id)]; // คอร์สของผู้ดูแล + คอร์สที่ครูสร้างเอง
 const pick = (v: any, ok: string[], x: string) => (ok.includes(v) ? v : x);
 const bodyAlign = pick(d.bodyAlign, ['left', 'center', 'right', 'justify'], 'left');
 const bodySize = pick(d.bodySize, ['normal', 'large', 'xlarge'], 'normal');
@@ -54,7 +56,7 @@ const hasMain = d.showContact || d.links.length > 0 || d.embeds.length > 0 || ha
     </div>
   </article>
   {d.teachers.length > 0 && <section class="section alt"><div class="container"><Teachers ids={d.teachers} /></div></section>}
-  {d.courses.length > 0 && <section class="section"><div class="container"><Courses courses={d.courses} pageSlug={d.slug ?? page.id} /></div></section>}
+  {allCourses.length > 0 && <section class="section"><div class="container"><Courses courses={allCourses} pageSlug={d.slug ?? page.id} /></div></section>}
   {news.length > 0 && (
     <section class="section">
       <div class="container">

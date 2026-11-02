@@ -5,10 +5,16 @@ import Base from '../layouts/Base.astro';
 import DocList from '../components/DocList.astro';
 import { labels, url } from '../lib/site';
 import { fileInfo } from '../lib/files';
+import { overlay, courseKeys, mergeCourse, teacherCoursesFor } from '../lib/overlay';
 
 const pages = (await getCollection('pages')).sort((a, b) => a.data.title.localeCompare(b.data.title, 'th'));
 const groups = pages
-  .map((p) => ({ page: p, courses: p.data.courses.filter((c) => c.documents.length > 0) }))
+  .map((p) => {
+    const slug = p.data.slug ?? p.id;
+    const keys = courseKeys(slug, p.data.courses);
+    const list = [...p.data.courses.map((c, i) => mergeCourse(c, overlay[keys[i]])), ...teacherCoursesFor(slug)];
+    return { page: p, courses: list.filter((c: any) => c.documents.length > 0) };
+  })
   .filter((g) => g.courses.length > 0);
 const docs = (c: any) => c.documents.map((d: any) => ({ title: d.title, note: d.note, href: url(d.file), ...fileInfo(d.file) }));
 ---

@@ -18,7 +18,7 @@ const api = /^https:\/\//.test(site.teacherApiUrl ?? '') ? site.teacherApiUrl! :
       <h1>{labels.loginTitle}</h1>
       <p class="login-intro">{labels.loginIntro}</p>
       {api ? (
-        <form class="login-form" data-login-form data-api={api} data-next={url('/teacher/')}>
+        <form class="login-form" data-login-form data-api={api} data-next={url('/teacher/')} data-owner={url('/admin/accounts.html')}>
           <label><span>{labels.loginUser}</span><input name="u" autocomplete="username" autocapitalize="none" required /></label>
           <label><span>{labels.loginPass}</span><input name="p" type="password" autocomplete="current-password" required /></label>
           <p class="login-error" data-error role="alert" hidden></p>
@@ -53,7 +53,7 @@ const api = /^https:\/\//.test(site.teacherApiUrl ?? '') ? site.teacherApiUrl! :
         const j = await r.json().catch(() => ({}));
         if (!r.ok) { err.textContent = r.status === 401 ? btn.dataset.fail! : btn.dataset.net!; err.hidden = false; return; }
         sessionStorage.setItem('bffTeacher', JSON.stringify({ ...j, api }));
-        location.href = form.dataset.next!;
+        location.href = j.owner ? form.dataset.owner! : form.dataset.next!;
       } catch {
         err.textContent = btn.dataset.net!;
         err.hidden = false;

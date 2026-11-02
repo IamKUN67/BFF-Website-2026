@@ -677,3 +677,33 @@ a.icon-btn { display: inline-grid; place-items: center; text-decoration: none; c
 .tc-docs li { display: grid; gap: .4rem; padding: .8rem; border: 1px solid var(--border); border-radius: 12px; }
 .tc-docs small { color: var(--muted); overflow-wrap: anywhere; }
 .tc-msg { min-height: 1.5rem; margin: 0; color: var(--link); font-weight: 600; }
+
+/* ───── พื้นที่ครูผู้สอน ───── */
+.tc-hero { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; margin-bottom: 1.5rem; padding: 1.3rem 1.6rem; border-radius: var(--radius); color: #fff; background: linear-gradient(120deg, #1a73c4, #0b9b6b 60%, #f6a935); box-shadow: var(--shadow); }
+.tc-avatar { flex: none; display: grid; place-items: center; width: 4.4rem; height: 4.4rem; overflow: hidden; border-radius: 50%; border: 4px solid rgba(255, 255, 255, .8); background: rgba(255, 255, 255, .25); font-size: 1.8rem; font-weight: 700; }
+.tc-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.tc-who { flex: 1; min-width: 12rem; }
+.tc-who strong { display: block; font-size: 1.35rem; }
+.tc-role { display: inline-block; margin-top: .2rem; padding: .05rem .8rem; border-radius: 999px; background: rgba(255, 255, 255, .25); font-size: .9rem; }
+.tc-hero .btn-outline { color: #fff; border-color: #fff; }
+.tc-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.tc-stat { padding: 1rem 1.2rem; text-align: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.tc-stat b { display: block; font-size: 2rem; line-height: 1.2; color: var(--link); }
+.tc-tabs { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-bottom: 1.2rem; }
+.tc-flash { min-height: 1.6rem; margin: 0 0 1rem; color: var(--link); font-weight: 600; }
+.tc-section-title { margin: 1.6rem 0 .8rem; font-size: 1.15rem; }
+.tc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 1.2rem; }
+.tc-card { display: grid; gap: .5rem; align-content: start; padding: 1.2rem 1.3rem; background: var(--surface); border: 1px solid var(--border); border-top: 6px solid var(--c-blue); border-radius: var(--radius); box-shadow: var(--shadow); }
+.tc-card h3 { margin: 0; font-size: 1.15rem; }
+.tc-card .muted { font-size: .92rem; }
+.tc-card .btn { justify-self: start; margin-top: .4rem; padding: .45rem 1.3rem; }
+.tc-form { display: grid; gap: 1rem; max-width: 780px; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.tc-form label > span { display: block; margin-bottom: .25rem; font-weight: 600; }
+.tc-form input:not([type="checkbox"]):not([type="file"]), .tc-form select, .tc-form textarea { width: 100%; padding: .7rem 1rem; border: 2px solid var(--border); border-radius: 12px; background: #fff; color: var(--text); font: inherit; }
+.tc-form input:focus, .tc-form select:focus, .tc-form textarea:focus { border-color: var(--primary); outline: none; }
+.tc-form .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.tc-form .checks { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
+.tc-link-row { display: grid; grid-template-columns: 1fr 1.6fr auto; gap: .5rem; margin-bottom: .5rem; }
+.tc-actions { display: flex; flex-wrap: wrap; gap: .7rem; align-items: center; }
+.tc-actions .danger { margin-left: auto; color: #9b1c1c; border-color: #e0a0a0; }
+@media (max-width: 560px) { .tc-link-row { grid-template-columns: 1fr; } }

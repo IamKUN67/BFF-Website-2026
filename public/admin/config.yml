@@ -509,6 +509,10 @@ collections:
       widget: markdown
       required: false
     collapsed: true
+  - name: teacherCourses
+    label: เปิดให้ครูเพิ่มคอร์สของตัวเองในหน้านี้ (ใช้กับหน้าวิชา)
+    widget: boolean
+    default: false
   - name: body
     label: ข้อความนำ (ไม่บังคับ)
     widget: markdown
@@ -1878,5 +1882,137 @@ collections:
       widget: string
     - name: tcView
       label: ลิงก์ดูหน้าวิชา
+      widget: string
+    - name: tcTabCourses
+      label: แท็บคอร์ส
+      widget: string
+    - name: tcTabProfile
+      label: แท็บโปรไฟล์
+      widget: string
+    - name: tcAddCourse
+      label: ปุ่มเพิ่มคอร์ส
+      widget: string
+    - name: tcEdit
+      label: ปุ่มแก้ไข
+      widget: string
+    - name: tcDeleteCourse
+      label: ปุ่มลบคอร์ส
+      widget: string
+    - name: tcConfirmDelete
+      label: ข้อความยืนยันลบ
+      widget: string
+    - name: tcBack
+      label: ปุ่มกลับ
+      widget: string
+    - name: tcCancel
+      label: ปุ่มยกเลิก
+      widget: string
+    - name: tcMyCourses
+      label: หัวข้อกลุ่มคอร์สของครู
+      widget: string
+    - name: tcManaged
+      label: หัวข้อกลุ่มคอร์สของผู้ดูแล
+      widget: string
+    - name: tcSubject
+      label: ช่องวิชา
+      widget: string
+    - name: tcPickSubject
+      label: ตัวเลือกวิชา
+      widget: string
+    - name: tcNoSubjects
+      label: ข้อความเมื่อไม่มีวิชา
+      widget: string
+    - name: tcCourseTitle
+      label: ช่องชื่อคอร์ส
+      widget: string
+    - name: tcGroup
+      label: ช่องหมวดคอร์ส
+      widget: string
+    - name: tcStart
+      label: ช่องวันเริ่ม
+      widget: string
+    - name: tcEnd
+      label: ช่องวันสิ้นสุด
+      widget: string
+    - name: tcSchedule
+      label: ช่องเวลาเรียน
+      widget: string
+    - name: tcTeachers
+      label: ช่องครู
+      widget: string
+    - name: tcDesc
+      label: ช่องรายละเอียด
+      widget: string
+    - name: tcLinks
+      label: หัวข้อลิงก์แนบ
+      widget: string
+    - name: tcLinkLabel
+      label: ช่องชื่อลิงก์
+      widget: string
+    - name: tcLinkUrl
+      label: ช่องลิงก์
+      widget: string
+    - name: tcAddLink
+      label: ปุ่มเพิ่มลิงก์
+      widget: string
+    - name: tcStatOpen
+      label: ป้ายเปิดรับสมัคร
+      widget: string
+    - name: tcStatClosed
+      label: ป้ายปิดรับสมัคร
+      widget: string
+    - name: tcStatEnded
+      label: ป้ายจบแล้ว
+      widget: string
+    - name: tcStatCourses
+      label: 'สถิติ: คอร์ส'
+      widget: string
+    - name: tcStatOpenCount
+      label: 'สถิติ: เปิดรับ'
+      widget: string
+    - name: tcStatDocs
+      label: 'สถิติ: เอกสาร'
+      widget: string
+    - name: tcName
+      label: ช่องชื่อ
+      widget: string
+    - name: tcPosition
+      label: ช่องตำแหน่ง
+      widget: string
+    - name: tcPhoto
+      label: ช่องรูปโปรไฟล์
+      widget: string
+    - name: tcEmail
+      label: ช่องอีเมล
+      widget: string
+    - name: tcPhone
+      label: ช่องเบอร์โทร
+      widget: string
+    - name: tcInstagram
+      label: ช่อง Instagram
+      widget: string
+    - name: tcFacebook
+      label: ช่อง Facebook
+      widget: string
+    - name: tcYoutube
+      label: ช่อง YouTube
+      widget: string
+    - name: tcNoProfile
+      label: ข้อความเมื่อไม่มีโปรไฟล์
+      widget: string
+    - name: tcRoleTeacher
+      label: ป้ายบทบาทครู
+      widget: string
+    - name: tcRoleAdmin
+      label: ป้ายบทบาทผู้ดูแล
+      widget: string
+    - name: tcRoleOwner
+      label: ป้ายบทบาทเจ้าของ
+      widget: string
+    - name: tcManageAccounts
+      label: ปุ่มไปหน้าจัดการบัญชี
+      widget: string
+    - name: tcOwnerNote
+      label: ข้อความสำหรับเจ้าของ
       widget: string
   description: ตั้งค่าทั่วไป หน้าสไลด์ต้อนรับ เมนู และข้อความในหน้าเว็บ

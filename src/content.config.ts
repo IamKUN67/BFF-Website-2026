@@ -146,6 +146,7 @@ const pages = defineCollection({
     legacy: bool,
     showContact: bool, // แสดงการ์ดช่องทางติดต่อจากหน้าตั้งค่า
     showExecutives: bool, // แสดงรายชื่อผู้บริหารท้ายหน้า
+    teacherCourses: bool, // เปิดให้ครูเพิ่มคอร์สของตัวเองในหน้านี้
     links: list(z.object({ label: z.string(), url: z.string(), note: str, width: pct, align: str })), // ปุ่มลิงก์ใหญ่ เช่น ฟอร์ม
     embeds: list(z.object({ title: str, url: z.string(), height: z.number().nullish(), width: pct, align: str })), // ฝังแบบฟอร์ม/เอกสาร
     newsCategory: str, // แสดงข่าวหมวดนี้ท้ายหน้า (เว้นว่าง = ไม่แสดง)
