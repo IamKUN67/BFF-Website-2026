@@ -1,15 +1,8 @@
 ---
 title: กลุ่มสาระการเรียนรู้คณิตศาสตร์
 slug: math
-description: ''
-legacy: false
-showContact: false
-showExecutives: false
-newsCategory: ข่าวการศึกษา
 teachers:
   - 20261024-084247
-links: []
-embeds: []
 courses:
   - title: คณิตศาสตร์พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
     group: ''
@@ -18,7 +11,9 @@ courses:
     schedule: ''
     teachers:
       - 20261024-084247
-    description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
+    applyUrl: ''
+    closed: false
+    ended: true
     documents:
       - title: เอกสารประกอบการเรียน หน่วย 1 จำนวนและตัวเลข
         file: /uploads/1 คณิตพื้น จำนวนและตัวเลข_2.pdf
@@ -50,12 +45,10 @@ courses:
       - title: เอกสารประกอบการเรียน หน่วย 10 กราฟและความสัมพันธ์เชิงเส้น
         file: /uploads/10 คณิตพื้น กราฟ_2.pdf
         note: ''
-    applyUrl: ''
-    closed: false
-    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
+    description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้พื้นฐาน ชั้นมัธยมศึกษาตอนต้น
   - title: คณิตศาสตร์เพิ่มเติม ชั้นมัธยมศึกษาตอนต้น
     group: ''
     startDate: 2023-10-04
@@ -63,7 +56,9 @@ courses:
     schedule: ''
     teachers:
       - 20261024-084247
-    description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้เพิ่มเติม ชั้นมัธยมศึกษาตอนต้น
+    applyUrl: ''
+    closed: false
+    ended: true
     documents:
       - title: เอกสารประกอบการเรียน หน่วย 1 ระบบจำนวนเต็มและจำนวนจริง
         file: /uploads/1 ระบบจำนวนเต็มและจำนวนจริง_2.pdf
@@ -101,12 +96,10 @@ courses:
       - title: เอกสารประกอบการเรียน หน่วย 11 กราฟความสัมพันธ์
         file: /uploads/11 กราฟคณิตเพิ่ม_2.pdf
         note: ''
-    applyUrl: ''
-    closed: false
-    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1dmZjIQqO53r6--0Vf76nKikOd9t3beL1tMrOuqx9YOQ/edit?usp=sharing
+    description: เนื้อหาวิชาคณิตศาสตร์สาระการเรียนรู้เพิ่มเติม ชั้นมัธยมศึกษาตอนต้น
   - title: โครงงานคณิตศาสตร์พื้นฐาน
     group: ''
     startDate: 2024-09-30
@@ -114,7 +107,9 @@ courses:
     schedule: ''
     teachers:
       - 20261024-084247
-    description: โครงงานคณิตศาสตร์พื้นฐานเน้นการศึกษาศาสตร์ต่างๆ ที่มีความสัมพันธ์กับคณิตศาสตร์ เน้นการสืบเสาะ หาความรู้ต่างๆ อย่างมีเหตุผล โดยใช้คณิตศาสตร์
+    applyUrl: ''
+    closed: false
+    ended: true
     documents:
       - title: เอกสารประกอบการเรียน หน่วย 1 ความหมายของคณิตศาสตร์
         file: /uploads/MathProject_Unit1.pdf
@@ -125,10 +120,8 @@ courses:
       - title: เอกสารประกอบการเรียน หน่วย 3 ตัวอย่างโครงงานคณิตศาสตร์
         file: /uploads/MathProject_Unit3.pdf
         note: ''
-    applyUrl: ''
-    closed: false
-    ended: true
     links: []
+    description: โครงงานคณิตศาสตร์พื้นฐานเน้นการศึกษาศาสตร์ต่างๆ ที่มีความสัมพันธ์กับคณิตศาสตร์ เน้นการสืบเสาะ หาความรู้ต่างๆ อย่างมีเหตุผล โดยใช้คณิตศาสตร์
   - title: คณิตศาสตร์มัธยมต้นเพื่อการสอบแข่งขัน
     group: ''
     startDate: 2025-03-13
@@ -136,18 +129,28 @@ courses:
     schedule: ''
     teachers:
       - 20261024-084247
-    description: ศึกษา วิเคราะห์ หลักการทางคณิตศาสตร์ระดับมัธยมต้น เพื่อต่อยอดเป็นองค์ความรู้หรือวิธีการเพิ่มเติมและนํา ไปสู่การแก้ปัญหาทางคณิตศาสตร์ที่มีความซับซ้อน ตั้งแต่ระดับ ง่าย ปานกลาง และ ยาก
+    applyUrl: ''
+    closed: false
+    ended: true
     documents:
       - title: เอกสารประกอบการเรียน คณิตศาสตร์มัธยมต้นเพื่อการสอบแข่งขัน
         file: /uploads/เอกสารประกอบการเรียนคณิตศาสตร์มัธยมต้น เพื่อการสอบแข่งขัน.pdf
         note: ''
-    applyUrl: ''
-    closed: false
-    ended: true
     links:
       - label: ระบบรายงานคะแนน
         url: https://docs.google.com/spreadsheets/d/1LQIKOsR2CoPF1I6NnmdW_EnC7A8pmAr7bYiYrISRbp0/edit?usp=sharing
+    description: ศึกษา วิเคราะห์ หลักการทางคณิตศาสตร์ระดับมัธยมต้น เพื่อต่อยอดเป็นองค์ความรู้หรือวิธีการเพิ่มเติมและนํา ไปสู่การแก้ปัญหาทางคณิตศาสตร์ที่มีความซับซ้อน ตั้งแต่ระดับ ง่าย ปานกลาง และ ยาก
+teacherCourses: true
 sections: []
+links: []
+embeds: []
+newsCategory: ข่าวการศึกษา
+showContact: false
+showExecutives: false
+description: ''
+legacy: false
+bodyAlign: left
+bodySize: normal
 ---
 
 กลุ่มสาระการเรียนรู้คณิตศาสตร์ ตามหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน พุทธศักราช 2551 (ฉบับปรับปรุง พ.ศ. 2560) มุ่งพัฒนาทักษะการคิดวิเคราะห์ การคิดอย่างมีเหตุผล การแก้ปัญหา และการนำความรู้ทางคณิตศาสตร์ไปประยุกต์ใช้ในชีวิตประจำวัน โดยแบ่งออกเป็นสาระการเรียนรู้พื้นฐาน 3 สาระ และสาระการเรียนรู้เพิ่มเติมสำหรับระดับมัธยมศึกษาตอนปลาย ดังนี้
